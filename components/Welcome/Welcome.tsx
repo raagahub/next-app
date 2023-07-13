@@ -1,4 +1,4 @@
-import { Title, Text, Anchor } from '@mantine/core';
+import { Title, Text, Anchor, Box } from '@mantine/core';
 import useStyles from './Welcome.styles';
 
 export function Welcome() {
@@ -6,20 +6,21 @@ export function Welcome() {
 
   return (
     <>
+    <Box px="md" >
       <Title className={classes.title} align="center" mt={100}>
-        Welcome to{' '}
+        Rediscover{' '}
         <Text inherit variant="gradient" component="span">
-          Mantine
+          Raagas
         </Text>
       </Title>
       <Text color="dimmed" align="center" size="lg" sx={{ maxWidth: 580 }} mx="auto" mt="xl">
-        This starter Next.js project includes a minimal setup for server side rendering, if you want
-        to learn more on Mantine + Next.js integration follow{' '}
-        <Anchor href="https://mantine.dev/guides/next/" size="lg">
-          this guide
+      <Text span fw={700} inherit>Raagahub</Text> is a vibrant online platform designed to help you discover, learn, and explore the captivating realm of{' '}
+        <Anchor href="https://en.wikipedia.org/wiki/Carnatic_music" size="lg">
+          Carnatic Music
         </Anchor>
-        . To get started edit index.tsx file.
+        . Immerse yourself in the rich heritage and intricate melodies as you embark on a journey of musical exploration like never before.
       </Text>
+    </Box>
     </>
   );
 }
