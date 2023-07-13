@@ -158,7 +158,7 @@ export function NavBar() {
                     />
 
                     <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
-                        <a href="#" className={classes.link}>
+                        <a href="/" className={classes.link}>
                             Home
                         </a>
                         <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
@@ -206,7 +206,7 @@ export function NavBar() {
                                 </div>
                             </HoverCard.Dropdown>
                         </HoverCard>
-                        <a href="#" className={classes.link}>
+                        <a href="/about" className={classes.link}>
                             About
                         </a>
                         <a href="#" className={classes.link}>
@@ -215,7 +215,7 @@ export function NavBar() {
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
-                        <Button>Sign In</Button>
+                        <Button variant="outline">Sign In</Button>
                         <ColorSchemeToggle />
                     </Group>
 
@@ -235,7 +235,7 @@ export function NavBar() {
                 <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
                     <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
-                    <a href="#" className={classes.link}>
+                    <a href="/" className={classes.link}>
                         Home
                     </a>
                     <UnstyledButton className={classes.link} onClick={toggleLinks}>
@@ -247,7 +247,7 @@ export function NavBar() {
                         </Center>
                     </UnstyledButton>
                     <Collapse in={linksOpened}>{links}</Collapse>
-                    <a href="#" className={classes.link}>
+                    <a href="/about" className={classes.link}>
                         About
                     </a>
                     <a href="#" className={classes.link}>
@@ -257,7 +257,7 @@ export function NavBar() {
                     <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
                     <Group position="center" grow pb="xl" px="md">
-                        <Button>Sign In</Button>
+                        <Button variant="light">Sign In</Button>
                         <ColorSchemeToggle />
                     </Group>
                 </ScrollArea>
