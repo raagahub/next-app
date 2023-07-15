@@ -152,5 +152,19 @@
         "is_vakra": false,
         "is_bashanga": false,
         "is_upanga": true
+    },
+    {
+        "id": 16,
+        "format_name": "Chakravakam",
+        "name": "chakravAkam",
+        "melakarta": null,
+        "arohanam": "S R1 G3 M1 P D2 N2 S",
+        "avarohanam": "S N2 D2 P M1 G3 R1 S",
+        "aliases": "",
+        "is_janaka": true,
+        "is_janya": false,
+        "is_vakra": false,
+        "is_bashanga": null,
+        "is_upanga": true
     }
 ]

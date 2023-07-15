@@ -15,6 +15,12 @@ import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
 const useStyles = createStyles((theme) => ({
     card: {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+        transition: 'transform 150ms ease, box-shadow 150ms ease',
+
+        '&:hover': {
+          transform: 'scale(1.05)',
+          boxShadow: theme.shadows.md,
+        },
     },
 
     // footer: {
@@ -69,7 +75,10 @@ export function RagaCard({raga}: RagaCardProps) {
                 <Text fz="lg" fw={700}>
                     {raga.format_name}
                 </Text>
-                <Badge>{raga.is_janaka ? "MELAKARTA RAAGA" : "JANYA RAAGA"}</Badge>
+                {raga.is_janaka ? 
+                <Badge variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
+                <Badge>JANYA RAAGA</Badge>}
+                
             </Group>
 
 

@@ -49,7 +49,7 @@ const RagaExplore = () => {
             <Flex
             mih={50}
             px="lg"
-            gap="md"
+            gap="lg"
             justify="center"
             align="flex-start"
             direction="row"
