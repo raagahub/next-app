@@ -4,13 +4,16 @@ import {
     Image,
     ActionIcon,
     Group,
+    Modal,
     Text,
     Avatar,
+    Stack,
     Badge,
     rem,
     Box,
 } from '@mantine/core';
 import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
+import { useDisclosure } from '@mantine/hooks';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -21,6 +24,10 @@ const useStyles = createStyles((theme) => ({
           transform: 'scale(1.05)',
           boxShadow: theme.shadows.md,
         },
+
+        [theme.fn.smallerThan('md')]: {
+            width: '100%'
+          },
     },
 
     // footer: {
@@ -68,59 +75,93 @@ export function RagaCard({raga}: RagaCardProps) {
     ))
     console.log(swaraGradient)
 
+    const [opened, { open, close }] = useDisclosure(false);
+
     return (
-        <Card withBorder padding="lg" radius="md" className={classes.card}>
-            
-            <Group position="apart">
-                <Text fz="lg" fw={700}>
-                    {raga.format_name}
-                </Text>
-                {raga.is_janaka ? 
-                <Badge variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
-                <Badge>JANYA RAAGA</Badge>}
-                
-            </Group>
-
-
-            <Group mt="lg" spacing="lg">
-                <div>
-                    <Text fz="xs" c="dimmed">
-                        Arohanam:
+        <>
+            <Modal opened={opened} onClose={close} withCloseButton={false} centered>
+                <Group position="apart">
+                    <Text fz="lg" fw={700} mr={16}>
+                        {raga.format_name}
                     </Text>
-                    <Text fw={500}>{raga.arohanam}</Text>
-                </div>
-                <div>
-                    <Text fz="xs" c="dimmed">
-                        Avarohanam:
-                    </Text>
-                    <Text fw={500}>{raga.avarohanam}</Text>
-                </div>
-            </Group>
+                    {raga.is_janaka ? 
+                    <Badge variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
+                    <Badge>JANYA RAAGA</Badge>}
+                </Group>
 
-            <Card.Section mt="md" mb="sm">
-                <Group grow spacing={0}>
+                <Stack mt="lg" spacing="lg">
+                    <div>
+                        <Text fz="xs" c="dimmed">
+                            Arohanam:
+                        </Text>
+                        <Text fw={500}>{raga.arohanam}</Text>
+                    </div>
+                    <div>
+                        <Text fz="xs" c="dimmed">
+                            Avarohanam:
+                        </Text>
+                        <Text fw={500}>{raga.avarohanam}</Text>
+                    </div>
+                </Stack>
+
+                <Group grow spacing={0} mt="lg">
                     {swaraGradient}
                 </Group>
-            </Card.Section>
-
-            <Card.Section px="lg" pb="xs">
+                
+            </Modal>
+            <Card withBorder padding="lg" radius="md" className={classes.card} onClick={open}>
+                
                 <Group position="apart">
-                    <Text fz="xs" c="dimmed">
-                        See Details
+                    <Text fz="lg" fw={700} mr={16}>
+                        {raga.format_name}
                     </Text>
-                    <Group spacing={0}>
-                        <ActionIcon>
-                            <IconHeart size="1.2rem" color={theme.colors.red[6]} stroke={1.5} />
-                        </ActionIcon>
-                        <ActionIcon>
-                            <IconBookmark size="1.2rem" color={theme.colors.yellow[6]} stroke={1.5} />
-                        </ActionIcon>
-                        <ActionIcon>
-                            <IconShare size="1.2rem" color={theme.colors.blue[6]} stroke={1.5} />
-                        </ActionIcon>
-                    </Group>
+                    {raga.is_janaka ? 
+                    <Badge variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
+                    <Badge>JANYA RAAGA</Badge>}
+                    
                 </Group>
-            </Card.Section>
-        </Card>
+
+
+                <Group mt="lg" spacing="lg">
+                    <div>
+                        <Text fz="xs" c="dimmed">
+                            Arohanam:
+                        </Text>
+                        <Text fw={500}>{raga.arohanam}</Text>
+                    </div>
+                    <div>
+                        <Text fz="xs" c="dimmed">
+                            Avarohanam:
+                        </Text>
+                        <Text fw={500}>{raga.avarohanam}</Text>
+                    </div>
+                </Group>
+
+                <Card.Section mt="md" mb="sm">
+                    <Group grow spacing={0}>
+                        {swaraGradient}
+                    </Group>
+                </Card.Section>
+
+                <Card.Section px="lg" pb="xs">
+                    <Group position="apart">
+                        <Text fz="xs" c="dimmed">
+                            See Details
+                        </Text>
+                        <Group spacing={0}>
+                            <ActionIcon>
+                                <IconHeart size="1.2rem" color={theme.colors.red[6]} stroke={1.5} />
+                            </ActionIcon>
+                            <ActionIcon>
+                                <IconBookmark size="1.2rem" color={theme.colors.yellow[6]} stroke={1.5} />
+                            </ActionIcon>
+                            <ActionIcon>
+                                <IconShare size="1.2rem" color={theme.colors.blue[6]} stroke={1.5} />
+                            </ActionIcon>
+                        </Group>
+                    </Group>
+                </Card.Section>
+            </Card>
+        </>
     );
 }
