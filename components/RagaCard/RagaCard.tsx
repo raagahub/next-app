@@ -14,6 +14,9 @@ import {
 } from '@mantine/core';
 import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
+import SwaraGradient from '../SwaraGradient/SwaraGradient'
+import { RagaModal } from '../RagaModal/RagaModal'
+
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -35,7 +38,7 @@ const useStyles = createStyles((theme) => ({
     // },
 }));
 
-interface RagaCardProps {
+export interface RagaCardProps {
     raga: {
         id: number;
         name: string;
@@ -47,67 +50,14 @@ interface RagaCardProps {
     };
 }
 
-let swaraColorMap = new Map([
-    ["SS", "dark.3"],
-    ["S", "dark.3"],
-    ["P", "pink.5"],
-    ["R1", "pink.3"],
-    ["R2", "grape.3"],
-    ["R3", "violet.3"],
-    ["G1", "indigo.3"],
-    ["G2", "blue.3"],
-    ["G3", "cyan.3"],
-    ["M1", "cyan.4"],
-    ["M2", "red.4"],
-    ["D1", "teal.3"],
-    ["D2", "green.3"],
-    ["D3", "lime.3"],
-    ["N1", "yellow.3"],
-    ["N2", "orange.3"],
-    ["N3", "orange.4"],
-])
-
 export function RagaCard({raga}: RagaCardProps) {
     const { classes, theme } = useStyles();
-    const swaraList = (raga.arohanam + raga.avarohanam).split(' ')
-    const swaraGradient = swaraList.map((swara) => (
-        <Box bg={swaraColorMap.get(swara)} miw={4} h={5}/>
-    ))
-    console.log(swaraGradient)
-
     const [opened, { open, close }] = useDisclosure(false);
 
     return (
         <>
             <Modal opened={opened} onClose={close} withCloseButton={false} centered>
-                <Group position="apart">
-                    <Text fz="lg" fw={700} mr={16}>
-                        {raga.format_name}
-                    </Text>
-                    {raga.is_janaka ? 
-                    <Badge variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
-                    <Badge>JANYA RAAGA</Badge>}
-                </Group>
-
-                <Stack mt="lg" spacing="lg">
-                    <div>
-                        <Text fz="xs" c="dimmed">
-                            Arohanam:
-                        </Text>
-                        <Text fw={500}>{raga.arohanam}</Text>
-                    </div>
-                    <div>
-                        <Text fz="xs" c="dimmed">
-                            Avarohanam:
-                        </Text>
-                        <Text fw={500}>{raga.avarohanam}</Text>
-                    </div>
-                </Stack>
-
-                <Group grow spacing={0} mt="lg">
-                    {swaraGradient}
-                </Group>
-                
+                <RagaModal raga={raga}/>
             </Modal>
             <Card withBorder padding="lg" radius="md" className={classes.card} onClick={open}>
                 
@@ -138,9 +88,7 @@ export function RagaCard({raga}: RagaCardProps) {
                 </Group>
 
                 <Card.Section mt="md" mb="sm">
-                    <Group grow spacing={0}>
-                        {swaraGradient}
-                    </Group>
+                    <SwaraGradient raga={raga}/>
                 </Card.Section>
 
                 <Card.Section px="lg" pb="xs">

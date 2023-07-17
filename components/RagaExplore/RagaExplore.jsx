@@ -13,7 +13,7 @@ const RagaExplore = () => {
         raga => raga.format_name
     )
     const ragaCards = mockdata.map((raga) => (
-        <RagaCard raga={raga}/>
+        <RagaCard raga={raga} key={raga.id}/>
     ))
     return (
         <Flex
