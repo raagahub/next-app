@@ -32,10 +32,6 @@ const useStyles = createStyles((theme) => ({
             width: '100%'
           },
     },
-
-    // footer: {
-    //     padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
-    // },
 }));
 
 export interface RagaCardProps {

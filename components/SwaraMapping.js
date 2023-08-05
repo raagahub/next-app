@@ -1,5 +1,6 @@
-export let swaraColorMap = new Map([
-    ["SS", "dark.3"],
+export const selectableSwaras = ["R1", "R2", "G1", "G2", "M1", "M2", "P", "D1", "D2", "N1", "N2"]
+
+export const swaraColorMap = new Map([
     ["S", "dark.3"],
     ["P", "pink.5"],
     ["R1", "pink.3"],
@@ -18,7 +19,7 @@ export let swaraColorMap = new Map([
     ["N3", "orange.4"],
 ])
 
-export let swaraNoteMap = new Map([
+export const swaraNoteMap = new Map([
     ["S", "C4"],
     ["R1", "C#4"],
     ["R2", "D4"],
