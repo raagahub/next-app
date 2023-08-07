@@ -4,23 +4,27 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import { RagaCard } from '../RagaCard/RagaCard';
 import { RagaFilter } from '../RagaFilter/RagaFilter'
-import { selectableSwaras } from '../SwaraMapping'
+import { allSwaras } from '../SwaraMapping'
 
-let mockdata = require('./mockdata.json');
+let data = require('./ragas.json');
 
 const swaraSelectStartState = {
     "S": false,
     "R1": false,
     "R2": false,
+    "R3": false,
     "G1": false,
     "G2": false,
+    "G3": false,
     "M1": false,
     "M2": false,
     "P": false,
     "D1": false,
     "D2": false,
+    "D3": false,
     "N1": false,
     "N2": false,
+    "N3": false,
 }
 
 const RagaExplore = () => {
@@ -28,7 +32,7 @@ const RagaExplore = () => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
 
-    const ragaNames = mockdata.map(
+    const ragaNames = data.map(
         raga => raga.format_name
     )
 
@@ -48,7 +52,7 @@ const RagaExplore = () => {
             }
         }
         if (out.length == 0) {
-            return selectableSwaras
+            return allSwaras
         } else {
             return out
         }
@@ -56,7 +60,7 @@ const RagaExplore = () => {
 
     console.log(getSwaraSelectList())
 
-    const ragaCards = mockdata.filter(
+    const ragaCards = data.filter(
         raga=>raga.format_name.toLowerCase().startsWith(query.toLowerCase()) && 
         getSwaraSelectList().some(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))
         ).map(
