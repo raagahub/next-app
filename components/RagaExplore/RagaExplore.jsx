@@ -52,7 +52,7 @@ const RagaExplore = () => {
             }
         }
         if (out.length == 0) {
-            return allSwaras
+            return []
         } else {
             return out
         }
@@ -62,7 +62,7 @@ const RagaExplore = () => {
 
     const ragaCards = data.filter(
         raga=>raga.format_name.toLowerCase().startsWith(query.toLowerCase()) && 
-        getSwaraSelectList().some(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))
+        getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))
         ).map(
             (raga) => (<RagaCard raga={raga} key={raga.id}/>))
 

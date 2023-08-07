@@ -148,7 +148,7 @@ export function NavBar() {
 
     return (
         <Box pb={60}>
-            <Header height={60} px="md">
+            <Header height={60} px="md" fixed={true}>
                 <Group position="apart" sx={{ height: '100%' }}>
                     <Image
                         src='/raagahub_logo_colour.png'
