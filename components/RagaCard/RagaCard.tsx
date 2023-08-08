@@ -22,6 +22,7 @@ const useStyles = createStyles((theme) => ({
     card: {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
         transition: 'transform 150ms ease, box-shadow 150ms ease',
+        minWidth: '100%',
 
         '&:hover': {
           transform: 'scale(1.05)',

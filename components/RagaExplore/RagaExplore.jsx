@@ -1,38 +1,23 @@
 import { ActionIcon, Autocomplete, Badge, Box, Button, Card, Collapse, Container, Divider, Flex, Grid, Group, Image, Text, useMantineColorScheme } from '@mantine/core';
 import { IconSearch, IconAdjustments } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RagaCard } from '../RagaCard/RagaCard';
 import { RagaFilter } from '../RagaFilter/RagaFilter'
-import { allSwaras } from '../SwaraMapping'
+import { swaraSelectStartState } from '../SwaraMapping'
+import { Virtuoso, VirtuosoGrid } from 'react-virtuoso'
+import styled from '@emotion/styled'
 
 let data = require('./ragas.json');
-
-const swaraSelectStartState = {
-    "S": false,
-    "R1": false,
-    "R2": false,
-    "R3": false,
-    "G1": false,
-    "G2": false,
-    "G3": false,
-    "M1": false,
-    "M2": false,
-    "P": false,
-    "D1": false,
-    "D2": false,
-    "D3": false,
-    "N1": false,
-    "N2": false,
-    "N3": false,
-}
 
 const RagaExplore = () => {
     const [opened, { toggle }] = useDisclosure(false);
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
 
-    const ragaNames = data.map(
+    const [filteredData, filterData] = useState(data)
+
+    const ragaNames = filteredData.map(
         raga => raga.format_name
     )
 
@@ -51,20 +36,50 @@ const RagaExplore = () => {
                 out.push(key)
             }
         }
-        if (out.length == 0) {
-            return []
-        } else {
-            return out
-        }
+        return out
     }
 
     console.log(getSwaraSelectList())
 
-    const ragaCards = data.filter(
-        raga=>raga.format_name.toLowerCase().startsWith(query.toLowerCase()) && 
-        getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))
-        ).map(
-            (raga) => (<RagaCard raga={raga} key={raga.id}/>))
+    useEffect(() => {
+        filterData(data.filter(
+            raga=>raga.format_name.toLowerCase().startsWith(query.toLowerCase()) && 
+            getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))
+            ))
+      }, [query, swaraSelectState]);
+
+    const ItemContainer = styled.div`
+      padding: 0.5rem;
+      display: flex;
+      width: 33%;
+      flex: 1 1 auto;
+      align-content: stretch;
+      justify-content: center;
+    
+      @media (max-width: 1024px) {
+        width: 50%;
+      }
+
+      @media (max-width: 512px) {
+        width: 100%;
+      }
+    `
+    
+    const ItemWrapper = styled.div`
+      flex: 1;
+      text-align: center;
+      font-size: 80%;
+      padding: 1rem 1rem;
+      border: 1px solid var(gray);
+      white-space: nowrap;
+    `
+    
+    const ListContainer = styled.div`
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    `
 
     return (
         <Flex
@@ -79,6 +94,7 @@ const RagaExplore = () => {
         >
             <Container mt="lg" py="lg" mx="auto" w={{ base: 320, sm: 480, lg: 640 }}>
                 <Autocomplete
+                    placeholder="Type any Raaga name"
                     size="xl"
                     width={800}
                     icon={<IconSearch />}
@@ -103,17 +119,20 @@ const RagaExplore = () => {
                     <RagaFilter selectedSwaras={swaraSelectState} handleSwaraSelect={handleSwaraSelect}/>
                 </Collapse>
             </Container>
-            <Flex
-            mih={50}
-            px="lg"
-            gap="lg"
-            justify="center"
-            align="flex-start"
-            direction="row"
-            wrap="wrap"
-            >
-                {ragaCards}
-            </Flex>
+            <Container pb="lg" mx="auto" w="100%" fluid={true}>
+                <VirtuosoGrid 
+                components={{
+                    Item: ItemContainer,
+                    List: ListContainer,
+                }}
+                style={{ height: '60vh' }} 
+                data={filteredData} 
+                itemContent={(index, raga) => (
+                <ItemContainer>
+                    <RagaCard raga={raga} key={raga.id}/>
+                </ItemContainer>)} />
+            </Container>
+
         </Flex>
     )
 }

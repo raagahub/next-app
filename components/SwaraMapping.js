@@ -1,6 +1,27 @@
 export const allSwaras = ["R1", "R2", "R3", "G1", "G2", "G3", "M1", "M2", "P", "D1", "D2", "D3", "N1", "N2", "N3"]
-export const selectableSwaras = ["R1", "R2G1", "R3G2", "G3", "M1", "M2", "P", "D1", "D2N1", "D3N2", "N3"]
 
+// Swara Select Filter Related
+export const selectableSwaras = ["R1", "R2G1", "R3G2", "G3", "M1", "M2", "P", "D1", "D2N1", "D3N2", "N3"]
+export const swaraSelectStartState = {
+    "S": false,
+    "R1": false,
+    "R2": false,
+    "R3": false,
+    "G1": false,
+    "G2": false,
+    "G3": false,
+    "M1": false,
+    "M2": false,
+    "P": false,
+    "D1": false,
+    "D2": false,
+    "D3": false,
+    "N1": false,
+    "N2": false,
+    "N3": false,
+}
+
+// Swara Color Related
 export const swaraColorMap = new Map([
     ["S", "dark.3"],
     ["P", "pink.5"],
@@ -20,6 +41,7 @@ export const swaraColorMap = new Map([
     ["N3", "orange.4"],
 ])
 
+// Swara Note Related
 export const swaraNoteMap = new Map([
     ["S", "C4"],
     ["R1", "C#4"],
