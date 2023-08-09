@@ -47,19 +47,44 @@ const RagaExplore = () => {
     }
     console.log("type:", ragaTypeState)
 
-    const [swaraCountState, toggleSwaraCount] = useState({5: true, 6: true, 7: true, others: true})
+    const [swaraCountState, toggleSwaraCount] = useState({five: true, six: true, seven: true, others: true})
     function handleSwaraCountToggle(countVal) {
         toggleSwaraCount({...swaraCountState, [countVal]: !(swaraCountState[countVal])})
     }
+    console.log("swaraCount:", swaraCountState)
+
+    const [sortByValue, updateSortBy] = useState("name")
+    function handleSortByChange(value) {
+        updateSortBy(value)
+    }
+
 
     useEffect(() => {
         filterData(data.filter(
             raga =>
             (raga.format_name.toLowerCase().startsWith(query.toLowerCase()) || raga.aliases.toLowerCase().includes(query.toLowerCase())) && 
             (getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))) &&
-            ((ragaTypeState.melakarta === raga.is_janaka) || (ragaTypeState.janya === raga.is_janya))
-            ))
-      }, [query, swaraSelectState, ragaTypeState]);
+            ((ragaTypeState.melakarta === raga.is_janaka) || (ragaTypeState.janya === raga.is_janya)) &&
+            (((raga.arohanam.split(" ").length === 6) && (raga.avarohanam.split(" ").length === 6) && swaraCountState.five) ||
+            ((raga.arohanam.split(" ").length === 7) && (raga.avarohanam.split(" ").length === 7) && swaraCountState.six) ||
+            ((raga.arohanam.split(" ").length === 8) && (raga.avarohanam.split(" ").length === 8) && swaraCountState.seven) ||
+            ((raga.arohanam.split(" ").length != raga.avarohanam.split(" ").length) && swaraCountState.others))
+            ).sort((a,b) => {
+                if (sortByValue == "name"){
+                    return a.format_name < b.format_name ? -1 : 1
+                } else if (sortByValue == "melakarta") {
+                    if (a.melakarta && b.melakarta) {
+                        return a.melakarta < b.melakarta ? -1 : 1
+                    } else if (a.melakarta) {
+                        return a.melakarta < b.id ? -1 : 1
+                    } else if (b.melakarta) {
+                        return a.id < b.melakarta ? -1 : 1
+                    } else {
+                        return a.id < b.id ? -1 : 1
+                    }
+                }
+            }))
+      }, [query, swaraSelectState, ragaTypeState, swaraCountState, sortByValue]);
 
     const ItemContainer = styled.div`
       padding: 0.5rem;
@@ -134,6 +159,10 @@ const RagaExplore = () => {
                     handleSwaraSelect={handleSwaraSelect}
                     ragaTypeState={ragaTypeState}
                     handleRagaTypeToggle={handleRagaTypeToggle}
+                    swaraCountState={swaraCountState}
+                    handleSwaraCountToggle={handleSwaraCountToggle}
+                    sortByValue={sortByValue}
+                    handleSortByChange={handleSortByChange}
                     />
                 </Collapse>
             </Container>

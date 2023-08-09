@@ -32,9 +32,8 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function RagaFilter({selectedSwaras, handleSwaraSelect, ragaTypeState, handleRagaTypeToggle}) {
+export function RagaFilter({selectedSwaras, handleSwaraSelect, ragaTypeState, handleRagaTypeToggle, swaraCountState, handleSwaraCountToggle, sortByValue, handleSortByChange}) {
     const { classes, theme } = useStyles();
-    const [sortByValue, updateSortBy] = useState("name")
 
     const swaraSelectButtons = selectableSwaras.map((swara) => {
         if (swara.length == 4) {
@@ -111,8 +110,8 @@ export function RagaFilter({selectedSwaras, handleSwaraSelect, ragaTypeState, ha
                         RAAGA TYPE:
                     </Text>
                     <Group position="center" spacing="xs">
-                        <Chip checked={ragaTypeState.melakarta} onChange={() => handleRagaTypeToggle("melakarta")} color="pink" variant="filled">Melakarta</Chip>
-                        <Chip checked={ragaTypeState.janya} onChange={() => handleRagaTypeToggle("janya")}variant="filled">Janya</Chip>
+                        <Chip checked={ragaTypeState.melakarta} onChange={() => handleRagaTypeToggle("melakarta")} color="pink.5" variant="filled">Melakarta</Chip>
+                        <Chip checked={ragaTypeState.janya} onChange={() => handleRagaTypeToggle("janya")} color="blue.4" variant="filled">Janya</Chip>
                     </Group>
                 </Box>
                 <Box>
@@ -120,10 +119,10 @@ export function RagaFilter({selectedSwaras, handleSwaraSelect, ragaTypeState, ha
                         NUMBER OF SWARAS:
                     </Text>
                     <Group position="center" spacing="xs">
-                        <Chip defaultChecked color="orange" variant="outline">5</Chip>
-                        <Chip defaultChecked color="orange" variant="outline">6</Chip>
-                        <Chip defaultChecked color="orange" variant="outline">7</Chip>
-                        <Chip defaultChecked color="orange" variant="outline">Others</Chip>
+                        <Chip checked={swaraCountState.five} onChange={() => handleSwaraCountToggle("five")} color="orange" variant="outline">5</Chip>
+                        <Chip checked={swaraCountState.six} onChange={() => handleSwaraCountToggle("six")} color="orange" variant="outline">6</Chip>
+                        <Chip checked={swaraCountState.seven} onChange={() => handleSwaraCountToggle("seven")} color="orange" variant="outline">7</Chip>
+                        <Chip checked={swaraCountState.others} onChange={() => handleSwaraCountToggle("others")} color="orange" variant="outline">Others</Chip>
                     </Group>
                 </Box>
                 <Box>
@@ -132,8 +131,8 @@ export function RagaFilter({selectedSwaras, handleSwaraSelect, ragaTypeState, ha
                     </Text>
                     <SegmentedControl
                     value={sortByValue}
-                    onChange={updateSortBy}
-                    color='violet'
+                    onChange={(v) => handleSortByChange(v)}
+                    color='violet.4'
                     data={[
                         { label: 'Name', value: 'name' },
                         { label: 'Melakarta', value: 'melakarta' }
