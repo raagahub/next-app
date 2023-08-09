@@ -22,6 +22,7 @@ const RagaExplore = () => {
     )
 
     const [query, setQuery] = useState("")
+
     const [swaraSelectState, updateSwaraSelect] = useState(swaraSelectStartState)
     function handleSwaraSelect(swara) {
         updateSwaraSelect({
@@ -38,15 +39,27 @@ const RagaExplore = () => {
         }
         return out
     }
-
     console.log(getSwaraSelectList())
+
+    const [ragaTypeState, toggleRagaType] = useState({melakarta: true, janya: true})
+    function handleRagaTypeToggle(ragaType) {
+        toggleRagaType({...ragaTypeState, [ragaType]: !(ragaTypeState[ragaType])})
+    }
+    console.log("type:", ragaTypeState)
+
+    const [swaraCountState, toggleSwaraCount] = useState({5: true, 6: true, 7: true, others: true})
+    function handleSwaraCountToggle(countVal) {
+        toggleSwaraCount({...swaraCountState, [countVal]: !(swaraCountState[countVal])})
+    }
 
     useEffect(() => {
         filterData(data.filter(
-            raga=>raga.format_name.toLowerCase().startsWith(query.toLowerCase()) && 
-            getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))
+            raga =>
+            (raga.format_name.toLowerCase().startsWith(query.toLowerCase()) || raga.aliases.toLowerCase().includes(query.toLowerCase())) && 
+            (getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))) &&
+            ((ragaTypeState.melakarta === raga.is_janaka) || (ragaTypeState.janya === raga.is_janya))
             ))
-      }, [query, swaraSelectState]);
+      }, [query, swaraSelectState, ragaTypeState]);
 
     const ItemContainer = styled.div`
       padding: 0.5rem;
@@ -116,7 +129,12 @@ const RagaExplore = () => {
                     }
                 />
                 <Collapse in={opened}>
-                    <RagaFilter selectedSwaras={swaraSelectState} handleSwaraSelect={handleSwaraSelect}/>
+                    <RagaFilter 
+                    selectedSwaras={swaraSelectState} 
+                    handleSwaraSelect={handleSwaraSelect}
+                    ragaTypeState={ragaTypeState}
+                    handleRagaTypeToggle={handleRagaTypeToggle}
+                    />
                 </Collapse>
             </Container>
             <Container pb="lg" mx="auto" w="100%" fluid={true}>
