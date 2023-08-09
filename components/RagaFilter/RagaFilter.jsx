@@ -32,7 +32,11 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function RagaFilter({selectedSwaras, handleSwaraSelect, ragaTypeState, handleRagaTypeToggle, swaraCountState, handleSwaraCountToggle, sortByValue, handleSortByChange}) {
+export function RagaFilter({
+    selectedSwaras, handleSwaraSelect, 
+    ragaTypeState, handleRagaTypeToggle, 
+    swaraCountState, handleSwaraCountToggle, 
+    sortByValue, handleSortByChange}) {
     const { classes, theme } = useStyles();
 
     const swaraSelectButtons = selectableSwaras.map((swara) => {
@@ -80,7 +84,7 @@ export function RagaFilter({selectedSwaras, handleSwaraSelect, ragaTypeState, ha
     })
 
     return (
-        <Box mt={32} w={'fit-content'}>
+        <Box m="0 auto" w="fit-content" py={16}>
             <Group position="apart" mb='sm'>
                 <Text fz="sm" fw={300} mr={16}>
                     RAAGA SWARAS:
