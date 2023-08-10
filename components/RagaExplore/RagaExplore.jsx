@@ -73,12 +73,24 @@ const RagaExplore = () => {
                 if (sortByValue == "name"){
                     return a.format_name < b.format_name ? -1 : 1
                 } else if (sortByValue == "melakarta") {
-                    if (a.melakarta && b.melakarta) {
-                        return a.melakarta < b.melakarta ? -1 : 1
-                    } else if (a.melakarta) {
-                        return a.melakarta < b.id ? -1 : 1
-                    } else if (b.melakarta) {
-                        return a.id < b.melakarta ? -1 : 1
+                    if (a.is_janya && b.is_janya) {
+                        if (a.melakarta == b.melakarta) {
+                            return a.format_name < b.format_name ? -1 : 1
+                        } else {
+                            return a.melakarta < b.melakarta ? -1 : 1
+                        }
+                    } else if (a.is_janya && b.is_janaka) {
+                        if (a.melakarta == b.id) {
+                            return 1
+                        } else {
+                            return a.melakarta < b.id ? -1 : 1
+                        }
+                    } else if (a.is_janaka && b.is_janya) {
+                        if (a.id == b.melakarta) {
+                            return -1
+                        } else {
+                            return a.id < b.melakarta ? -1 : 1
+                        }
                     } else {
                         return a.id < b.id ? -1 : 1
                     }
