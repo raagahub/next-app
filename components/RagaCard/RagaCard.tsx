@@ -16,6 +16,7 @@ import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import SwaraGradient from '../SwaraGradient/SwaraGradient'
 import { RagaModal } from '../RagaModal/RagaModal'
+import { nth } from '../StringUtilities'
 
 
 const useStyles = createStyles((theme) => ({
@@ -50,6 +51,14 @@ export interface RagaCardProps {
 export function RagaCard({raga}: RagaCardProps) {
     const { classes, theme } = useStyles();
     const [opened, { open, close }] = useDisclosure(false);
+
+    function descriptor(raga: RagaCardProps["raga"]) {
+        if(raga.is_janaka){
+            return `${raga.id}${nth(raga.id)} Melakarta`
+        } else {
+            return `${raga.melakarta}${nth(raga.melakarta)} Melakarta Janya`
+        }
+    }
 
     return (
         <>
@@ -91,12 +100,9 @@ export function RagaCard({raga}: RagaCardProps) {
                 <Card.Section px="lg" pb="xs">
                     <Group position="apart">
                         <Text fz="xs" c="dimmed">
-                            See Details
+                            {descriptor(raga)}
                         </Text>
                         <Group spacing={0}>
-                            <ActionIcon>
-                                <IconHeart size="1.2rem" color={theme.colors.red[6]} stroke={1.5} />
-                            </ActionIcon>
                             <ActionIcon>
                                 <IconBookmark size="1.2rem" color={theme.colors.yellow[6]} stroke={1.5} />
                             </ActionIcon>
