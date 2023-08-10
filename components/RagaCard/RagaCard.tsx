@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import SwaraGradient from '../SwaraGradient/SwaraGradient'
+import { SwaraGradient } from '../SwaraGradient/SwaraGradient'
 import { RagaModal } from '../RagaModal/RagaModal'
 import { nth } from '../StringUtilities'
 
@@ -94,7 +94,7 @@ export function RagaCard({raga}: RagaCardProps) {
                 </Group>
 
                 <Card.Section mt="md" mb="sm">
-                    <SwaraGradient raga={raga}/>
+                    <SwaraGradient raga={raga} height={4}/>
                 </Card.Section>
 
                 <Card.Section px="lg" pb="xs">
