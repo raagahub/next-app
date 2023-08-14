@@ -9,7 +9,8 @@ import {
     SegmentedControl,
     Text
 } from '@mantine/core';
-import { selectableSwaras, swaraColorMap } from '../SwaraMapping'
+import { selectableSwaras, swaraColorMap, SwaraSelectState, SwaraSelectKey } from '../SwaraHelpers'
+import { RagaTypeState, SwaraCountState, RagaSortOption } from '../RagaHelpers'
 import { useState } from 'react';
 
 
@@ -32,17 +33,29 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
+export interface RagaFilterProps {
+    selectedSwaras: SwaraSelectState;
+    handleSwaraSelect: Function;
+    ragaTypeState: RagaTypeState;
+    handleRagaTypeToggle: Function;
+    swaraCountState: SwaraCountState;
+    handleSwaraCountToggle: Function;
+    sortByValue: RagaSortOption;
+    handleSortByChange: Function;
+}
+
+
 export function RagaFilter({
     selectedSwaras, handleSwaraSelect, 
     ragaTypeState, handleRagaTypeToggle, 
     swaraCountState, handleSwaraCountToggle, 
-    sortByValue, handleSortByChange}) {
+    sortByValue, handleSortByChange}: RagaFilterProps) {
     const { classes, theme } = useStyles();
 
     const swaraSelectButtons = selectableSwaras.map((swara) => {
         if (swara.length == 4) {
-            let swara1 = swara.substring(0,2);
-            let swara2 = swara.substring(2,4);
+            let swara1: SwaraSelectKey = swara.substring(0,2) as SwaraSelectKey;
+            let swara2: SwaraSelectKey = swara.substring(2,4) as SwaraSelectKey;
             return (
                 <Button.Group orientation="vertical">
                     <Button
@@ -72,8 +85,8 @@ export function RagaFilter({
                 <Button
                 key={"swaraSelect_" + swara}
                 className={classes.swaraSelect} 
-                variant={selectedSwaras[swara] ? "filled" : "outline"} 
-                color={selectedSwaras[swara] ? swaraColorMap.get(swara) : "dark.3"}
+                variant={selectedSwaras[swara as SwaraSelectKey] ? "filled" : "outline"} 
+                color={selectedSwaras[swara as SwaraSelectKey] ? swaraColorMap.get(swara) : "dark.3"}
                 onClick={()=>{handleSwaraSelect(swara)}}
                 >
                     {swara}

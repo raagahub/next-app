@@ -2,10 +2,11 @@ import { ActionIcon, Autocomplete, Badge, Box, Button, Card, Collapse, Container
 import { IconSearch, IconAdjustments } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
-import { RagaCard } from '../RagaCard/RagaCard';
+import { Raga, RagaType, RagaTypeState, RagaSwaraCountVal, SwaraCountState, RagaSortOption } from '../RagaHelpers'
+import { RagaCard} from '../RagaCard/RagaCard';
 import { RagaFilter } from '../RagaFilter/RagaFilter'
-import { swaraSelectStartState } from '../SwaraMapping'
-import { Virtuoso, VirtuosoGrid } from 'react-virtuoso'
+import { swaraSelectStartState, SwaraSelectKey, SwaraSelectState } from '../SwaraHelpers'
+import { VirtuosoGrid, GridItemProps, GridListProps } from 'react-virtuoso'
 import styled from '@emotion/styled'
 
 let data = require('./ragas.json');
@@ -18,58 +19,53 @@ const RagaExplore = () => {
     const [filteredData, filterData] = useState(data)
 
     const ragaNames = filteredData.map(
-        raga => raga.format_name
+        (raga: Raga) => raga.format_name
     )
 
     const [query, setQuery] = useState("")
 
-    const [swaraSelectState, updateSwaraSelect] = useState(swaraSelectStartState)
-    function handleSwaraSelect(swara) {
+    const [swaraSelectState, updateSwaraSelect] = useState<SwaraSelectState>(swaraSelectStartState)
+    function handleSwaraSelect(swara: SwaraSelectKey) {
         updateSwaraSelect({
             ...swaraSelectState,
             [swara]: !(swaraSelectState[swara])
         })
     }
-    function getSwaraSelectList() {
-        const out = []
-        for (let key in swaraSelectState) {
-            if (swaraSelectState[key]) {
-                out.push(key)
-            }
-        }
-        return out
+    function getSwaraSelectList(): (keyof SwaraSelectState)[] {
+        return Object.keys(swaraSelectState).filter(key => swaraSelectState[key as keyof SwaraSelectState]) as (keyof SwaraSelectState)[];
     }
     console.log(getSwaraSelectList())
 
-    const [ragaTypeState, toggleRagaType] = useState({melakarta: true, janya: true})
-    function handleRagaTypeToggle(ragaType) {
+    const [ragaTypeState, toggleRagaType] = useState<RagaTypeState>({melakarta: true, janya: true})
+    function handleRagaTypeToggle(ragaType: RagaType) {
         toggleRagaType({...ragaTypeState, [ragaType]: !(ragaTypeState[ragaType])})
     }
     console.log("type:", ragaTypeState)
 
-    const [swaraCountState, toggleSwaraCount] = useState({five: true, six: true, seven: true, others: true})
-    function handleSwaraCountToggle(countVal) {
+    const [swaraCountState, toggleSwaraCount] = useState<SwaraCountState>({five: true, six: true, seven: true, others: true})
+    function handleSwaraCountToggle(countVal: RagaSwaraCountVal) {
         toggleSwaraCount({...swaraCountState, [countVal]: !(swaraCountState[countVal])})
     }
     console.log("swaraCount:", swaraCountState)
 
-    const [sortByValue, updateSortBy] = useState("name")
-    function handleSortByChange(value) {
+    const [sortByValue, updateSortBy] = useState<RagaSortOption>("name")
+    function handleSortByChange(value: RagaSortOption) {
         updateSortBy(value)
     }
 
 
     useEffect(() => {
-        filterData(data.filter(
-            raga =>
-            (raga.format_name.toLowerCase().startsWith(query.toLowerCase()) || raga.aliases.toLowerCase().includes(query.toLowerCase())) && 
-            (getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))) &&
-            ((ragaTypeState.melakarta === raga.is_janaka) || (ragaTypeState.janya === raga.is_janya)) &&
-            (((raga.arohanam.split(" ").length === 6) && (raga.avarohanam.split(" ").length === 6) && swaraCountState.five) ||
-            ((raga.arohanam.split(" ").length === 7) && (raga.avarohanam.split(" ").length === 7) && swaraCountState.six) ||
-            ((raga.arohanam.split(" ").length === 8) && (raga.avarohanam.split(" ").length === 8) && swaraCountState.seven) ||
-            ((raga.arohanam.split(" ").length != raga.avarohanam.split(" ").length) && swaraCountState.others))
-            ).sort((a,b) => {
+        filterData(data
+            .filter((raga: Raga) =>
+                (raga.format_name.toLowerCase().startsWith(query.toLowerCase()) || raga.aliases.toLowerCase().includes(query.toLowerCase())) && 
+                (getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))) &&
+                ((ragaTypeState.melakarta === raga.is_janaka) || (ragaTypeState.janya === raga.is_janya)) &&
+                (((raga.arohanam.split(" ").length === 6) && (raga.avarohanam.split(" ").length === 6) && swaraCountState.five) ||
+                ((raga.arohanam.split(" ").length === 7) && (raga.avarohanam.split(" ").length === 7) && swaraCountState.six) ||
+                ((raga.arohanam.split(" ").length === 8) && (raga.avarohanam.split(" ").length === 8) && swaraCountState.seven) ||
+                ((raga.arohanam.split(" ").length != raga.avarohanam.split(" ").length) && swaraCountState.others))
+            )
+            .sort((a: Raga, b: Raga) => {
                 if (sortByValue == "name"){
                     return a.format_name < b.format_name ? -1 : 1
                 } else if (sortByValue == "melakarta") {
@@ -98,7 +94,7 @@ const RagaExplore = () => {
             }))
       }, [query, swaraSelectState, ragaTypeState, swaraCountState, sortByValue]);
 
-    const ItemContainer = styled.div`
+    const ItemContainer = styled.div<GridItemProps>`
       padding: 0.5rem;
       display: flex;
       width: 33%;
@@ -115,16 +111,7 @@ const RagaExplore = () => {
       }
     `
     
-    const ItemWrapper = styled.div`
-      flex: 1;
-      text-align: center;
-      font-size: 80%;
-      padding: 1rem 1rem;
-      border: 1px solid var(gray);
-      white-space: nowrap;
-    `
-    
-    const ListContainer = styled.div`
+    const ListContainer = styled.div<GridListProps>`
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
@@ -187,7 +174,7 @@ const RagaExplore = () => {
                 style={{ height: '60vh' }} 
                 data={filteredData} 
                 itemContent={(index, raga) => (
-                <ItemContainer>
+                <ItemContainer data-index={index}>
                     <RagaCard raga={raga} key={raga.id}/>
                 </ItemContainer>)} />
             </Container>

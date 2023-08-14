@@ -16,6 +16,7 @@ import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { SwaraGradient } from '../SwaraGradient/SwaraGradient'
 import { RagaModal } from '../RagaModal/RagaModal'
+import { Raga } from '../RagaHelpers'
 import { nth } from '../StringUtilities'
 
 
@@ -37,15 +38,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface RagaCardProps {
-    raga: {
-        id: number;
-        name: string;
-        format_name: string;
-        arohanam: string;
-        avarohanam: string;
-        melakarta: number;
-        is_janaka: boolean;
-    };
+    raga: Raga;
 }
 
 export function RagaCard({raga}: RagaCardProps) {

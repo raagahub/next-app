@@ -1,25 +1,45 @@
-export const allSwaras = ["R1", "R2", "R3", "G1", "G2", "G3", "M1", "M2", "P", "D1", "D2", "D3", "N1", "N2", "N3"]
+export const allSwaras = ["R1", "R2", "R3", "G1", "G2", "G3", "M1", "M2", "P", "D1", "D2", "D3", "N1", "N2", "N3"];
 
 // Swara Select Filter Related
-export const selectableSwaras = ["R1", "R2G1", "R3G2", "G3", "M1", "M2", "P", "D1", "D2N1", "D3N2", "N3"]
+export type SwaraSelectKey = 'S' | 'R1' | 'R2' | 'R3' | 'G1' | 'G2' | 'G3' | 'M1' | 'M2' | 'P' | 'D1' | 'D2' | 'D3' | 'N1' | 'N2' | 'N3';
+export type SwaraSelectState = {
+    S: boolean;
+    R1: boolean;
+    R2: boolean;
+    R3: boolean;
+    G1: boolean;
+    G2: boolean;
+    G3: boolean;
+    M1: boolean;
+    M2: boolean;
+    P: boolean;
+    D1: boolean;
+    D2: boolean;
+    D3: boolean;
+    N1: boolean;
+    N2: boolean;
+    N3: boolean;
+    
+};
+export const selectableSwaras = ["R1", "R2G1", "R3G2", "G3", "M1", "M2", "P", "D1", "D2N1", "D3N2", "N3"];
 export const swaraSelectStartState = {
-    "S": false,
-    "R1": false,
-    "R2": false,
-    "R3": false,
-    "G1": false,
-    "G2": false,
-    "G3": false,
-    "M1": false,
-    "M2": false,
-    "P": false,
-    "D1": false,
-    "D2": false,
-    "D3": false,
-    "N1": false,
-    "N2": false,
-    "N3": false,
-}
+    S: false,
+    R1: false,
+    R2: false,
+    R3: false,
+    G1: false,
+    G2: false,
+    G3: false,
+    M1: false,
+    M2: false,
+    P: false,
+    D1: false,
+    D2: false,
+    D3: false,
+    N1: false,
+    N2: false,
+    N3: false,
+};
 
 // Swara Color Related
 export const swaraColorMap = new Map([

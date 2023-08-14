@@ -12,7 +12,7 @@ import {
 import { IconPlayerPlay, IconHeart, IconBookmark, IconShare } from '@tabler/icons-react'
 import { RagaCardProps } from '../RagaCard/RagaCard'
 import { SwaraGradient } from '../SwaraGradient/SwaraGradient';
-import { swaraNoteMap } from '../SwaraMapping'
+import { swaraNoteMap } from '../SwaraHelpers'
 import Tone from '../Tone'
 
 const useStyles = createStyles((theme) => ({
