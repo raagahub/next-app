@@ -22,27 +22,6 @@ import { FacebookIcon } from './FacebookIcon'
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
-
-export function GoogleButton(props: ButtonProps) {
-    return <Button leftIcon={<GoogleIcon />} variant="default" color="gray" {...props} />;
-};
-
-export function FacebookButton(props: ButtonProps) {
-    return (
-        <Button
-            leftIcon={<FacebookIcon />}
-            sx={(theme) => ({
-                backgroundColor: '#4267B2',
-                color: '#fff',
-                '&:not([data-disabled]):hover': {
-                    backgroundColor: theme.fn.darken('#4267B2', 0.1),
-                },
-            })}
-            {...props}
-        />
-    );
-};
-
 export interface SignInModalProps {
     opened: boolean;
     close: () => void;
@@ -69,6 +48,30 @@ export function SignInModal({ opened, close }: SignInModalProps) {
             password: (val: string) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
         },
     });
+
+    async function handleGoogleAuth() {
+        try {
+            setLoading(true)
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+              })
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function handleFacebookAuth() {
+        try {
+            setLoading(true)
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'facebook',
+              })
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     async function handleSubmit() {
         if (type === 'register') {
@@ -142,8 +145,25 @@ export function SignInModal({ opened, close }: SignInModalProps) {
                 </Text>
 
                 <Group grow mb="md" mt="md">
-                    <GoogleButton radius="xl">Google</GoogleButton>
-                    <FacebookButton radius="xl">Facebook</FacebookButton>
+                    <Button 
+                    leftIcon={<GoogleIcon />} 
+                    variant="default" 
+                    color="gray" 
+                    radius={"md"} 
+                    onClick={() => handleGoogleAuth()}
+                    >Google</Button>
+                    <Button
+                        leftIcon={<FacebookIcon />}
+                        sx={(theme) => ({
+                            backgroundColor: '#4267B2',
+                            color: '#fff',
+                            '&:not([data-disabled]):hover': {
+                                backgroundColor: theme.fn.darken('#4267B2', 0.1),
+                            },
+                        })}
+                        radius={"md"}
+                        onClick={() => handleFacebookAuth()}
+                    >Facebook</Button>
                 </Group>
 
                 <Divider label="Or continue with email" labelPosition="center" my="lg" />
