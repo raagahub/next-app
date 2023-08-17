@@ -2,12 +2,14 @@ import { Avatar, Menu, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications';
 import { IconUser, IconBookmarks, IconDoorExit, IconCheck, IconAlertCircle } from '@tabler/icons-react'
 import { User, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 
 export interface UserMenuProps {
     user: User
 }
 
 export const UserMenu = ({ user }: UserMenuProps) => {
+    const router = useRouter()
     const supabase = useSupabaseClient()
     
     async function signOut() {
@@ -42,7 +44,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
                 <Menu.Dropdown>
                     <Menu.Item><Text>{user.email}</Text></Menu.Item>
-                    <Menu.Item icon={<IconUser size={14} />}>Account</Menu.Item>
+                    <Menu.Item icon={<IconUser size={14} />} onClick={() => router.push('/dashboard/account')}>Account</Menu.Item>
                     <Menu.Item icon={<IconBookmarks size={14} />}>Bookmarks</Menu.Item>
                     <Menu.Divider />
                     <Menu.Item color="red" icon={<IconDoorExit size={14} />} onClick={() => signOut()}>Sign Out</Menu.Item>
