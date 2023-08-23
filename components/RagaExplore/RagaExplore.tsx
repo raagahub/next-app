@@ -166,6 +166,7 @@ const RagaExplore = () => {
                 </Collapse>
             </Container>
             <Container pb="lg" mx="auto" w="100%" fluid={true}>
+                <Text align='right' color="dark.3" weight={300} mb={16}>Showing {filteredData.length} Results</Text>
                 <VirtuosoGrid 
                 components={{
                     Item: ItemContainer,

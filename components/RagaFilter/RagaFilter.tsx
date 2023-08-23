@@ -57,7 +57,7 @@ export function RagaFilter({
             let swara1: SwaraSelectKey = swara.substring(0,2) as SwaraSelectKey;
             let swara2: SwaraSelectKey = swara.substring(2,4) as SwaraSelectKey;
             return (
-                <Button.Group orientation="vertical">
+                <Button.Group orientation="vertical" key={"swaraGroup_" + swara}>
                     <Button
                     key={"swaraSelect_" + swara1}
                     className={classes.swaraSelectSplit} 
@@ -100,7 +100,7 @@ export function RagaFilter({
         <Box m="0 auto" w="fit-content" py={16}>
             <Group position="apart" mb='sm'>
                 <Text fz="sm" fw={300} mr={16}>
-                    RAAGA SWARAS:
+                    Raaga Swaras:
                 </Text>
                 <Button
                     variant="subtle"
@@ -124,32 +124,33 @@ export function RagaFilter({
             <Group mt='md' position="apart" spacing="lg">
                 <Box>
                     <Text fz="sm" fw={300} mr={16} mb='sm'>
-                        RAAGA TYPE:
+                        Raaga Type:
                     </Text>
                     <Group position="center" spacing="xs">
                         <Chip checked={ragaTypeState.melakarta} onChange={() => handleRagaTypeToggle("melakarta")} color="pink.5" variant="filled">Melakarta</Chip>
-                        <Chip checked={ragaTypeState.janya} onChange={() => handleRagaTypeToggle("janya")} color="blue.4" variant="filled">Janya</Chip>
+                        <Chip checked={ragaTypeState.janya} onChange={() => handleRagaTypeToggle("janya")} variant="filled">Janya</Chip>
                     </Group>
                 </Box>
                 <Box>
                     <Text fz="sm" fw={300} mr={16} mb='sm'>
-                        NUMBER OF SWARAS:
+                        Number of Swaras:
                     </Text>
                     <Group position="center" spacing="xs">
-                        <Chip checked={swaraCountState.five} onChange={() => handleSwaraCountToggle("five")} color="orange" variant="outline">5</Chip>
-                        <Chip checked={swaraCountState.six} onChange={() => handleSwaraCountToggle("six")} color="orange" variant="outline">6</Chip>
-                        <Chip checked={swaraCountState.seven} onChange={() => handleSwaraCountToggle("seven")} color="orange" variant="outline">7</Chip>
-                        <Chip checked={swaraCountState.others} onChange={() => handleSwaraCountToggle("others")} color="orange" variant="outline">Others</Chip>
+                        <Chip checked={swaraCountState.five} onChange={() => handleSwaraCountToggle("five")} variant="outline">5</Chip>
+                        <Chip checked={swaraCountState.six} onChange={() => handleSwaraCountToggle("six")} variant="outline">6</Chip>
+                        <Chip checked={swaraCountState.seven} onChange={() => handleSwaraCountToggle("seven")} variant="outline">7</Chip>
+                        <Chip checked={swaraCountState.others} onChange={() => handleSwaraCountToggle("others")} variant="outline">Others</Chip>
                     </Group>
                 </Box>
                 <Box>
-                    <Text fz="sm" fw={300} mr={16}>
-                        SORT BY:
+                    <Text fz="sm" fw={300} mr={16} mb={8}>
+                        Sort By:
                     </Text>
                     <SegmentedControl
+                    color="blue"
+                    radius="lg"
                     value={sortByValue}
                     onChange={(v) => handleSortByChange(v)}
-                    color='violet.4'
                     data={[
                         { label: 'Name', value: 'name' },
                         { label: 'Melakarta', value: 'melakarta' }
