@@ -19,7 +19,7 @@ import {
     useMantineColorScheme
 } from '@mantine/core';
 
-export const AccountForm = () => {
+export const ProfileForm = () => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
     const supabase = useSupabaseClient()
@@ -96,16 +96,15 @@ export const AccountForm = () => {
     }
 
     return (
-        <Container mt={64} bg={dark ? 'dark.6' : 'indigo.0'} px={64} py={48}>
+        <Container>
             <Grid justify="center">
                 <Grid.Col span={3}>
-                    <Stack mt={16}>
+                    <Stack mt={16} spacing={4}>
                         <Image mx="auto" radius="md" src={avatar_url} alt="profile_image" />
-                        <Button size="sm" variant={"default"}>Edit Profile Image</Button>
+                        <Button size="xs" variant={"default"}>Edit Image</Button>
                     </Stack>
                 </Grid.Col>
                 <Grid.Col span={9} pl={64}>
-                    <Title order={1} mb={16}>Account Information</Title>
                     <form onSubmit={form.onSubmit(() => { updateProfile() })}>
                         <Stack>
                             <TextInput

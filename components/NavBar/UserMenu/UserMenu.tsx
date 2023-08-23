@@ -3,6 +3,7 @@ import { notifications } from '@mantine/notifications';
 import { IconUser, IconBookmarks, IconDoorExit, IconCheck, IconAlertCircle } from '@tabler/icons-react'
 import { User, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
+import { dashboardElements } from '../../Dashboard/DashboardHelper'
 
 export interface UserMenuProps {
     user: User
@@ -35,6 +36,10 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         }
     }
 
+    const menuItems = dashboardElements.map((item, index) => (
+        <Menu.Item icon={<item.icon size={14}/>} onClick={() => router.push(`/dashboard/${item.path}`)}>{item.label}</Menu.Item>
+    ))
+
     return (
         <>
             <Menu shadow="md" offset={10} width={200} trigger="hover" openDelay={100} closeDelay={150}>
@@ -43,9 +48,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                    <Menu.Item><Text>{user.email}</Text></Menu.Item>
-                    <Menu.Item icon={<IconUser size={14} />} onClick={() => router.push('/dashboard/account')}>Account</Menu.Item>
-                    <Menu.Item icon={<IconBookmarks size={14} />}>Bookmarks</Menu.Item>
+                    {menuItems}
                     <Menu.Divider />
                     <Menu.Item color="red" icon={<IconDoorExit size={14} />} onClick={() => signOut()}>Sign Out</Menu.Item>
                 </Menu.Dropdown>

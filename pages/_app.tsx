@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import NextApp, { AppProps, AppContext } from 'next/app';
+import { MyAppProps, AppPropsWithLayout } from './types'
 import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
@@ -8,10 +9,11 @@ import { NavBar } from '../components/NavBar/NavBar';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 
-export default function App(props: AppProps<{
+export default function App(props: AppPropsWithLayout<{
   initialSession: Session
 }> & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
+  const getLayout = Component.getLayout ?? ((page) => page)
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
 
   const toggleColorScheme = (value?: ColorScheme) => {
@@ -39,7 +41,7 @@ export default function App(props: AppProps<{
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
             <NavBar/>
             <Notifications position="top-right" mt={48} zIndex={199}/>
-            <Component {...pageProps} />
+            {getLayout(<Component {...pageProps} />)}
           </MantineProvider>
         </ColorSchemeProvider>
       </SessionContextProvider>
