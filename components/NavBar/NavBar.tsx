@@ -30,6 +30,9 @@ import {
     IconChevronDown,
 } from '@tabler/icons-react';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
+import { SignInModal } from './SignInModal/SignInModal'
+import { UserMenu } from './UserMenu/UserMenu'
+import { useUser } from '@supabase/auth-helpers-react'
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -124,9 +127,12 @@ const mockdata = [
 ];
 
 export function NavBar() {
+    const [opened, { open, close }] = useDisclosure(false);
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const { classes, theme } = useStyles();
+
+    const user = useUser()
 
     const links = mockdata.map((item) => (
         <UnstyledButton className={classes.subLink} key={item.title}>
@@ -148,7 +154,7 @@ export function NavBar() {
 
     return (
         <Box pb={60}>
-            <Header height={60} px="md" fixed={true}>
+            <Header height={60} px="md" zIndex={199} fixed>
                 <Group position="apart" sx={{ height: '100%' }}>
                     <Image
                         src='/raagahub_logo_colour.png'
@@ -215,8 +221,9 @@ export function NavBar() {
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
-                        <Button variant="outline">Sign In</Button>
+                        <SignInModal opened={opened} close={close}/>
                         <ColorSchemeToggle />
+                        { user ? <UserMenu user={user} /> : <Button onClick={open}>Sign In</Button>}
                     </Group>
 
                     <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
