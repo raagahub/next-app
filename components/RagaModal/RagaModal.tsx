@@ -23,7 +23,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function RagaModal({raga}: RagaCardProps) {
+export function RagaModal({raga, bookmarked}: RagaCardProps) {
     const { classes, theme } = useStyles();
 
     // start global Transport

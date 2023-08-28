@@ -18,13 +18,12 @@ import {
     Title,
     useMantineColorScheme
 } from '@mantine/core';
+import { initSupabase } from '../SupabaseHelpers'
 
 export const ProfileForm = () => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
-    const supabase = useSupabaseClient()
-    const session = useSession()
-    const user = session?.user
+    const { supabase, user } = initSupabase()
 
     const [loading, setLoading] = useState(true)
     const [avatar_url, setAvatarUrl] = useState<string | null>(null)
@@ -45,13 +44,13 @@ export const ProfileForm = () => {
         try {
             setLoading(true)
 
-            let { data, error, status } = await supabase
+            let { data, error } = await supabase
                 .from('profiles')
                 .select(`full_name, username, website, avatar_url`)
                 .eq('id', user?.id)
                 .single()
 
-            if (error && status !== 406) {
+            if (error) {
                 throw error
             }
 

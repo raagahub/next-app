@@ -3,20 +3,59 @@ import { IconSearch, IconAdjustments } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { Raga, RagaType, RagaTypeState, RagaSwaraCountVal, SwaraCountState, RagaSortOption } from '../RagaHelpers'
-import { RagaCard} from '../RagaCard/RagaCard';
+import { RagaCard } from '../RagaCard/RagaCard';
 import { RagaFilter } from '../RagaFilter/RagaFilter'
 import { swaraSelectStartState, SwaraSelectKey, SwaraSelectState } from '../SwaraHelpers'
-import { VirtuosoGrid, GridItemProps, GridListProps } from 'react-virtuoso'
-import styled from '@emotion/styled'
+import { VirtuosoGrid } from 'react-virtuoso'
+import { ItemContainer, ListContainer } from '../RagaCard/VirtuosoContainers'
+import { initSupabase } from '../SupabaseHelpers'
+import { databaseErrorNotification } from '../NotificationHelpers'
 
-let data = require('./ragas.json');
+// let data = require('./ragas.json');
 
 const RagaExplore = () => {
     const [opened, { toggle }] = useDisclosure(false);
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
 
-    const [filteredData, filterData] = useState(data)
+    const { supabase, user } = initSupabase()
+
+    const [loading, setLoading] = useState(false)
+    const [data, setData] = useState<Raga[]>([])
+
+    const getRagas = async () => {
+        try {
+            setLoading(true);
+            let { data, error } = await supabase
+                .from('ragas')
+                .select('*')
+            if (error) { databaseErrorNotification(error) };
+            if (data) { setData(data) };
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const [bookmarks, setBookmarks] = useState<any[]>([])
+    const getBookmarks = async () => {
+        try {
+            setLoading(true)
+            let { data, error } = await supabase
+                .from('raga_bookmarks')
+                .select(`raga_id`)
+                .eq('user_id', user?.id)
+            if (error) { databaseErrorNotification(error) }
+            if (data) { setBookmarks(data.map(bookmark => bookmark.raga_id)) }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const [filteredData, filterData] = useState<Raga[]>([])
 
     const ragaNames = filteredData.map(
         (raga: Raga) => raga.format_name
@@ -34,7 +73,7 @@ const RagaExplore = () => {
     function getSwaraSelectList(): (keyof SwaraSelectState)[] {
         return Object.keys(swaraSelectState).filter(key => swaraSelectState[key as keyof SwaraSelectState]) as (keyof SwaraSelectState)[];
     }
-    console.log(getSwaraSelectList())
+    console.log("swaraSelect:", getSwaraSelectList())
 
     const [ragaTypeState, toggleRagaType] = useState<RagaTypeState>({melakarta: true, janya: true})
     function handleRagaTypeToggle(ragaType: RagaType) {
@@ -53,11 +92,22 @@ const RagaExplore = () => {
         updateSortBy(value)
     }
 
+    useEffect(() => {
+        getRagas();
+    }, [])
 
     useEffect(() => {
-        filterData(data
+        if (user) {
+            getBookmarks();
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (data.length === 0) return;
+
+        const filteredRagas = data
             .filter((raga: Raga) =>
-                (raga.format_name.toLowerCase().startsWith(query.toLowerCase()) || raga.aliases.toLowerCase().includes(query.toLowerCase())) && 
+                (raga.format_name.toLowerCase().startsWith(query.toLowerCase()) || raga.aliases?.toLowerCase().includes(query.toLowerCase())) && 
                 (getSwaraSelectList().every(swara => raga.arohanam.includes(swara) || raga.avarohanam.includes(swara))) &&
                 ((ragaTypeState.melakarta === raga.is_janaka) || (ragaTypeState.janya === raga.is_janya)) &&
                 (((raga.arohanam.split(" ").length === 6) && (raga.avarohanam.split(" ").length === 6) && swaraCountState.five) ||
@@ -91,32 +141,12 @@ const RagaExplore = () => {
                         return a.id < b.id ? -1 : 1
                     }
                 }
-            }))
-      }, [query, swaraSelectState, ragaTypeState, swaraCountState, sortByValue]);
+                return 0
+            })
 
-    const ItemContainer = styled.div<GridItemProps>`
-      padding: 0.5rem;
-      display: flex;
-      width: 33%;
-      flex: 1 1 auto;
-      align-content: stretch;
-      justify-content: center;
-    
-      @media (max-width: 1024px) {
-        width: 50%;
-      }
-
-      @media (max-width: 512px) {
-        width: 100%;
-      }
-    `
-    
-    const ListContainer = styled.div<GridListProps>`
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    `
+        filterData(filteredRagas)
+        
+      }, [data, bookmarks, query, swaraSelectState, ragaTypeState, swaraCountState, sortByValue]);
 
     return (
         <Flex
@@ -176,7 +206,7 @@ const RagaExplore = () => {
                 data={filteredData} 
                 itemContent={(index, raga) => (
                 <ItemContainer data-index={index}>
-                    <RagaCard raga={raga} key={raga.id}/>
+                    <RagaCard raga={raga} key={raga.id} bookmarked={bookmarks.includes(raga.id)}/>
                 </ItemContainer>)} />
             </Container>
 

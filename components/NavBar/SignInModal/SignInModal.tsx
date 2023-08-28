@@ -21,6 +21,7 @@ import { GoogleIcon } from './GoogleIcon'
 import { FacebookIcon } from './FacebookIcon'
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { registrationSuccessNotification } from '../../NotificationHelpers'
 
 export interface SignInModalProps {
     opened: boolean;
@@ -82,8 +83,7 @@ export function SignInModal({ opened, close }: SignInModalProps) {
                     password: form.values.password,
                     options: {
                         data: {
-                            first_name: form.values.name.first,
-                            last_name: form.values.name.last
+                            full_name: form.values.name.first + " " + form.values.name.last
                         }
                     }
                 })
@@ -96,12 +96,7 @@ export function SignInModal({ opened, close }: SignInModalProps) {
                     setLoading(false)
                     close()
                     updateAuthError({title: "", message: ""})
-                    notifications.show({
-                        title: 'Registration Successful',
-                        message: 'Please check your email to confirm your registration.',
-                        color: "teal",
-                        icon: <IconCheck size="1.1rem" />
-                    })
+                    registrationSuccessNotification()
                 }
             } catch (error) {
                 console.log(error)

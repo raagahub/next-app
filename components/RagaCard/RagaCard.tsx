@@ -1,23 +1,21 @@
 import {
     createStyles,
     Card,
-    Image,
     ActionIcon,
     Group,
     Modal,
     Text,
-    Avatar,
-    Stack,
     Badge,
-    rem,
-    Box,
 } from '@mantine/core';
-import { IconHeart, IconBookmark, IconShare } from '@tabler/icons-react';
+import { IconAlertCircle, IconBookmark, IconBookmarkFilled,  IconShare } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
+import { useState, useTransition } from 'react';
 import { SwaraGradient } from '../SwaraGradient/SwaraGradient'
 import { RagaModal } from '../RagaModal/RagaModal'
 import { Raga } from '../RagaHelpers'
 import { nth } from '../StringUtilities'
+import { initSupabase } from '../SupabaseHelpers'
 
 
 const useStyles = createStyles((theme) => ({
@@ -39,11 +37,13 @@ const useStyles = createStyles((theme) => ({
 
 export interface RagaCardProps {
     raga: Raga;
+    bookmarked: boolean;
 }
 
-export function RagaCard({raga}: RagaCardProps) {
+export function RagaCard({raga, bookmarked}: RagaCardProps) {
     const { classes, theme } = useStyles();
     const [opened, { open, close }] = useDisclosure(false);
+    const { supabase, user } = initSupabase()
 
     function descriptor(raga: RagaCardProps["raga"]) {
         if(raga.is_janaka){
@@ -53,12 +53,71 @@ export function RagaCard({raga}: RagaCardProps) {
         }
     }
 
+    const [bookmark, setBookmark] = useState(bookmarked || false)
+    const [bookmarking, startTransition] = useTransition()
+
+    async function toggleBookmarkRaga() {
+        if (bookmark) {
+            setBookmark(false)
+            const { status, error } = await supabase
+                .from('raga_bookmarks')
+                .delete()
+                .eq('user_id', user?.id)
+                .eq('raga_id', raga.id)
+            
+            if (status == 204) {
+                notifications.show({
+                    title: `Removed from Bookmarks`,
+                    message: `${raga.format_name} was removed from your bookmarks.`,
+                    color: "yellow",
+                    icon: <IconBookmarkFilled size="1.1rem" />
+                  })
+            }
+    
+            if (error) {
+                notifications.show({
+                    title: `Error - ${error.code}`,
+                    message: error.message,
+                    color: "red",
+                    icon: <IconAlertCircle size="1.1rem" />
+                  })
+                setBookmark(true)
+            }
+        } else {
+            setBookmark(true)
+            const { status, error } = await supabase
+                .from('raga_bookmarks')
+                .insert([
+                    { user_id: user?.id, raga_id: raga.id },
+                ])
+            
+            if (status == 201) {
+                notifications.show({
+                    title: `Added to Bookmarks`,
+                    message: `${raga.format_name} was added to your bookmarks.`,
+                    color: "yellow",
+                    icon: <IconBookmarkFilled size="1.1rem" />
+                  })
+            }
+    
+            if (error) {
+                notifications.show({
+                    title: `Error - ${error.code}`,
+                    message: error.message,
+                    color: "red",
+                    icon: <IconAlertCircle size="1.1rem" />
+                  })
+                setBookmark(false)
+            }
+        }
+    }
+
     return (
         <>
             <Modal opened={opened} onClose={close} withCloseButton={false} centered>
-                <RagaModal raga={raga}/>
+                <RagaModal raga={raga} bookmarked={bookmark}/>
             </Modal>
-            <Card withBorder padding="lg" radius="md" className={classes.card} onClick={open}>
+            <Card withBorder padding="lg" radius="md" className={classes.card}>
                 
                 <Group position="apart">
                     <Text fz="lg" fw={700} mr={16}>
@@ -96,8 +155,9 @@ export function RagaCard({raga}: RagaCardProps) {
                             {descriptor(raga)}
                         </Text>
                         <Group spacing={0}>
-                            <ActionIcon>
-                                <IconBookmark size="1.2rem" color={theme.colors.yellow[6]} stroke={1.5} />
+                            <ActionIcon color="yellow" variant="transparent" onClick={() => {startTransition(() => {toggleBookmarkRaga()})}}>
+                                {bookmark ? <IconBookmarkFilled size="1.2rem" stroke={1.5} /> : 
+                                <IconBookmark size="1.2rem" stroke={1.5} />}
                             </ActionIcon>
                             <ActionIcon>
                                 <IconShare size="1.2rem" color={theme.colors.blue[6]} stroke={1.5} />
