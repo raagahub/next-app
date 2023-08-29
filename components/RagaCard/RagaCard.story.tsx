@@ -19,4 +19,4 @@ export default {
   title: 'Raga Card',
 };
 
-export const Usage = () => <RagaCard raga={mockRaga}/>;
+export const Usage = () => <RagaCard raga={mockRaga} bookmarked={true}/>;
