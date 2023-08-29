@@ -34,13 +34,13 @@ export default function App(props: AppPropsWithLayout<{
       </Head>
 
       <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
       >
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-            <NavBar/>
-            <Notifications position="top-right" mt={48} zIndex={199}/>
+            <NavBar />
+            <Notifications position="top-right" mt={48} zIndex={199} />
             {getLayout(<Component {...pageProps} />)}
           </MantineProvider>
         </ColorSchemeProvider>
