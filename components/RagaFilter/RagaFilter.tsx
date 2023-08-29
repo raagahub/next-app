@@ -9,7 +9,7 @@ import {
     SegmentedControl,
     Text
 } from '@mantine/core';
-import { selectableSwaras, swaraColorMap, SwaraSelectState, SwaraSelectKey } from '../SwaraHelpers'
+import { selectableSwaras, swaraColorMap, SwaraSelectState, Swara } from '../SwaraHelpers'
 import { RagaTypeState, SwaraCountState, RagaSortOption } from '../RagaHelpers'
 import { useState } from 'react';
 
@@ -54,8 +54,8 @@ export function RagaFilter({
 
     const swaraSelectButtons = selectableSwaras.map((swara) => {
         if (swara.length == 4) {
-            let swara1: SwaraSelectKey = swara.substring(0,2) as SwaraSelectKey;
-            let swara2: SwaraSelectKey = swara.substring(2,4) as SwaraSelectKey;
+            let swara1: Swara = swara.substring(0,2) as Swara;
+            let swara2: Swara = swara.substring(2,4) as Swara;
             return (
                 <Button.Group orientation="vertical" key={"swaraGroup_" + swara}>
                     <Button
@@ -85,8 +85,8 @@ export function RagaFilter({
                 <Button
                 key={"swaraSelect_" + swara}
                 className={classes.swaraSelect} 
-                variant={selectedSwaras[swara as SwaraSelectKey] ? "filled" : "outline"} 
-                color={selectedSwaras[swara as SwaraSelectKey] ? swaraColorMap.get(swara) : "dark.3"}
+                variant={selectedSwaras[swara as Swara] ? "filled" : "outline"} 
+                color={selectedSwaras[swara as Swara] ? swaraColorMap.get(swara) : "dark.3"}
                 onClick={()=>{handleSwaraSelect(swara)}}
                 >
                     {swara}

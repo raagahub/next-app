@@ -12,7 +12,7 @@ import {
 import { IconPlayerPlay, IconHeart, IconBookmark, IconShare } from '@tabler/icons-react'
 import { RagaCardProps } from '../RagaCard/RagaCard'
 import { SwaraGradient } from '../SwaraGradient/SwaraGradient';
-import { swaraNoteMap } from '../SwaraHelpers'
+import { Swara, swaraNoteMap } from '../SwaraHelpers'
 import Tone from '../Tone'
 
 const useStyles = createStyles((theme) => ({
@@ -49,8 +49,8 @@ export function RagaModal({raga, bookmarked}: RagaCardProps) {
     }
 
     function playSwaras(swaras: string, scaleType: string) {
-        let swaraList = swaras.split(' ')
-        let noteList = swaraList.map(swara => swaraNoteMap.get(swara))
+        let swaraList: Swara[] = swaras.split(' ') as Swara[];
+        const noteList: string[] = swaraList.map(swara => swaraNoteMap.get(swara)!);
         let formatNotes = formatNoteList(noteList, scaleType)
         console.log(formatNotes)
         let seq = new Tone.Sequence((time, note) => {

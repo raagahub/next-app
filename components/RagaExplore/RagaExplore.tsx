@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Raga, RagaType, RagaTypeState, RagaSwaraCountVal, SwaraCountState, RagaSortOption } from '../RagaHelpers'
 import { RagaCard } from '../RagaCard/RagaCard';
 import { RagaFilter } from '../RagaFilter/RagaFilter'
-import { swaraSelectStartState, SwaraSelectKey, SwaraSelectState } from '../SwaraHelpers'
+import { swaraSelectStartState, Swara, SwaraSelectState } from '../SwaraHelpers'
 import { VirtuosoGrid } from 'react-virtuoso'
 import { ItemContainer, ListContainer } from '../RagaCard/VirtuosoContainers'
 import { initSupabase } from '../SupabaseHelpers'
@@ -64,7 +64,7 @@ const RagaExplore = () => {
     const [query, setQuery] = useState("")
 
     const [swaraSelectState, updateSwaraSelect] = useState<SwaraSelectState>(swaraSelectStartState)
-    function handleSwaraSelect(swara: SwaraSelectKey) {
+    function handleSwaraSelect(swara: Swara) {
         updateSwaraSelect({
             ...swaraSelectState,
             [swara]: !(swaraSelectState[swara])
