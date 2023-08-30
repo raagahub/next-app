@@ -8,6 +8,9 @@ export interface Raga {
     is_janaka: boolean;
     is_janya: boolean;
     aliases: string;
+    is_vakra: boolean;
+    is_bashanga: boolean;
+    is_upanga: boolean;
 }
 
 export type RagaType = 'melakarta' | 'janya'

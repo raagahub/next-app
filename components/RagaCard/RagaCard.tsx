@@ -3,9 +3,10 @@ import {
     Card,
     ActionIcon,
     Group,
-    Modal,
+    Title,
     Text,
     Badge,
+    Divider,
 } from '@mantine/core';
 import { IconAlertCircle, IconBookmark, IconBookmarkFilled,  IconShare } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
@@ -16,6 +17,12 @@ import { RagaModal } from '../RagaModal/RagaModal'
 import { Raga } from '../RagaHelpers'
 import { nth } from '../StringUtilities'
 import { initSupabase } from '../SupabaseHelpers'
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { VakraTag } from '../RagaDetail/RagaTags/VakraTag';
+import { BashangaTag } from '../RagaDetail/RagaTags/BashangaTag';
+import { UpangaTag } from '../RagaDetail/RagaTags/UpangaTag';
+import { AddMoodButton, getMoodTags } from '../RagaDetail/MoodTags/MoodTags';
 
 
 const useStyles = createStyles((theme) => ({
@@ -33,17 +40,24 @@ const useStyles = createStyles((theme) => ({
             width: '100%'
           },
     },
+    header: {
+        minWidth: '100%',
+    }
 }));
 
 export interface RagaCardProps {
     raga: Raga;
     bookmarked: boolean;
+    variant?: 'card' | 'header';
 }
 
-export function RagaCard({raga, bookmarked}: RagaCardProps) {
+export function RagaCard({raga, bookmarked, variant='card'}: RagaCardProps) {
     const { classes, theme } = useStyles();
     const [opened, { open, close }] = useDisclosure(false);
     const { supabase, user } = initSupabase()
+    const router = useRouter()
+
+    const isHeader = variant == 'header'
 
     function descriptor(raga: RagaCardProps["raga"]) {
         if(raga.is_janaka){
@@ -110,27 +124,48 @@ export function RagaCard({raga, bookmarked}: RagaCardProps) {
                 setBookmark(false)
             }
         }
+    } 
+
+    
+    const generateTags = (raga: Raga) => {
+        let tags = []
+        if (raga.is_vakra) {
+            tags.push(<VakraTag raga={raga}/>)
+        }
+        if (raga.is_bashanga) {
+            tags.push(<BashangaTag raga={raga}/>)
+        }
+        if (raga.is_upanga) {
+            tags.push(<UpangaTag raga={raga}/>)
+        }
+        return tags
     }
+    const ragaTags = generateTags(raga)
+    const moodTags = getMoodTags()
 
     return (
         <>
-            <Modal opened={opened} onClose={close} withCloseButton={false} centered>
-                <RagaModal raga={raga} bookmarked={bookmark}/>
-            </Modal>
-            <Card withBorder padding="lg" radius="md" className={classes.card}>
+            <Card withBorder padding={isHeader ? 36 : "lg"} radius="md" className={isHeader ? classes.header : classes.card}>
                 
                 <Group position="apart">
-                    <Text fz="lg" fw={700} mr={16}>
-                        {raga.format_name}
-                    </Text>
+                    {isHeader &&
+                    <Text fz="xs" c="dimmed">
+                        {descriptor(raga)}
+                    </Text>}
+                    {!isHeader &&
+                    <Link href={"/raga/" + raga.id}>
+                        <Text fz="lg" fw={700} mr={16}>{raga.format_name}</Text>
+                    </Link>}
                     {raga.is_janaka ? 
-                    <Badge variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
-                    <Badge>JANYA RAAGA</Badge>}
-                    
+                    <Badge size="lg" variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
+                    <Badge size="lg">JANYA RAAGA</Badge>}
                 </Group>
 
+                {isHeader &&
+                    <Title order={1} fw={700} size={48}>{raga.format_name}</Title>}
 
-                <Group mt="lg" spacing="lg">
+
+                <Group mt="lg" spacing={36}>
                     <div>
                         <Text fz="xs" c="dimmed">
                             Arohanam:
@@ -146,10 +181,11 @@ export function RagaCard({raga, bookmarked}: RagaCardProps) {
                 </Group>
 
                 <Card.Section mt="md" mb="sm">
-                    <SwaraGradient raga={raga} height={4}/>
+                    <SwaraGradient raga={raga} height={isHeader ? 8 : 4}/>
                 </Card.Section>
 
-                <Card.Section px="lg" pb="xs">
+                {!isHeader &&
+                <Card.Section px="lg" pb={'xs'}>
                     <Group position="apart">
                         <Text fz="xs" c="dimmed">
                             {descriptor(raga)}
@@ -164,7 +200,33 @@ export function RagaCard({raga, bookmarked}: RagaCardProps) {
                             </ActionIcon>
                         </Group>
                     </Group>
-                </Card.Section>
+                </Card.Section>}
+
+                {isHeader &&
+                <Card.Section px={36} pb={'sm'}>
+                    <Group position='apart'>
+                        <Group py={'sm'} spacing={8}>
+                            <Group spacing={4}>
+                                {ragaTags}
+                            </Group>
+                            <Divider orientation="vertical"/>
+                            <Group spacing={4}>
+                                {moodTags}
+                                <AddMoodButton />
+                            </Group>
+                            
+                        </Group>
+                        <Group spacing={0}>
+                            <ActionIcon color="yellow" variant="transparent" onClick={() => {startTransition(() => {toggleBookmarkRaga()})}}>
+                                {bookmark ? <IconBookmarkFilled size="1.2rem" stroke={1.5} /> : 
+                                <IconBookmark size="1.2rem" stroke={1.5} />}
+                            </ActionIcon>
+                            <ActionIcon>
+                                <IconShare size="1.2rem" color={theme.colors.blue[6]} stroke={1.5} />
+                            </ActionIcon>
+                        </Group>
+                    </Group>
+                </Card.Section>}
             </Card>
         </>
     );
