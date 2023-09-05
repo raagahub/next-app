@@ -4,7 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
 import { Raga, RagaType, RagaTypeState, RagaSwaraCountVal, SwaraCountState, RagaSortOption } from '../RagaHelpers'
 import { RagaCard } from '../RagaCard/RagaCard';
-import { RagaFilter } from '../RagaFilter/RagaFilter'
+import { RagaFilter } from './RagaFilter/RagaFilter'
 import { swaraSelectStartState, Swara, SwaraSelectState } from '../SwaraHelpers'
 import { VirtuosoGrid } from 'react-virtuoso'
 import { ItemContainer, ListContainer } from '../RagaCard/VirtuosoContainers'
@@ -152,7 +152,7 @@ const RagaExplore = () => {
         <Flex
             mt="xl"
             mih={50}
-            bg={dark ? 'dark.6' : 'indigo.0'}
+            bg={dark ? 'dark.6' : 'orange.0'}
             gap="md"
             justify="flex-start"
             align="center"
