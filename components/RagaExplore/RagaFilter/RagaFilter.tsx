@@ -9,8 +9,8 @@ import {
     SegmentedControl,
     Text
 } from '@mantine/core';
-import { selectableSwaras, swaraColorMap, SwaraSelectState, Swara } from '../SwaraHelpers'
-import { RagaTypeState, SwaraCountState, RagaSortOption } from '../RagaHelpers'
+import { selectableSwaras, swaraColorMap, SwaraSelectState, Swara } from '../../SwaraHelpers'
+import { RagaTypeState, SwaraCountState, RagaSortOption } from '../../RagaHelpers'
 import { useState } from 'react';
 
 
@@ -147,7 +147,7 @@ export function RagaFilter({
                         Sort By:
                     </Text>
                     <SegmentedControl
-                    color="blue"
+                    color="raga-red"
                     radius="lg"
                     value={sortByValue}
                     onChange={(v) => handleSortByChange(v)}

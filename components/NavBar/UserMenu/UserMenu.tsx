@@ -50,7 +50,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         <>
             <Menu shadow="md" offset={10} width={200} trigger="hover" openDelay={100} closeDelay={150}>
                 <Menu.Target>
-                    <Avatar color='blue'>{getInitials().toUpperCase()}</Avatar>
+                    <Avatar color='orange.8' variant='filled'>{getInitials().toUpperCase()}</Avatar>
                 </Menu.Target>
 
                 <Menu.Dropdown>
