@@ -13,7 +13,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useState, useTransition } from 'react';
 import { SwaraGradient } from '../SwaraGradient/SwaraGradient'
-import { RagaModal } from '../RagaModal/RagaModal'
 import { Raga } from '../RagaHelpers'
 import { nth } from '../StringUtilities'
 import { initSupabase } from '../SupabaseHelpers'
@@ -158,7 +157,7 @@ export function RagaCard({raga, bookmarked, variant='card'}: RagaCardProps) {
                     </Link>}
                     {raga.is_janaka ? 
                     <Badge size="lg" variant="gradient" gradient={{ from: '#ed6ea0', to: '#ec8c69', deg: 35 }}>MELAKARTA RAAGA</Badge> : 
-                    <Badge size="lg">JANYA RAAGA</Badge>}
+                    <Badge size="lg" variant='filled'>JANYA RAAGA</Badge>}
                 </Group>
 
                 {isHeader &&

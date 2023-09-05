@@ -3,6 +3,7 @@ import { IconBrandYoutube, IconMessageCircle, IconMusic } from '@tabler/icons-re
 import { RagaDiscussionProps } from '../RagaDetailProps';
 import { useState } from 'react';
 import useStyles from './RagaDiscussion.styles'
+import { Discuss } from './Discuss/Discuss';
 
 export const RagaDiscussion = ({raga}: RagaDiscussionProps) => {
     const { classes } = useStyles();
@@ -26,7 +27,7 @@ export const RagaDiscussion = ({raga}: RagaDiscussionProps) => {
             </Tabs.List>
 
             <Tabs.Panel value="discuss" pt="xs">
-                Discussion tab content
+                <Discuss/>
             </Tabs.Panel>
 
             <Tabs.Panel value="videos" pt="xs">

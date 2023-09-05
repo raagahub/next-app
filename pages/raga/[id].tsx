@@ -55,10 +55,10 @@ export const RagaDetail = () => {
             <Container mt={16}>
                 <RagaCard raga={raga} bookmarked={false} variant='header' />
                 <Grid p={36} gutter={48}>
-                    <Grid.Col span={4}>
+                    <Grid.Col span={5}>
                         <RagaScalePlayer raga={raga}/>
                     </Grid.Col>
-                    <Grid.Col span={8}>
+                    <Grid.Col span={7}>
                         <RagaDescription raga={raga} />
                     </Grid.Col>
                 </Grid>

@@ -11,3 +11,7 @@ export interface RagaDescriptionProps {
 export interface RagaScalePlayerProps {
     raga: Raga;
 }
+
+export interface RagaDiscussionProps {
+    raga: Raga;
+}
