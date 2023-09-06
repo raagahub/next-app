@@ -2,11 +2,11 @@ import { ReactElement, useEffect, useState } from 'react'
 import { Container, Text } from '@mantine/core'
 import { VirtuosoGrid, GridItemProps, GridListProps } from 'react-virtuoso'
 import DashboardLayout from '../../../layouts/DashboardLayout'
-import { initSupabase } from '../../../components/SupabaseHelpers'
-import { databaseErrorNotification } from '../../../components/NotificationHelpers'
-import { Raga } from '../../../components/RagaHelpers'
-import { RagaCard } from '../../../components/RagaCard/RagaCard'
-import { generateItemContainer, ListContainer } from '../../../components/RagaCard/VirtuosoContainers'
+import { initSupabase } from '../../../library/helpers/SupabaseHelpers'
+import { databaseErrorNotification } from '../../../library/helpers/NotificationHelpers'
+import { Raga } from '../../../library/helpers/RagaHelpers'
+import { RagaCard } from '../../../library/components/RagaCard/RagaCard'
+import { generateItemContainer, ListContainer } from '../../../library/components/RagaCard/VirtuosoContainers'
 
 const Bookmarks = () => {
   const { supabase, user } = initSupabase()

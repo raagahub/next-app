@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { initSupabase } from '../../components/SupabaseHelpers'
+import { initSupabase } from '../../library/helpers/SupabaseHelpers'
 import { Box, Container, Button, Paper, Text, Title, useMantineColorScheme, Grid } from '@mantine/core';
-import { databaseErrorNotification } from '../../components/NotificationHelpers'
-import { Raga } from '../../components/RagaHelpers'
-import { RagaCard } from '../../components/RagaCard/RagaCard';
-import { RagaDescription } from '../../components/RagaDetail/RagaDescription';
-import { RagaScalePlayer } from '../../components/RagaDetail/RagaScalePlayer';
-import { RagaDiscussion } from '../../components/RagaDetail/RagaDiscussion/RagaDiscussion';
+import { databaseErrorNotification } from '../../library/helpers/NotificationHelpers'
+import { Raga, RagaContext } from '../../library/helpers/RagaHelpers'
+import { RagaCard } from '../../library/components/RagaCard/RagaCard';
+import { RagaDescription } from '../../library/components/RagaDetail/RagaDescription';
+import { RagaScalePlayer } from '../../library/components/RagaDetail/RagaScalePlayer';
+import { RagaDiscussion } from '../../library/components/RagaDetail/RagaDiscussion/RagaDiscussion';
 
 export const RagaDetail = () => {
     const router = useRouter();
@@ -52,20 +52,22 @@ export const RagaDetail = () => {
 
     return (
         <>
+        <RagaContext.Provider value={raga}>
             <Container mt={16}>
                 <RagaCard raga={raga} bookmarked={false} variant='header' />
                 <Grid p={36} gutter={48}>
                     <Grid.Col span={5}>
-                        <RagaScalePlayer raga={raga}/>
+                        <RagaScalePlayer/>
                     </Grid.Col>
                     <Grid.Col span={7}>
-                        <RagaDescription raga={raga} />
+                        <RagaDescription/>
                     </Grid.Col>
                 </Grid>
                 <Box p={36}>
-                    <RagaDiscussion raga={raga}/>
+                    <RagaDiscussion/>
                 </Box>
             </Container>
+        </RagaContext.Provider>
         </>
     )
 }
