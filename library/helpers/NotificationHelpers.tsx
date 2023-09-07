@@ -6,6 +6,7 @@ import { Raga } from './RagaHelpers';
 // ERROR NOTIFICATIONS
 
 export const databaseErrorNotification = (error: PostgrestError) => {
+  console.log(error)
   notifications.show({
     title: `Error - ${error.code}`,
     message: error.message,

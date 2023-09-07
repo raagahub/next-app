@@ -49,7 +49,7 @@ export const Discuss = () => {
     setLoading(true)
     const { data, error, status } = await supabase
       .from('raga_comments')
-      .select('*, profiles (full_name, username, avatar_url)')
+      .select('*, profiles!raga_comments_user_id_fkey (full_name, username, avatar_url), raga_comment_votes (value)')
       .eq('raga_id', raga.id)
 
     if (status == 200) {
