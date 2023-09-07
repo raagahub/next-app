@@ -10,16 +10,17 @@ export interface CommentFormProps {
     toggleClose: () => void;
     ragaId: number;
     parentCommentId?: string | null;
+    addNewComment: Function;
 }
 
-export const CommentForm = ({ toggleClose, ragaId, parentCommentId = null }: CommentFormProps) => {
+export const CommentForm = ({ toggleClose, ragaId, addNewComment, parentCommentId = null }: CommentFormProps) => {
     const [commentVal, setComment] = useState('')
     const [loading, setLoading] = useState(false)
     const { supabase, user } = initSupabase()
 
     async function submitComment() {
         setLoading(true)
-        const { status, error } = await supabase
+        const { data, status, error } = await supabase
             .from('raga_comments')
             .insert([
                 {   user_id: user?.id, 
@@ -28,8 +29,12 @@ export const CommentForm = ({ toggleClose, ragaId, parentCommentId = null }: Com
                     parent_comment_id: parentCommentId
                 },
             ])
+            .select('*, profiles (full_name, username, avatar_url)')
+            .single()
         
-        if (status == 201) {
+        if (status == 201 && data) {
+            console.log("addNewComment", data)
+            addNewComment(data as Comment[])
             setLoading(false)
             toggleClose()
         }
