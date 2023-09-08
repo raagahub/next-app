@@ -34,6 +34,7 @@ const useStyles = createStyles((theme) => ({
         '&:hover': {
           transform: 'scale(1.05)',
           boxShadow: theme.shadows.md,
+        //   cursor: 'pointer'
         },
 
         [theme.fn.smallerThan('md')]: {
@@ -110,13 +111,13 @@ export function RagaCard({raga, bookmarked, variant='card'}: RagaCardProps) {
     const generateTags = (raga: Raga) => {
         let tags = []
         if (raga.is_vakra) {
-            tags.push(<VakraTag/>)
+            tags.push(<VakraTag key={`vakra_${raga.id}`}/>)
         }
         if (raga.is_bashanga) {
-            tags.push(<BashangaTag/>)
+            tags.push(<BashangaTag key={`bashanga_${raga.id}`}/>)
         }
         if (raga.is_upanga) {
-            tags.push(<UpangaTag/>)
+            tags.push(<UpangaTag key={`upanga_${raga.id}`}/>)
         }
         return tags
     }

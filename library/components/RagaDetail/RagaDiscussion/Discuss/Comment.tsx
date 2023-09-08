@@ -1,4 +1,4 @@
-import { createStyles, Text, ActionIcon, Avatar, Button, Group, Grid, Stack, rem } from '@mantine/core';
+import { createStyles, Text, ActionIcon, Avatar, Button, Group, Grid, Stack, rem, TypographyStylesProvider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconCaretUp, IconCaretDown, IconMessage2, IconShare } from '@tabler/icons-react'
 import dayjs from 'dayjs';
@@ -7,14 +7,25 @@ import { CommentForm } from './CommentForm';
 import { initSupabase } from '../../../../helpers/SupabaseHelpers';
 import { useEffect, useState } from 'react';
 import { databaseErrorNotification } from '../../../../helpers/NotificationHelpers';
+import { LinkPreview } from './LinkPreview';
+import ReactMarkdown from 'react-markdown'
 
 dayjs.extend(relativeTime);
+const extractUrls = require("extract-urls") //https://www.npmjs.com/package/extract-urls
 
 // REFERENCE FOR THREADED COMMENTS: https://github.com/lawrencecchen/threaded-comments/tree/main
 
 const useStyles = createStyles((theme) => ({
     body: {
-        paddingTop: theme.spacing.sm,
+        h1: {
+            fontSize: "16px"
+        },
+        h2: {
+            fontSize: "16px"
+        },
+        h3: {
+            fontSize: "16px"
+        }
     },
 }));
 
@@ -53,7 +64,6 @@ export function CommentItem({ comment, addNewComment }: CommentProps) {
     const [showCommentForm, handlers] = useDisclosure(false);
 
     const [voteCount, updateVoteCount] = useState(0)
-
     async function submitVote(value: number) {
         const { status, error } = await supabase
             .from('raga_comment_votes')
@@ -75,8 +85,11 @@ export function CommentItem({ comment, addNewComment }: CommentProps) {
 
     }
 
+    const [urls, updateUrls] = useState([])
+
     useEffect(() => {
         updateVoteCount(comment.raga_comment_votes.reduce((acc, val) => acc + val.value, 0))
+        updateUrls(extractUrls(comment.content))
     }, [comment]);
 
     return (
@@ -91,9 +104,14 @@ export function CommentItem({ comment, addNewComment }: CommentProps) {
                         <Text size="xs" color="dimmed">
                             {dayjs(comment.created_at).fromNow()}
                         </Text>
-                        <Text className={classes.body} size="sm">
-                            {comment.content}
+                        <Text className={classes.body}>
+                            <ReactMarkdown>
+                                {comment.content}
+                            </ReactMarkdown>
                         </Text>
+                        {urls && urls.map((url) => (
+                            <LinkPreview url={url}/>
+                        ))}
                         <Group my={16}>
                             <Button leftIcon={<IconMessage2 />} variant="light" color="gray" radius="lg" size="xs" onClick={handlers.toggle} compact>Reply</Button>
                             <Button leftIcon={<IconShare />} variant="light" color="gray" radius="lg" size="xs" compact>Share</Button>

@@ -29,7 +29,7 @@ export const CommentForm = ({ toggleClose, ragaId, addNewComment, parentCommentI
                     parent_comment_id: parentCommentId
                 },
             ])
-            .select('*, profiles (full_name, username, avatar_url)')
+            .select('*, profiles!raga_comments_user_id_fkey (full_name, username, avatar_url), raga_comment_votes (value)')
             .single()
         
         if (status == 201 && data) {
