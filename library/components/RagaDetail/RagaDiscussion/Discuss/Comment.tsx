@@ -7,7 +7,7 @@ import { CommentForm } from './CommentForm';
 import { initSupabase } from '../../../../helpers/SupabaseHelpers';
 import { useEffect, useState } from 'react';
 import { databaseErrorNotification } from '../../../../helpers/NotificationHelpers';
-import { LinkPreview } from './LinkPreview';
+import { LinkPreview } from '../LinkPreview';
 import ReactMarkdown from 'react-markdown'
 
 dayjs.extend(relativeTime);
@@ -17,6 +17,7 @@ const extractUrls = require("extract-urls") //https://www.npmjs.com/package/extr
 
 const useStyles = createStyles((theme) => ({
     body: {
+        padding: 0,
         h1: {
             fontSize: "16px"
         },
@@ -141,15 +142,14 @@ export function CommentItem({ comment, addNewComment }: CommentProps) {
                     </Stack>
                 </Modal>
                 <Grid>
-                    <Grid.Col span={1}>
-                        <Avatar src={comment.profiles.avatar_url} alt={comment.profiles.username} radius="md" />
-                    </Grid.Col>
                     <Grid.Col span={10}>
                         <Stack spacing={0}>
-                            <Text size="sm" fw={500}>@{comment.profiles.username}</Text>
-                            <Text size="xs" color="dimmed">
-                                {dayjs(comment.created_at).fromNow()}
-                            </Text>
+                            <Group spacing="xs" noWrap my={8}>
+                                <Avatar size={16} src={comment.profiles.avatar_url} alt={comment.profiles.username} radius="md"/>
+                                <Text size="xs">{comment.profiles.username}</Text>
+                                <Text size="xs"> • </Text>
+                                <Text size="xs" color="dimmed">{dayjs(comment.created_at).fromNow()}</Text>
+                            </Group>
                             <Text className={classes.body}>
                                 <ReactMarkdown>
                                     {comment.content}
@@ -168,7 +168,7 @@ export function CommentItem({ comment, addNewComment }: CommentProps) {
                             {showCommentForm && <CommentForm toggleClose={handlers.close} ragaId={comment.raga_id} addNewComment={addNewComment} parentCommentId={comment.parent_comment_id || comment.comment_id} />}
                         </Stack>
                     </Grid.Col>
-                    <Grid.Col span={1}>
+                    <Grid.Col span={2}>
                         <Stack spacing={0} align="center">
                             <ActionIcon size="lg" onClick={() => submitVote(1)}>
                                 <IconCaretUp size="1.625rem" />

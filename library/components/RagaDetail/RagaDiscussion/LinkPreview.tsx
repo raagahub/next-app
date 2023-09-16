@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createStyles, Card, Text, Image, Avatar, Button, Group, Grid, Stack, rem } from '@mantine/core';
+import { useUnfurlUrl } from "../../../helpers/UrlHelpers";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -21,41 +22,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export type RequestStatus = "iddle" | "loading" | "success" | "error";
 
-export type UrlData = {
-    title: string;
-    description: string | null;
-    favicon: string | null;
-    imageSrc: string | null;
-};
-
-export function useUnfurlUrl(url: string) {
-    const [status, setStatus] = useState<RequestStatus>("iddle");
-    const [data, setData] = useState<null | UrlData>(null);
-
-    useEffect(() => {
-        setStatus("loading");
-
-        const encoded = encodeURIComponent(url);
-        fetch(`/api/unfurl/${encoded}`)
-            .then(async (res) => {
-                if (res.ok) {
-                    const data = await res.json();
-                    setData(data);
-                    setStatus("success");
-                } else {
-                    setStatus("error");
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                setStatus("error");
-            });
-    }, [url]);
-
-    return { status, data };
-}
 
 export const LinkPreview = ({ url }: { url: string }) => {
     const { classes } = useStyles();

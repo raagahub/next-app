@@ -45,6 +45,7 @@
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.7",
     "react-virtuoso": "^4.4.2",
+    "react-youtube": "^10.1.0",
     "tone": "^14.7.77",
     "unfurl.js": "^6.3.2"
   },
