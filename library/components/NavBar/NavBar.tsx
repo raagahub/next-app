@@ -28,11 +28,15 @@ import {
     IconFingerprint,
     IconCoin,
     IconChevronDown,
+    IconWaveSine,
+    IconHighlight,
+    IconHandThreeFingers,
 } from '@tabler/icons-react';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { SignInModal } from './SignInModal/SignInModal'
 import { UserMenu } from './UserMenu/UserMenu'
 import { useUser } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -68,6 +72,11 @@ const useStyles = createStyles((theme) => ({
         }),
 
         '&:active': theme.activeStyles,
+
+        '&:disabled': {
+            color: theme.colors.gray[6],
+            cursor: 'not-allowed',
+        }
     },
 
     dropdownFooter: {
@@ -95,34 +104,32 @@ const useStyles = createStyles((theme) => ({
 
 const mockdata = [
     {
-        icon: IconCode,
-        title: 'Open source',
-        description: 'This Pokémon’s cry is very loud and distracting',
+        icon: IconWaveSine,
+        title: 'Raga Explore',
+        description: 'Search, filter and discover the world of Carnatic Ragas.',
+        path: '/ragas',
+        active: true
     },
     {
-        icon: IconCoin,
-        title: 'Free for everyone',
-        description: 'The fluid of Smeargle’s tail secretions changes',
+        icon: IconHighlight,
+        title: 'Composer Explore',
+        description: "Learn about composers' music, lives and history.",
+        path: '/composers',
+        active: false
     },
     {
         icon: IconBook,
-        title: 'Documentation',
-        description: 'Yanma is capable of seeing 360 degrees without',
+        title: 'Kriti Explore',
+        description: 'Search for the compositions written through the ages.',
+        path: '/kritis',
+        active: true
     },
     {
-        icon: IconFingerprint,
-        title: 'Security',
-        description: 'The shell’s rounded shape and the grooves on its.',
-    },
-    {
-        icon: IconChartPie3,
-        title: 'Analytics',
-        description: 'This Pokémon uses its flying ability to quickly chase',
-    },
-    {
-        icon: IconNotification,
-        title: 'Notifications',
-        description: 'Combusken battles with the intensely hot flames it spews',
+        icon: IconHandThreeFingers,
+        title: 'Tala Explore',
+        description: 'Search and explore and discover Talas, in an interactive way.',
+        path: '/talas',
+        active: false
     },
 ];
 
@@ -132,14 +139,15 @@ export function NavBar() {
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const { classes, theme } = useStyles();
+    const router = useRouter();
 
     const user = useUser()
 
     const links = mockdata.map((item) => (
-        <UnstyledButton className={classes.subLink} key={item.title}>
+        <UnstyledButton className={classes.subLink} key={item.title}  onClick={() => router.push(item.path)} disabled={!item.active}>
             <Group noWrap align="flex-start">
                 <ThemeIcon size={34} variant="default" radius="md">
-                    <item.icon size={rem(22)} color={theme.fn.primaryColor()} />
+                    <item.icon size={rem(22)} color={item.active ? theme.fn.primaryColor() : theme.colors.gray[3]} />
                 </ThemeIcon>
                 <div>
                     <Text size="sm" fw={500}>
@@ -182,7 +190,7 @@ export function NavBar() {
 
                             <HoverCard.Dropdown sx={{ overflow: 'hidden' }}>
                                 <Group position="apart" px="md">
-                                    <Text fw={500}>Features</Text>
+                                    <Text fw={500}>Tools</Text>
                                     <Anchor href="#" fz="xs">
                                         View all
                                     </Anchor>
