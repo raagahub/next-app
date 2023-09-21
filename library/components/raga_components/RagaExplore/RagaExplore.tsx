@@ -2,14 +2,14 @@ import { ActionIcon, Autocomplete, Badge, Box, Button, Card, Collapse, Container
 import { IconSearch, IconAdjustments } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
-import { Raga, RagaType, RagaTypeState, RagaSwaraCountVal, SwaraCountState, RagaSortOption } from '../../helpers/RagaHelpers'
+import { Raga, RagaType, RagaTypeState, RagaSwaraCountVal, SwaraCountState, RagaSortOption } from '../../../helpers/RagaHelpers'
 import { RagaCard } from '../RagaCard/RagaCard';
 import { RagaFilter } from './RagaFilter/RagaFilter'
-import { swaraSelectStartState, Swara, SwaraSelectState } from '../../helpers/SwaraHelpers'
+import { swaraSelectStartState, Swara, SwaraSelectState } from '../../../helpers/SwaraHelpers'
 import { VirtuosoGrid } from 'react-virtuoso'
 import { ItemContainer, ListContainer } from '../RagaCard/VirtuosoContainers'
-import { initSupabase } from '../../helpers/SupabaseHelpers'
-import { databaseErrorNotification } from '../../helpers/NotificationHelpers'
+import { initSupabase } from '../../../helpers/SupabaseHelpers'
+import { databaseErrorNotification } from '../../../helpers/NotificationHelpers'
 import useStyles from './RagaExplore.styles';
 
 // let data = require('./ragas.json');

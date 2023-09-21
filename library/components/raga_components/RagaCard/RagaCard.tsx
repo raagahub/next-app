@@ -14,17 +14,17 @@ import { IconAlertCircle, IconBookmark, IconBookmarkFilled, IconBrandYoutube, Ic
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useState, useTransition } from 'react';
-import { SwaraGradient } from '../SwaraGradient/SwaraGradient'
-import { Raga } from '../../helpers/RagaHelpers'
-import { nth } from '../../helpers/StringUtilities'
-import { initSupabase } from '../../helpers/SupabaseHelpers'
+import { SwaraGradient } from '../../SwaraGradient/SwaraGradient'
+import { Raga } from '../../../helpers/RagaHelpers'
+import { nth } from '../../../helpers/StringUtilities'
+import { initSupabase } from '../../../helpers/SupabaseHelpers'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { VakraTag } from '../RagaDetail/RagaTags/VakraTag';
 import { BashangaTag } from '../RagaDetail/RagaTags/BashangaTag';
 import { UpangaTag } from '../RagaDetail/RagaTags/UpangaTag';
 import { AddMoodButton, getMoodTags } from '../RagaDetail/MoodTags/MoodTags';
-import { bookmarkAddedNotification, bookmarkRemovedNotification, databaseErrorNotification } from '../../helpers/NotificationHelpers';
+import { bookmarkAddedNotification, bookmarkRemovedNotification, databaseErrorNotification } from '../../../helpers/NotificationHelpers';
 import useStyles from './RagaCard.styles';
 
 export interface RagaCardProps {

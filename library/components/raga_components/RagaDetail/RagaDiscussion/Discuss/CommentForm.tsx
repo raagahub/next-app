@@ -2,9 +2,9 @@ import { Button, Group, Paper, Stack, Textarea } from '@mantine/core'
 import { notifications } from '@mantine/notifications';
 import { useForm, isEmail } from '@mantine/form';
 import { useState } from 'react';
-import { initSupabase } from '../../../../helpers/SupabaseHelpers';
-import { Raga } from '../../../../helpers/RagaHelpers';
-import { databaseErrorNotification } from '../../../../helpers/NotificationHelpers';
+import { initSupabase } from '../../../../../helpers/SupabaseHelpers';
+import { Raga } from '../../../../../helpers/RagaHelpers';
+import { databaseErrorNotification } from '../../../../../helpers/NotificationHelpers';
 
 export interface CommentFormProps {
     toggleClose: () => void;

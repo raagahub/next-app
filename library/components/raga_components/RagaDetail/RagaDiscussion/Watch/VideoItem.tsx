@@ -2,13 +2,13 @@ import Link from "next/link";
 import { ActionIcon, Alert, AspectRatio, Avatar, Button, Card, Collapse, Divider, Grid, Group, Image, Loader, LoadingOverlay, Mark, Modal, Stack, Text, Tooltip, createStyles, useMantineTheme } from "@mantine/core";
 import { IconCaretDown, IconCaretUp, IconShare, IconTrashX, IconPlaylistAdd, IconPlayerPlay, IconUsersGroup } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { initSupabase } from "../../../../helpers/SupabaseHelpers";
-import { databaseErrorNotification } from "../../../../helpers/NotificationHelpers";
+import { initSupabase } from "../../../../../helpers/SupabaseHelpers";
+import { databaseErrorNotification } from "../../../../../helpers/NotificationHelpers";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useDisclosure } from "@mantine/hooks";
-import { useUnfurlUrl } from "../../../../helpers/UrlHelpers";
-import { Artist } from "../../../../helpers/ArtistHelpers";
+import { useUnfurlUrl } from "../../../../../helpers/UrlHelpers";
+import { Artist } from "../../../../../helpers/ArtistHelpers";
 
 dayjs.extend(relativeTime);
 

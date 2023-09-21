@@ -5,8 +5,8 @@ import DashboardLayout from '../../../layouts/DashboardLayout'
 import { initSupabase } from '../../../library/helpers/SupabaseHelpers'
 import { databaseErrorNotification } from '../../../library/helpers/NotificationHelpers'
 import { Raga } from '../../../library/helpers/RagaHelpers'
-import { RagaCard } from '../../../library/components/RagaCard/RagaCard'
-import { generateItemContainer, ListContainer } from '../../../library/components/RagaCard/VirtuosoContainers'
+import { RagaCard } from '../../../library/components/raga_components/RagaCard/RagaCard'
+import { generateItemContainer, ListContainer } from '../../../library/components/raga_components/RagaCard/VirtuosoContainers'
 
 const Bookmarks = () => {
   const { supabase, user } = initSupabase()

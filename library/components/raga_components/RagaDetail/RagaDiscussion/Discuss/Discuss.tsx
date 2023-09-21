@@ -4,9 +4,9 @@ import { CommentItem, Comment, CommentThread, CommentWithChildren } from './Comm
 import { IconMessage2Plus } from '@tabler/icons-react'
 import { CommentForm } from './CommentForm';
 import { useContext, useEffect, useState } from 'react';
-import { RagaContext } from '../../../../helpers/RagaHelpers';
-import { initSupabase } from '../../../../helpers/SupabaseHelpers';
-import { databaseErrorNotification } from '../../../../helpers/NotificationHelpers';
+import { RagaContext } from '../../../../../helpers/RagaHelpers';
+import { initSupabase } from '../../../../../helpers/SupabaseHelpers';
+import { databaseErrorNotification } from '../../../../../helpers/NotificationHelpers';
 
 
 // let data = require('./mockdata.json');

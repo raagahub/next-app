@@ -11,9 +11,9 @@ import {
 } from '@mantine/core';
 import { IconPlayerPlay, IconHeart, IconBookmark, IconShare } from '@tabler/icons-react'
 import { RagaCardProps } from '../RagaCard/RagaCard'
-import { SwaraGradient } from '../SwaraGradient/SwaraGradient';
-import { Swara, swaraNoteMap } from '../../helpers/SwaraHelpers'
-import Tone from '../Tone'
+import { SwaraGradient } from '../../SwaraGradient/SwaraGradient';
+import { Swara, swaraNoteMap } from '../../../helpers/SwaraHelpers'
+import Tone from '../../Tone'
 
 const useStyles = createStyles((theme) => ({
     modal: {

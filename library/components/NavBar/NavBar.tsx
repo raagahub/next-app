@@ -107,28 +107,28 @@ const mockdata = [
         icon: IconWaveSine,
         title: 'Raga Explore',
         description: 'Search, filter and discover the world of Carnatic Ragas.',
-        path: '/ragas',
+        path: '/raga/explore',
         active: true
     },
     {
         icon: IconHighlight,
         title: 'Composer Explore',
         description: "Learn about composers' music, lives and history.",
-        path: '/composers',
+        path: '/composer/explore',
         active: false
     },
     {
         icon: IconBook,
         title: 'Kriti Explore',
         description: 'Search for the compositions written through the ages.',
-        path: '/kritis',
+        path: '/kriti/explore',
         active: true
     },
     {
         icon: IconHandThreeFingers,
         title: 'Tala Explore',
         description: 'Search and explore and discover Talas, in an interactive way.',
-        path: '/talas',
+        path: '/tala/explore',
         active: false
     },
 ];

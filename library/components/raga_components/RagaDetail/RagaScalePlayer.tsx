@@ -1,9 +1,9 @@
 import { ActionIcon, Group, Image, Stack, Text } from '@mantine/core'
 import { IconPlayerPlay } from '@tabler/icons-react'
-import { Swara, swaraNoteMap } from '../../helpers/SwaraHelpers'
-import Tone from '../Tone'
+import { Swara, swaraNoteMap } from '../../../helpers/SwaraHelpers'
+import Tone from '../../Tone'
 import { useContext } from 'react';
-import { RagaContext } from '../../helpers/RagaHelpers';
+import { RagaContext } from '../../../helpers/RagaHelpers';
 
 export const RagaScalePlayer = () => {
     const raga = useContext(RagaContext)

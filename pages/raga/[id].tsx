@@ -4,10 +4,10 @@ import { initSupabase } from '../../library/helpers/SupabaseHelpers'
 import { Box, Container, Button, Paper, Text, Title, useMantineColorScheme, Grid } from '@mantine/core';
 import { databaseErrorNotification } from '../../library/helpers/NotificationHelpers'
 import { Raga, RagaContext } from '../../library/helpers/RagaHelpers'
-import { RagaCard } from '../../library/components/RagaCard/RagaCard';
-import { RagaDescription } from '../../library/components/RagaDetail/RagaDescription';
-import { RagaScalePlayer } from '../../library/components/RagaDetail/RagaScalePlayer';
-import { RagaDiscussion } from '../../library/components/RagaDetail/RagaDiscussion/RagaDiscussion';
+import { RagaCard } from '../../library/components/raga_components/RagaCard/RagaCard';
+import { RagaDescription } from '../../library/components/raga_components/RagaDetail/RagaDescription';
+import { RagaScalePlayer } from '../../library/components/raga_components/RagaDetail/RagaScalePlayer';
+import { RagaDiscussion } from '../../library/components/raga_components/RagaDetail/RagaDiscussion/RagaDiscussion';
 
 export const RagaDetail = () => {
     const router = useRouter();

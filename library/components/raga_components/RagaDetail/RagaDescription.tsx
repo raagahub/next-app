@@ -2,7 +2,7 @@ import { Button, Group, Text } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useContext } from 'react';
-import { RagaContext } from '../../helpers/RagaHelpers';
+import { RagaContext } from '../../../helpers/RagaHelpers';
 
 export const RagaDescription = () => {
     var now = dayjs()
