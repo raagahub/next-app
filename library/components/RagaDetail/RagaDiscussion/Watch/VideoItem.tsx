@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { ActionIcon, AspectRatio, Avatar, Button, Card, Grid, Group, Image, Loader, LoadingOverlay, Modal, Stack, Text, createStyles, useMantineTheme } from "@mantine/core";
-import { IconCaretDown, IconCaretUp, IconShare, IconTrashX, IconPlaylistAdd, IconPlayerPlay } from "@tabler/icons-react";
-import { useState } from "react";
+import { ActionIcon, Alert, AspectRatio, Avatar, Button, Card, Collapse, Divider, Grid, Group, Image, Loader, LoadingOverlay, Mark, Modal, Stack, Text, Tooltip, createStyles, useMantineTheme } from "@mantine/core";
+import { IconCaretDown, IconCaretUp, IconShare, IconTrashX, IconPlaylistAdd, IconPlayerPlay, IconUsersGroup } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import { initSupabase } from "../../../../helpers/SupabaseHelpers";
 import { databaseErrorNotification } from "../../../../helpers/NotificationHelpers";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useDisclosure } from "@mantine/hooks";
 import { useUnfurlUrl } from "../../../../helpers/UrlHelpers";
+import { Artist } from "../../../../helpers/ArtistHelpers";
 
 dayjs.extend(relativeTime);
 
@@ -34,6 +35,28 @@ export type YoutubeVideo = {
         username: string;
         avatar_url: string;
     };
+    raga_video_artists: [
+        {
+            role: string;
+            instrument: string;
+            artist_id: {
+                id: number;
+                name: string;
+            }
+        }
+    ];
+    pending_artists: [
+        {
+            id: number;
+            role: string;
+            main_instrument: string;
+            name: string;
+        }
+    ]
+}
+
+export type ArtistWithPending = Artist & {
+    pending: boolean;
 }
 
 interface VideoProps {
@@ -54,7 +77,7 @@ export const VideoItem = ({ video, setNowPlaying, isPlaying = false }: VideoProp
     async function deleteVideo() {
         setLoading(true)
         const { status, error } = await supabase
-            .from('raga_comments')
+            .from('raga_videos')
             .delete()
             .eq('video_id', video.video_id)
         
@@ -93,11 +116,55 @@ export const VideoItem = ({ video, setNowPlaying, isPlaying = false }: VideoProp
 
     }
 
+    const [mainArtist, setMainArtist] = useState<ArtistWithPending | null>(null)
+    const [accompanyingArtists, setAccompanying] = useState<ArtistWithPending[]>([])
+    const [moreInfoOpen, { toggle: toggleInfo }] = useDisclosure(false);
+
+    function parseArtists() {
+        let accompanyingArtists: ArtistWithPending[] = []
+
+        video.raga_video_artists.forEach((artist) => {
+            const artistFormat: ArtistWithPending = {
+                id: artist.artist_id.id,
+                name: artist.artist_id.name,
+                main_instrument: artist.instrument,
+                pending: false
+            }
+
+            if (artist.role == 'main') {
+                setMainArtist(artistFormat)
+            } else if (artist.role == 'accompanying') {
+                accompanyingArtists.push(artistFormat)
+            }
+        })
+
+        video.pending_artists.forEach((artist) => {
+            const artistFormat: ArtistWithPending = {
+                id: artist.id,
+                name: artist.name,
+                main_instrument: artist.main_instrument,
+                pending: true
+            }
+
+            if (artist.role == 'main') {
+                setMainArtist(artistFormat)
+            } else if (artist.role == 'accompanying') {
+                accompanyingArtists.push(artistFormat)
+            }
+        })
+
+        setAccompanying(accompanyingArtists)
+    }
+
+    useEffect(() => {
+        parseArtists()
+      }, [video]);
+
     if (status === "error") {
         return <Link href={video.video_url} />;
     }
 
-    if (status === "success") {
+    if (status === "success" && !deleted) {
         return (
             <>
             <Modal
@@ -137,12 +204,58 @@ export const VideoItem = ({ video, setNowPlaying, isPlaying = false }: VideoProp
                                 <Text size="xs" color="dimmed">{dayjs(video.created_at).fromNow()}</Text>
                             </Group>
                             <Text className={classes.title} mb="xs">
-                                {data?.title}
+                                {data?.title.slice(0, -(" - YouTube".length))}
                             </Text>
                             <Text color="dimmed" size="xs" mb="xs" lineClamp={3}>
                                 {data?.description}
                             </Text>
-                            <Group noWrap spacing="xs">
+                            <Divider 
+                            my="xs" 
+                            labelPosition="left"
+                            label={
+                                <Button p={0} variant="subtle" size={"xs"} onClick={toggleInfo}>
+                                    Artistes
+                                </Button>
+                            } 
+                             />
+                            <Collapse in={moreInfoOpen} mb={16}>
+                                <Grid>
+                                    <Grid.Col span={6}>
+                                        <Text color="dimmed" size={"xs"} fw={300}>Main Artiste</Text>
+                                    </Grid.Col>
+                                    <Grid.Col span={6}>
+                                        <Group position="apart">
+                                            <Text size={"xs"}>{mainArtist?.name}</Text>
+                                            <Text size={"xs"}>{mainArtist?.main_instrument.toUpperCase()}</Text>
+                                        </Group>
+                                    </Grid.Col>
+                                </Grid>
+                                <Grid>
+                                    <Grid.Col span={6}>
+                                        <Text color="dimmed" size={"xs"} fw={300}>Accompanying Artistes</Text>
+                                    </Grid.Col>
+                                    <Grid.Col span={6}>
+                                        {accompanyingArtists.map((artist) => (
+                                        <Group position="apart">
+                                            <Text size="xs">
+                                                {!artist.pending ? artist.name : (
+                                                    <Tooltip inline label="Pending Approval"
+                                                    color="yellow"
+                                                    position="top-end"
+                                                    withArrow>
+                                                        <Mark>{artist.name}</Mark>
+                                                    </Tooltip>
+                                                )}
+                                            </Text>
+                                            <Text size={"xs"}>{artist.main_instrument.toUpperCase()}</Text>
+                                        </Group>
+
+                                        ))}
+                                    </Grid.Col>
+                                </Grid>
+                            </Collapse>
+                            
+                            <Group noWrap spacing="xs" mt={16}>
                                 <Group spacing="xs" noWrap>
                                     <Button leftIcon={<IconPlayerPlay />} variant="light" color="gray" radius="lg" size="xs" compact onClick={()=> setNowPlaying(video)}>Play Now</Button>
                                     <Button leftIcon={<IconPlaylistAdd />} variant="light" color="gray" radius="lg" size="xs" compact>Play Next</Button>
@@ -169,8 +282,13 @@ export const VideoItem = ({ video, setNowPlaying, isPlaying = false }: VideoProp
             </>
 
         )
+    } else if (deleted) {
+        return (
+            <Alert icon={<IconTrashX size="1rem" />} color="red" radius={'md'}>Video Deleted</Alert>
+        )
+    } else {
+        return (
+            <div>Loading Preview</div>
+        )
     }
-    return (
-        <div>Loading Preview</div>
-    )
 }

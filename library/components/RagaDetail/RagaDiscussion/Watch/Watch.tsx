@@ -24,7 +24,7 @@ export const Watch = () => {
         setLoading(true)
         const { data, error, status } = await supabase
             .from('raga_videos')
-            .select('*, profiles (full_name, username, avatar_url)')
+            .select('*, profiles!raga_videos_user_id_fkey (full_name, username, avatar_url), raga_video_artists (role, instrument, artist_id (id, name)), pending_artists (id, role, main_instrument, name)')
             .eq('raga_id', raga.id)
 
         if (status == 200) {
@@ -40,9 +40,7 @@ export const Watch = () => {
     }
 
     function addVideoToPlaylist(video: YoutubeVideo) {
-        setPlaylist((prevPlaylist) => {
-            return [...prevPlaylist, video];
-        })
+        getRagaVideos()
     }
 
     function updateNowPlaying(video: YoutubeVideo) {
@@ -83,7 +81,7 @@ export const Watch = () => {
     return (
         <Stack mt={16}>
             {nowPlaying ? <YTPlayer youtubeId={nowPlaying} playNext={playNext} /> : "Playlist is empty"}
-            {showYTSubmitForm ? <YTSubmitForm toggleClose={handlers.close} ragaId={raga.id} addVideo={addVideoToPlaylist} /> :
+            {showYTSubmitForm ? <YTSubmitForm toggleClose={handlers.close} raga={raga} addVideo={addVideoToPlaylist} /> :
                 <Button leftIcon={<IconVideoPlus />} variant="light" color="gray" radius="lg" onClick={handlers.open}>Add to Playlist</Button>
             }
             {loading ? "loading playlist" : videoPlaylist}
