@@ -13,6 +13,8 @@ export interface Raga {
     is_vakra: boolean;
     is_bashanga: boolean;
     is_upanga: boolean;
+    raga_comments_cnt: number;
+    raga_videos_cnt: number;
 }
 
 export type RagaType = 'melakarta' | 'janya'

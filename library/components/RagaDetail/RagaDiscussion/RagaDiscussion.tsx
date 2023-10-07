@@ -22,7 +22,7 @@ export const RagaDiscussion = () => {
                 <Tabs.Tab icon={<IconBrandYoutube size="0.8rem" />} value="videos">
                     Watch
                 </Tabs.Tab>
-                <Tabs.Tab icon={<IconMusic size="0.8rem" />} value="music">
+                <Tabs.Tab icon={<IconMusic size="0.8rem" />} value="music" disabled>
                     Listen
                 </Tabs.Tab>
             </Tabs.List>

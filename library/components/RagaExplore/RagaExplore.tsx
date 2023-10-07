@@ -10,6 +10,7 @@ import { VirtuosoGrid } from 'react-virtuoso'
 import { ItemContainer, ListContainer } from '../RagaCard/VirtuosoContainers'
 import { initSupabase } from '../../helpers/SupabaseHelpers'
 import { databaseErrorNotification } from '../../helpers/NotificationHelpers'
+import useStyles from './RagaExplore.styles';
 
 // let data = require('./ragas.json');
 
@@ -17,6 +18,7 @@ const RagaExplore = () => {
     const [opened, { toggle }] = useDisclosure(false);
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
+    const { classes } = useStyles();
 
     const { supabase, user } = initSupabase()
 
@@ -28,9 +30,16 @@ const RagaExplore = () => {
             setLoading(true);
             let { data, error } = await supabase
                 .from('ragas')
-                .select('*')
+                .select('*, raga_comments (count), raga_videos (count)')
             if (error) { databaseErrorNotification(error) };
-            if (data) { setData(data) };
+            if (data) { 
+                console.log(data)
+                setData(data.map((raga)=>({
+                    ...raga,
+                    raga_comments_cnt: raga.raga_comments[0].count,
+                    raga_videos_cnt: raga.raga_videos[0].count
+                }))) 
+            };
         } catch (error) {
             console.log(error)
         } finally {
@@ -149,19 +158,10 @@ const RagaExplore = () => {
       }, [data, bookmarks, query, swaraSelectState, ragaTypeState, swaraCountState, sortByValue]);
 
     return (
-        <Flex
-            mt="xl"
-            mih={50}
-            bg={dark ? 'dark.6' : 'orange.0'}
-            gap="md"
-            justify="flex-start"
-            align="center"
-            direction="column"
-            wrap="wrap"
-        >
+        <Box className={classes.container} pt={32}>
             <Container mt="lg" py="lg" mx="auto" w={{ base: 320, sm: 480, lg: 640 }}>
                 <Autocomplete
-                    placeholder="Type any Raaga name"
+                    placeholder="Search for a Raga"
                     size="xl"
                     width={800}
                     icon={<IconSearch />}
@@ -210,7 +210,7 @@ const RagaExplore = () => {
                 </ItemContainer>)} />
             </Container>
 
-        </Flex>
+        </Box>
     )
 }
 

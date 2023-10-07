@@ -100,7 +100,7 @@ export function RagaFilter({
         <Box m="0 auto" w="fit-content" py={16}>
             <Group position="apart" mb='sm'>
                 <Text fz="sm" fw={300} mr={16}>
-                    Raaga Swaras:
+                    Raga Swaras:
                 </Text>
                 <Button
                     variant="subtle"
@@ -124,11 +124,11 @@ export function RagaFilter({
             <Group mt='md' position="apart" spacing="lg">
                 <Box>
                     <Text fz="sm" fw={300} mr={16} mb='sm'>
-                        Raaga Type:
+                        Raga Type:
                     </Text>
                     <Group position="center" spacing="xs">
-                        <Chip checked={ragaTypeState.melakarta} onChange={() => handleRagaTypeToggle("melakarta")} color="pink.5" variant="filled">Melakarta</Chip>
-                        <Chip checked={ragaTypeState.janya} onChange={() => handleRagaTypeToggle("janya")} variant="filled">Janya</Chip>
+                        <Chip checked={ragaTypeState.melakarta} onChange={() => handleRagaTypeToggle("melakarta")} color="raga-red.6" variant="filled">Melakarta</Chip>
+                        <Chip checked={ragaTypeState.janya} onChange={() => handleRagaTypeToggle("janya")} color="raga-orange.4" variant="filled">Janya</Chip>
                     </Group>
                 </Box>
                 <Box>
@@ -147,7 +147,7 @@ export function RagaFilter({
                         Sort By:
                     </Text>
                     <SegmentedControl
-                    color="raga-red"
+                    color={sortByValue == 'melakarta' ? "raga-red.6" : "raga-orange.4"}
                     radius="lg"
                     value={sortByValue}
                     onChange={(v) => handleSortByChange(v)}

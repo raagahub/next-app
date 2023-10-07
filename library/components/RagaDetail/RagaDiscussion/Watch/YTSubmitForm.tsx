@@ -301,7 +301,7 @@ export const YTSubmitForm = ({ toggleClose, raga, addVideo }: YTSubmitFormProps)
     ))
 
     return (
-        <Paper shadow="md" p="md" radius={'md'} >
+        <Paper shadow="md" p="md" radius={'md'}>
             <Text size={"xl"} fw={700} my={8}>Add a Video to {raga.format_name}</Text>
             <form onSubmit={form.onSubmit((values) => submitYTLink())}>
                 <TextInput

@@ -127,6 +127,7 @@ const mockdata = [
 ];
 
 export function NavBar() {
+    const showDarkModeToggle = false
     const [opened, { open, close }] = useDisclosure(false);
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
@@ -222,7 +223,7 @@ export function NavBar() {
 
                     <Group className={classes.hiddenMobile}>
                         <SignInModal opened={opened} close={close}/>
-                        <ColorSchemeToggle />
+                        { showDarkModeToggle && <ColorSchemeToggle /> }
                         { user ? <UserMenu user={user} /> : <Button onClick={open}>Sign In</Button>}
                     </Group>
 

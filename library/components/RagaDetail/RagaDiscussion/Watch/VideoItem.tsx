@@ -20,6 +20,7 @@ const useStyles = createStyles((theme) => ({
     body: {
         paddingLeft: '16px',
         paddingRight: '16px',
+        width: '100%'
     },
 }));
 
@@ -195,7 +196,7 @@ export const VideoItem = ({ video, setNowPlaying, isPlaying = false }: VideoProp
                 </AspectRatio>
                 </Grid.Col>
                 <Grid.Col span={8}>
-                    <Group noWrap spacing={0}>
+                    <Group noWrap spacing={0} w={'100%'}>
                         <div className={classes.body}>
                             <Group spacing="xs" noWrap my={8}>
                                 <Avatar size={16} src={video.profiles.avatar_url} />
@@ -224,7 +225,7 @@ export const VideoItem = ({ video, setNowPlaying, isPlaying = false }: VideoProp
                                         <Text color="dimmed" size={"xs"} fw={300}>Main Artiste</Text>
                                     </Grid.Col>
                                     <Grid.Col span={6}>
-                                        <Group position="apart">
+                                        <Group position="right" spacing={20}>
                                             <Text size={"xs"}>{mainArtist?.name}</Text>
                                             <Text size={"xs"}>{mainArtist?.main_instrument.toUpperCase()}</Text>
                                         </Group>
