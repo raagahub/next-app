@@ -1,4 +1,4 @@
-import { Raga } from "../../helpers/RagaHelpers";
+import { Raga } from "../../../helpers/RagaHelpers";
 import { RagaCard } from "./RagaCard";
 
 const mockRaga: Raga = {

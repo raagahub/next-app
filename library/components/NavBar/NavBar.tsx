@@ -58,7 +58,7 @@ const useStyles = createStyles((theme) => ({
         },
 
         ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors['raga-green'][1],
         }),
     },
 
@@ -76,6 +76,9 @@ const useStyles = createStyles((theme) => ({
         '&:disabled': {
             color: theme.colors.gray[6],
             cursor: 'not-allowed',
+            '&:hover': {
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
+            }
         }
     },
 
