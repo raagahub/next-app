@@ -44,16 +44,16 @@ const customThemeColors: Partial<Record<ExtendedCustomColors, Tuple<string, 10>>
     "#a13908"
   ],
   'raga-green': [
-    "#f7f7f2",
-    "#ebece6",
-    "#d7d9c8",
-    "#c0c4a7",
-    "#acb28b",
-    "#a0a779",
-    "#9aa26e",
-    "#858d5c",
-    "#777e51",
-    "#656c41"
+    "#f5f8ee",
+    "#ebede2",
+    "#d5d8c4",
+    "#bdc3a5",
+    "#aab089",
+    "#9ea577",
+    "#979f6d",
+    "#828b5a",
+    "#747b4e",
+    "#636a3e"
   ]
 }
 
