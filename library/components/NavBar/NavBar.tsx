@@ -68,7 +68,7 @@ const useStyles = createStyles((theme) => ({
         borderRadius: theme.radius.md,
 
         ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors['raga-green'][1]
         }),
 
         '&:active': theme.activeStyles,
@@ -80,7 +80,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     dropdownFooter: {
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors['raga-green'][1],
         margin: `calc(${theme.spacing.md} * -1)`,
         marginTop: theme.spacing.sm,
         padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
@@ -122,7 +122,7 @@ const mockdata = [
         title: 'Kriti Explore',
         description: 'Search for the compositions written through the ages.',
         path: '/kriti/explore',
-        active: true
+        active: false
     },
     {
         icon: IconHandThreeFingers,

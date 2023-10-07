@@ -21,6 +21,6 @@ export default createStyles((theme) => ({
         },
     },
     header: {
-        minWidth: '100%',
+        minWidth: '100%'
     }
 }));

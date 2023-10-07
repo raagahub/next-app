@@ -9,7 +9,7 @@ export function Welcome() {
       <Box px="md" pt={32} pb={48} className={classes.box}>
           <Title className={classes.title} align="center">
             Rediscover{' '}
-            <Text inherit variant="gradient" gradient={{ from: 'raga-red.6', to: 'orange.5', deg: 45 }} component="span">
+            <Text inherit variant="gradient" gradient={{ from: 'raga-red.6', to: 'raga-orange.4', deg: 45 }} component="span">
               Ragas
             </Text>
           </Title>
