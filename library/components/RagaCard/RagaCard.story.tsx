@@ -1,6 +1,7 @@
+import { Raga } from "../../helpers/RagaHelpers";
 import { RagaCard } from "./RagaCard";
 
-const mockRaga = {
+const mockRaga: Raga = {
     "id": 227,
     "format_name": "Arabhi",
     "name": "Arabhi",
@@ -12,7 +13,9 @@ const mockRaga = {
     "is_janya": true,
     "is_vakra": false,
     "is_bashanga": false,
-    "is_upanga": true
+    "is_upanga": true,
+    "raga_comments_cnt": 31,
+    "raga_videos_cnt": 28
 }
 
 export default {
