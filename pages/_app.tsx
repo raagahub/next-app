@@ -101,7 +101,7 @@ export default function App(props: AppPropsWithLayout<{
         supabaseClient={supabaseClient}
         initialSession={pageProps.initialSession}
       >
-        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+        <ColorSchemeProvider colorScheme={colorScheme == 'light' ? 'light' : 'light'} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ 
             colorScheme, 
             colors: customThemeColors,
