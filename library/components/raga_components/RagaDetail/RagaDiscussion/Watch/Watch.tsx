@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { initSupabase } from "../../../../helpers/SupabaseHelpers";
+import { initSupabase } from "../../../../../helpers/SupabaseHelpers";
 import { useDisclosure } from "@mantine/hooks";
-import { RagaContext } from "../../../../helpers/RagaHelpers";
+import { RagaContext } from "../../../../../helpers/RagaHelpers";
 import { Button, Stack } from "@mantine/core";
 import { IconVideoPlus } from "@tabler/icons-react";
 import { YTPlayer } from "./YTPlayer";
 import { YTSubmitForm } from "./YTSubmitForm";
-import { databaseErrorNotification } from "../../../../helpers/NotificationHelpers";
+import { databaseErrorNotification } from "../../../../../helpers/NotificationHelpers";
 import { VideoItem, YoutubeVideo } from "./VideoItem";
 
 export const Watch = () => {

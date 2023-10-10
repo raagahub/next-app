@@ -1,10 +1,10 @@
-import { Button, Group, Stack, Textarea } from '@mantine/core'
+import { Button, Group, Paper, Stack, Textarea } from '@mantine/core'
 import { notifications } from '@mantine/notifications';
 import { useForm, isEmail } from '@mantine/form';
 import { useState } from 'react';
-import { initSupabase } from '../../../../helpers/SupabaseHelpers';
-import { Raga } from '../../../../helpers/RagaHelpers';
-import { databaseErrorNotification } from '../../../../helpers/NotificationHelpers';
+import { initSupabase } from '../../../../../helpers/SupabaseHelpers';
+import { Raga } from '../../../../../helpers/RagaHelpers';
+import { databaseErrorNotification } from '../../../../../helpers/NotificationHelpers';
 
 export interface CommentFormProps {
     toggleClose: () => void;
@@ -46,7 +46,7 @@ export const CommentForm = ({ toggleClose, ragaId, addNewComment, parentCommentI
     }
 
     return (
-        <div>
+        <Paper shadow="md" p="md" radius={'md'}>
             <Textarea
                 placeholder="Share your thoughts, opinions and relevant links"
                 autosize
@@ -59,6 +59,6 @@ export const CommentForm = ({ toggleClose, ragaId, addNewComment, parentCommentI
                 <Button variant='filled' loading={loading} onClick={() => submitComment()}>Add to Discussion</Button>
                 <Button variant='default' onClick={toggleClose}>Cancel</Button>
             </Group>
-        </div>
+        </Paper>
     )
 }

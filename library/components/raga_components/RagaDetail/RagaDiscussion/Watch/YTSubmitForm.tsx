@@ -1,15 +1,15 @@
 import { forwardRef, useEffect, useState } from "react";
-import { initSupabase } from "../../../../helpers/SupabaseHelpers";
-import { databaseErrorNotification } from "../../../../helpers/NotificationHelpers";
+import { initSupabase } from "../../../../../helpers/SupabaseHelpers";
+import { databaseErrorNotification } from "../../../../../helpers/NotificationHelpers";
 import { Accordion, ActionIcon, Alert, Autocomplete, Button, Divider, Group, Loader, Paper, Select, SelectItemProps, Text, TextInput, Textarea, Title, rem } from "@mantine/core";
 import { useForm } from '@mantine/form';
-import { youtubeIdRegExp, youtubeRegExp } from "../../../../helpers/UrlHelpers";
+import { youtubeIdRegExp, youtubeRegExp } from "../../../../../helpers/UrlHelpers";
 import { YoutubeVideo } from "./VideoItem";
 import { useDebouncedValue, useToggle } from "@mantine/hooks";
 import { IconAlertCircle, IconCheck, IconCircleCheck, IconCircleMinus, IconMinus, IconUser, IconUsersGroup } from "@tabler/icons-react";
-import { Raga } from "../../../../helpers/RagaHelpers";
+import { Raga } from "../../../../../helpers/RagaHelpers";
 import type { SelectItem } from "@mantine/core/lib/Select"
-import { Artist, leadOptions, accompanimentOptions } from "../../../../helpers/ArtistHelpers";
+import { Artist, leadOptions, accompanimentOptions } from "../../../../../helpers/ArtistHelpers";
 import { PostgrestError } from "@supabase/supabase-js";
 
 
@@ -301,7 +301,7 @@ export const YTSubmitForm = ({ toggleClose, raga, addVideo }: YTSubmitFormProps)
     ))
 
     return (
-        <Paper shadow="md" p="md" radius={'md'} >
+        <Paper shadow="md" p="md" radius={'md'}>
             <Text size={"xl"} fw={700} my={8}>Add a Video to {raga.format_name}</Text>
             <form onSubmit={form.onSubmit((values) => submitYTLink())}>
                 <TextInput

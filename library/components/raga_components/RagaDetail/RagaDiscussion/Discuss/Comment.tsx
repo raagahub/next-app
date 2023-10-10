@@ -4,9 +4,9 @@ import { IconCaretUp, IconCaretDown, IconMessage2, IconShare, IconTrashX } from 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { CommentForm } from './CommentForm';
-import { initSupabase } from '../../../../helpers/SupabaseHelpers';
+import { initSupabase } from '../../../../../helpers/SupabaseHelpers';
 import { useEffect, useState } from 'react';
-import { databaseErrorNotification } from '../../../../helpers/NotificationHelpers';
+import { databaseErrorNotification } from '../../../../../helpers/NotificationHelpers';
 import { LinkPreview } from '../LinkPreview';
 import ReactMarkdown from 'react-markdown'
 

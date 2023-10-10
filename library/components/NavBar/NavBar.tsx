@@ -28,11 +28,15 @@ import {
     IconFingerprint,
     IconCoin,
     IconChevronDown,
+    IconWaveSine,
+    IconHighlight,
+    IconHandThreeFingers,
 } from '@tabler/icons-react';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { SignInModal } from './SignInModal/SignInModal'
 import { UserMenu } from './UserMenu/UserMenu'
 import { useUser } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -54,7 +58,7 @@ const useStyles = createStyles((theme) => ({
         },
 
         ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors['raga-green'][1],
         }),
     },
 
@@ -64,14 +68,22 @@ const useStyles = createStyles((theme) => ({
         borderRadius: theme.radius.md,
 
         ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors['raga-green'][1]
         }),
 
         '&:active': theme.activeStyles,
+
+        '&:disabled': {
+            color: theme.colors.gray[6],
+            cursor: 'not-allowed',
+            '&:hover': {
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
+            }
+        }
     },
 
     dropdownFooter: {
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors['raga-green'][1],
         margin: `calc(${theme.spacing.md} * -1)`,
         marginTop: theme.spacing.sm,
         padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
@@ -95,50 +107,50 @@ const useStyles = createStyles((theme) => ({
 
 const mockdata = [
     {
-        icon: IconCode,
-        title: 'Open source',
-        description: 'This Pokémon’s cry is very loud and distracting',
+        icon: IconWaveSine,
+        title: 'Raga Explore',
+        description: 'Search, filter and discover the world of Carnatic Ragas.',
+        path: '/raga/explore',
+        active: true
     },
     {
-        icon: IconCoin,
-        title: 'Free for everyone',
-        description: 'The fluid of Smeargle’s tail secretions changes',
+        icon: IconHighlight,
+        title: 'Composer Explore',
+        description: "Learn about composers' music, lives and history.",
+        path: '/composer/explore',
+        active: false
     },
     {
         icon: IconBook,
-        title: 'Documentation',
-        description: 'Yanma is capable of seeing 360 degrees without',
+        title: 'Kriti Explore',
+        description: 'Search for the compositions written through the ages.',
+        path: '/kriti/explore',
+        active: false
     },
     {
-        icon: IconFingerprint,
-        title: 'Security',
-        description: 'The shell’s rounded shape and the grooves on its.',
-    },
-    {
-        icon: IconChartPie3,
-        title: 'Analytics',
-        description: 'This Pokémon uses its flying ability to quickly chase',
-    },
-    {
-        icon: IconNotification,
-        title: 'Notifications',
-        description: 'Combusken battles with the intensely hot flames it spews',
+        icon: IconHandThreeFingers,
+        title: 'Tala Explore',
+        description: 'Search and explore and discover Talas, in an interactive way.',
+        path: '/tala/explore',
+        active: false
     },
 ];
 
 export function NavBar() {
+    const showDarkModeToggle = false
     const [opened, { open, close }] = useDisclosure(false);
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const { classes, theme } = useStyles();
+    const router = useRouter();
 
     const user = useUser()
 
     const links = mockdata.map((item) => (
-        <UnstyledButton className={classes.subLink} key={item.title}>
+        <UnstyledButton className={classes.subLink} key={item.title}  onClick={() => router.push(item.path)} disabled={!item.active}>
             <Group noWrap align="flex-start">
                 <ThemeIcon size={34} variant="default" radius="md">
-                    <item.icon size={rem(22)} color={theme.fn.primaryColor()} />
+                    <item.icon size={rem(22)} color={item.active ? theme.fn.primaryColor() : theme.colors.gray[3]} />
                 </ThemeIcon>
                 <div>
                     <Text size="sm" fw={500}>
@@ -181,7 +193,7 @@ export function NavBar() {
 
                             <HoverCard.Dropdown sx={{ overflow: 'hidden' }}>
                                 <Group position="apart" px="md">
-                                    <Text fw={500}>Features</Text>
+                                    <Text fw={500}>Tools</Text>
                                     <Anchor href="#" fz="xs">
                                         View all
                                     </Anchor>
@@ -222,7 +234,7 @@ export function NavBar() {
 
                     <Group className={classes.hiddenMobile}>
                         <SignInModal opened={opened} close={close}/>
-                        <ColorSchemeToggle />
+                        { showDarkModeToggle && <ColorSchemeToggle /> }
                         { user ? <UserMenu user={user} /> : <Button onClick={open}>Sign In</Button>}
                     </Group>
 

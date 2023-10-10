@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createStyles, Card, Text, Image, Avatar, Button, Group, Grid, Stack, rem } from '@mantine/core';
-import { useUnfurlUrl } from "../../../helpers/UrlHelpers";
+import { useUnfurlUrl } from "../../../../helpers/UrlHelpers";
 
 const useStyles = createStyles((theme) => ({
     card: {
