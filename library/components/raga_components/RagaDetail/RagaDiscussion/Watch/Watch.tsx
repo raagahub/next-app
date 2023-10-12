@@ -17,7 +17,7 @@ export const Watch = () => {
     const [playlist, setPlaylist] = useState<YoutubeVideo[]>([])
     const [loading, setLoading] = useState(false)
 
-    const [nowPlaying, setNowPlaying] = useState("")
+    const [nowPlaying, setNowPlaying] = useState<YoutubeVideo | null>(null)
     const [nowPlayingIndex, setNowPlayingIndex] = useState(0)
 
     async function getRagaVideos() {
@@ -44,18 +44,18 @@ export const Watch = () => {
     }
 
     function updateNowPlaying(video: YoutubeVideo) {
-        setNowPlaying(video.youtube_video_id)
+        setNowPlaying(video)
     }
 
-    const [queue, updateQueue] = useState<string[]>([])
+    const [queue, updateQueue] = useState<YoutubeVideo[]>([])
     function addToQueue(video: YoutubeVideo) {
-        updateQueue((prevQueue) => {return [...prevQueue, video.youtube_video_id]})
+        updateQueue((prevQueue) => {return [...prevQueue, video]})
     }
 
     function playNext() {
         if(queue.length > 0) {
             updateQueue((currQueue)=> {
-                setNowPlaying(currQueue.shift() as string)
+                setNowPlaying(currQueue.shift() as YoutubeVideo)
                 return currQueue
             })
         } else {
@@ -64,7 +64,7 @@ export const Watch = () => {
     }
 
     const videoPlaylist = playlist.map((video) => (
-        <VideoItem key={video.video_id} video={video} setNowPlaying={updateNowPlaying} isPlaying={nowPlaying == video.youtube_video_id}/>
+        <VideoItem key={video.video_id} video={video} setNowPlaying={updateNowPlaying} isPlaying={nowPlaying?.youtube_video_id == video.youtube_video_id}/>
     ))
 
     useEffect(() => {
@@ -73,14 +73,14 @@ export const Watch = () => {
 
     useEffect(() => {
         if (playlist.length > 0 && playlist.length > nowPlayingIndex) {
-            setNowPlaying(playlist[nowPlayingIndex].youtube_video_id)
+            setNowPlaying(playlist[nowPlayingIndex])
         }
     }, [playlist, nowPlayingIndex])
 
 
     return (
         <Stack mt={16}>
-            {nowPlaying ? <YTPlayer youtubeId={nowPlaying} playNext={playNext} /> : "Playlist is empty"}
+            {nowPlaying ? <YTPlayer video={nowPlaying} playNext={playNext} /> : "Playlist is empty"}
             {showYTSubmitForm ? <YTSubmitForm toggleClose={handlers.close} raga={raga} addVideo={addVideoToPlaylist} /> :
                 <Button leftIcon={<IconVideoPlus />} variant="light" color="gray" radius="lg" onClick={handlers.open}>Add to Playlist</Button>
             }
