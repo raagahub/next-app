@@ -1,5 +1,5 @@
-import { ActionIcon, AspectRatio, Button, Group, Progress, Stack, Switch, Text, Title, Tooltip } from "@mantine/core"
-import { useDisclosure, useInterval, useToggle } from "@mantine/hooks";
+import { ActionIcon, AspectRatio, Button, Group, Progress, Slider, Stack, Switch, Text, Title, Tooltip } from "@mantine/core"
+import { useDebouncedValue, useDisclosure, useInterval, useToggle } from "@mantine/hooks";
 import { IconMovie, IconMovieOff, IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import YouTube, { YouTubeProps, YouTubePlayer } from 'react-youtube';
@@ -8,13 +8,21 @@ import { useUnfurlUrl } from "../../../../../helpers/UrlHelpers";
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Duration from 'dayjs/plugin/duration'
 dayjs.extend(relativeTime);
+dayjs.extend(Duration)
 
 const initialOpts: YouTubeProps['opts'] = {
     height: '0',
     width: '0',
     playerVars: {
         autoplay: 0,
+        controls: 0,
+        disablekb: 0,
+        enablejsapi: 1,
+        fs: 0,
+        playsinline: 1,
+        rel: 0,
     },
 };
 
@@ -33,6 +41,9 @@ export const YTPlayer = ({ video, playNext }: YTPlayerProps) => {
     const [autoplay, setAutoplay] = useState(true)
     const [totalTime, setTotalTime] = useState(0)
     const [currentTime, setCurrentTime] = useState(0)
+    const [scrubberVal, setScrubberVal] = useState(0)
+    const [scrubberEndValue, setEndValue] = useState(0);
+    const [isScrubbing, setScrubbing] = useState(false)
 
     const getCurrentTime = () => {
         return player?.target.getCurrentTime() || 0;
@@ -47,6 +58,11 @@ export const YTPlayer = ({ video, playNext }: YTPlayerProps) => {
             setTotalTime(getDuration())
         }
         setCurrentTime(getCurrentTime())
+    }
+
+    const seekToTime = (value: number) => {
+        const seekingTime = (value/100) * totalTime
+        player?.target.seekTo(seekingTime, true)
     }
 
     const [intervalRunning, setIntervalRunning] = useState(false);
@@ -125,6 +141,19 @@ export const YTPlayer = ({ video, playNext }: YTPlayerProps) => {
     }
 
     useEffect(() => {
+        if (currentTime > 0 && !isScrubbing) {
+            setScrubberVal((currentTime/totalTime)*100)
+        }
+    }, [currentTime])
+    
+
+    useEffect(() => {
+        if (scrubberEndValue > 0) {
+            seekToTime(scrubberEndValue)
+        }
+    }, [scrubberEndValue]);
+
+    useEffect(() => {
         setCurrentTime(0);
         setTotalTime(0);
     }, [video]);
@@ -158,8 +187,14 @@ export const YTPlayer = ({ video, playNext }: YTPlayerProps) => {
                     </Group>
                 </Stack>
             }
-            <Text size={"xs"} color="raga-red.6">{currentTime} / {totalTime}</Text>
-            <Progress color="raga-red.6" value={(currentTime / totalTime)*100} animate />
+            <Text size={"xs"} color="raga-red.6">{dayjs.duration(currentTime, 'seconds').format('mm:ss')} / {dayjs.duration(totalTime, 'seconds').format('mm:ss')}</Text>
+            <Slider 
+            label={dayjs.duration((scrubberVal/100)*totalTime, 'seconds').format('mm:ss')}
+            value={scrubberVal} 
+            onChange={setScrubberVal} 
+            onChangeEnd={setEndValue} 
+            onMouseDown={()=>{setScrubbing(true)}} 
+            onMouseUp={()=>setScrubbing(false)} />
             <Group position="apart">
                 <Tooltip label={showVideo ? "Hide Video" : "Show Video"}>
                     <ActionIcon p={4} radius="md" size="md" color={"raga-red.6"} variant="outline" onClick={() => setShowVideo()}>
