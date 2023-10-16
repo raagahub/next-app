@@ -63,6 +63,10 @@ export const Watch = () => {
         }
     }
 
+    function playPrev() {
+        setNowPlayingIndex(nowPlayingIndex - 1)
+    }
+
     const videoPlaylist = playlist.map((video) => (
         <VideoItem key={video.video_id} video={video} setNowPlaying={updateNowPlaying} isPlaying={nowPlaying?.youtube_video_id == video.youtube_video_id}/>
     ))
@@ -80,7 +84,7 @@ export const Watch = () => {
 
     return (
         <Stack mt={16}>
-            {nowPlaying ? <YTPlayer video={nowPlaying} playNext={playNext} /> : "Playlist is empty"}
+            {nowPlaying ? <YTPlayer video={nowPlaying} playNext={playNext} playPrev={playPrev} /> : "Playlist is empty"}
             {showYTSubmitForm ? <YTSubmitForm toggleClose={handlers.close} raga={raga} addVideo={addVideoToPlaylist} /> :
                 <Button leftIcon={<IconVideoPlus />} variant="light" color="gray" radius="lg" onClick={handlers.open}>Add to Playlist</Button>
             }

@@ -7,7 +7,7 @@ import { Watch } from './Watch/Watch';
 
 export const RagaDiscussion = () => {
     const { classes } = useStyles();
-    const [activeTab, setActiveTab] = useState<string | null>('discuss');
+    const [activeTab, setActiveTab] = useState<string | null>('videos');
     
     return (
         <Tabs value={activeTab} onTabChange={setActiveTab} 
@@ -27,17 +27,14 @@ export const RagaDiscussion = () => {
                 </Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="discuss" pt="xs">
-                <Discuss/>
-            </Tabs.Panel>
 
             <Tabs.Panel value="videos" pt="xs">
                 <Watch/>
             </Tabs.Panel>
-
-            <Tabs.Panel value="music" pt="xs">
-                Music tab content
+            <Tabs.Panel value="discuss" pt="xs">
+                <Discuss/>
             </Tabs.Panel>
+
         </Tabs>
     )
 }
