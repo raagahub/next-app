@@ -151,7 +151,7 @@ export const YTPlayer = ({ video, playNext, playPrev }: YTPlayerProps) => {
             } 
             if (isPlaying) {
                 event.target.loadVideoById({videoId: video.youtube_video_id, startSeconds: 0});
-                event.target.playVideo();
+                // event.target.playVideo();
                 console.log("loadVideoByID and play");
             } else {
                 event.target.cueVideoById({videoId: video.youtube_video_id, startSeconds: 0});
