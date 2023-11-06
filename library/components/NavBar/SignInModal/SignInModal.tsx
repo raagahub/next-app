@@ -136,7 +136,7 @@ export function SignInModal({ opened, close }: SignInModalProps) {
             <Modal opened={opened} onClose={close} withCloseButton={false} size={"md"} padding={"xl"} radius={"md"} centered>
                 <LoadingOverlay visible={loading} overlayBlur={2} />
                 <Text size="xl" weight={500}>
-                    Welcome to <Text weight={700} variant="gradient" component="span">RaagaHub</Text>, {type} with
+                    Welcome to <Text weight={700} variant="gradient" component="span">RagaHub</Text>, {type} with
                 </Text>
 
                 <Group grow mb="md" mt="md">

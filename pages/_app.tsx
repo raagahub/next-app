@@ -9,6 +9,7 @@ import { Notifications } from '@mantine/notifications';
 import { NavBar } from '../library/components/NavBar/NavBar';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
+import useStyles from './styles'
 
 type ExtendedCustomColors = 'raga-red' | 'raga-orange' | 'raga-green' | DefaultMantineColor; // | 'secondaryColorName'
 
@@ -79,6 +80,7 @@ export default function App(props: AppPropsWithLayout<{
   const { Component, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page) => page)
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
+  const { classes } = useStyles();
 
   const toggleColorScheme = (value?: ColorScheme) => {
     const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
@@ -92,7 +94,7 @@ export default function App(props: AppPropsWithLayout<{
   return (
     <>
       <Head>
-        <title>Raagahub</title>
+        <title>Ragahub</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
@@ -103,16 +105,18 @@ export default function App(props: AppPropsWithLayout<{
       >
         <ColorSchemeProvider colorScheme={colorScheme == 'light' ? 'light' : 'light'} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ 
-            colorScheme, 
+            colorScheme: 'light', 
             colors: customThemeColors,
             primaryColor: 'raga-orange',
             primaryShade: 8,
             headings: customHeadingFont,
             fontFamily: customBodyFont,
             }} withGlobalStyles withNormalizeCSS>
-            <NavBar />
-            <Notifications position="top-right" mt={48} zIndex={199} />
-            {getLayout(<Component {...pageProps} />)}
+              <div className={classes.body}>
+                <NavBar />
+                <Notifications position="top-right" mt={48} zIndex={199} />
+                {getLayout(<Component {...pageProps} />)}
+              </div>
           </MantineProvider>
         </ColorSchemeProvider>
       </SessionContextProvider>
