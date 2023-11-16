@@ -20,7 +20,7 @@ export const Player = () => {
                             </Anchor>
                         </Box>
                         <Box w={'90%'}>
-                            <Slider value={50} size={'sm'} />
+                            <Slider value={40} size={'sm'} showLabelOnHover={false} label={null}/>
                         </Box>
                         <Group position="center">
                             <ActionIcon variant='outline' size={'xl'} color='raga-red.6' radius={'xl'}>

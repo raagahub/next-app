@@ -45,6 +45,7 @@ export function NavBar() {
 
     useEffect(() => {
         setActiveRoute(router.pathname);
+        closeDrawer();
         if (router.pathname == '/') {
             setHome(true)
         } else {
