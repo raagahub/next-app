@@ -27,6 +27,11 @@ export const useStyles = createStyles((theme) => ({
         ...theme.fn.hover({
             border: '2px solid black',
         }),
+
+        '&.active': {
+            border: '2px solid black',
+            
+        },
     },
 
     linkMobile: {
@@ -46,28 +51,8 @@ export const useStyles = createStyles((theme) => ({
 
     },
 
-    subLink: {
-        width: '100%',
-        padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-        borderRadius: theme.radius.md,
-
-        ...theme.fn.hover({
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors['raga-green'][1]
-        }),
-
-        '&:active': theme.activeStyles,
-
-        '&:disabled': {
-            color: theme.colors.gray[6],
-            cursor: 'not-allowed',
-            '&:hover': {
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
-            }
-        }
-    },
-
     signupButton: {
-        backgroundColor: theme.colors["raga-orange"][8],
+        backgroundColor: theme.colors["raga-red"][6],
         borderColor: theme.black,
         color: theme.white,
         padding: '8px 16px',
@@ -80,8 +65,8 @@ export const useStyles = createStyles((theme) => ({
 
         ...theme.fn.hover({
             backgroundColor: theme.white,
-            color: theme.colors["raga-orange"][8],
-            borderColor: theme.colors["raga-orange"][8],
+            color: theme.colors["raga-red"][6],
+            borderColor: theme.colors["raga-red"][6],
         }),
 
         [theme.fn.smallerThan('sm')]: {

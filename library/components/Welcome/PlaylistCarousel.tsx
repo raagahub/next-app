@@ -64,7 +64,7 @@ function Card({ image, color, title, category }: CardProps) {
             className={classes.card}
         >
             <Box className={classes.mandala} sx={{ backgroundColor: theme.colors[color][3] }}>
-                <Title order={3} className={classes.title}>
+                <Title order={3} className={classes.title} sx={{ color: theme.colors[color][6] }}>
                     {title}
                 </Title>
                 <Text className={classes.category} size="md">
@@ -78,23 +78,10 @@ function Card({ image, color, title, category }: CardProps) {
 const data = [
     {
         image:'/geometric-patterns/6323198.jpg',
-        color: 'raga-green',
-        title: 'Dikshitar’s Devotion',
-        category: 'Divine Compositions of Dikshitar',
-    },
-    {
-        image:'/geometric-patterns/6323198.jpg',
-        color: 'raga-orange',
-        title: "Mayamalavagowla",
-        category: 'Graceful Melodic Grandeur',
-    },
-    {
-        image:'/geometric-patterns/6323198.jpg',
         color: 'grape',
         title: 'Tyagaraja’s Triumphs',
         category: 'Profound Works of Sri Tyagaraja',
     },
-    
     {
         image:'/geometric-patterns/6323198.jpg',
         color: 'raga-red',
@@ -107,6 +94,21 @@ const data = [
         title: 'Thillana Thrills',
         category: 'Energetic Dance-Driven Melodies',
     },
+    {
+        image:'/geometric-patterns/6323198.jpg',
+        color: 'teal',
+        title: 'Dikshitar’s Devotion',
+        category: 'Divine Compositions of Dikshitar',
+    },
+    {
+        image:'/geometric-patterns/6323198.jpg',
+        color: 'raga-orange',
+        title: "Mayamalavagowla",
+        category: 'Graceful Melodic Grandeur',
+    },
+    
+    
+    
 ];
 
 export const PlaylistCarousel = () => {

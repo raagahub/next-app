@@ -37,7 +37,7 @@ export function Welcome() {
             <Box className={classes.card} sx={{ backgroundColor: theme.colors['lime'][3], backgroundImage: `url('/flat-sparkling-star-collection/star_icon_2.png')` }}>
               <Text color="green.9" align="left" fw={700} style={{ fontSize: '24px' }}>
                 <Text span fw={900} inherit>Ragahub</Text> is your portal into the world of{' '}
-                <Anchor href='/about' inherit className={classes['.highlight-text']}>Carnatic Music</Anchor>
+                <Anchor href='/about' inherit className={classes['.highlight-text']}>Carnatic music</Anchor>
               </Text>
             </Box>
             <Grid>

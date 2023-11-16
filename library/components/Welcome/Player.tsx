@@ -23,13 +23,13 @@ export const Player = () => {
                             <Slider value={50} size={'sm'} />
                         </Box>
                         <Group position="center">
-                            <ActionIcon variant='outline' size={'xl'} color='raga-orange.8' radius={'xl'}>
+                            <ActionIcon variant='outline' size={'xl'} color='raga-red.6' radius={'xl'}>
                                 <IconPlayerTrackPrevFilled />
                             </ActionIcon>
-                            <ActionIcon variant='outline' size={'xl'} color='raga-orange.8' radius={'xl'}>
+                            <ActionIcon variant='outline' size={'xl'} color='raga-red.6' radius={'xl'}>
                                 <IconPlayerPlayFilled />
                             </ActionIcon>
-                            <ActionIcon variant='outline' size={'xl'} color='raga-orange.8' radius={'xl'}>
+                            <ActionIcon variant='outline' size={'xl'} color='raga-red.6' radius={'xl'}>
                                 <IconPlayerTrackNextFilled />
                             </ActionIcon>
                         </Group>

@@ -1,45 +1,44 @@
-import { createStyles, keyframes } from '@mantine/core';
+import { createStyles, keyframes, rem } from '@mantine/core';
 
-const spinner = keyframes`
-100% { transform: rotate(360deg) }
-`
 
 export default createStyles((theme) => ({
-  container: {
-    padding: '32px 48px',
-    [theme.fn.smallerThan('md')]: {
-      padding: '32px 16px',
-    },
-  },
+  container: {},
 
   box: {
     height: 'fit-content',
-    padding: '32px 48px',
+    width: '100%',
+    margin: 0,
+    padding: '48px 40px',
     backgroundPosition: 'top 10px right 50px',
     backgroundSize: '100px',
     backgroundRepeat: 'no-repeat',
     backgroundBlendMode: 'overlay',
+    borderColor: 'rgba(0, 0, 0, 0.9)',
+    borderWidth: '2px',
     [theme.fn.smallerThan('md')]: {
       padding: '48px 16px',
-      marginTop: '16px',
-      marginBottom: '16px',
       backgroundPosition: 'top 0px right 0px',
     },
+    img: {
+      maxWidth: '360px',
+      margin: '0 auto'
+    }
   },
 
   card: {
-    height: "100%",
+    width: 'fit-content',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    backgroundPosition: 'bottom -10px right -10px',
-    backgroundSize: '100px',
-    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'bottom',
+    backgroundSize: '50px',
+    backgroundRepeat: 'repeat',
     backgroundBlendMode: 'overlay',
     borderRadius: '8px',
     borderColor: 'rgba(0, 0, 0, 0.9)',
     borderWidth: '2px',
     borderStyle: 'solid',
     boxShadow: '8px 8px 0px -2px rgba(0, 0, 0, 1)',
-    padding: '36px',
+    padding: '16px 32px',
+    marginBottom: '32px',
     '&:hover': {
       backgroundSize: '120px',
     },
@@ -48,15 +47,33 @@ export default createStyles((theme) => ({
       backgroundSize: '80px',
       backgroundPosition: 'bottom -10px right -16px',
     },
+    
   },
+
+  banner: {
+    height: rem(100),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    backgroundPosition: 'center',
+    backgroundSize: '450px',
+    backgroundRepeat: 'repeat',
+    backgroundBlendMode: 'color-burn',
+    borderRadius: '0px',
+    borderColor: 'rgba(0, 0, 0, 0.9)',
+    boxShadow: '0px 0px 0px 0px rgba(0, 0, 0, 1)',
+    overflow: 'clip',
+    [theme.fn.smallerThan('md')]: {
+      height: rem(100),
+    },
+},
 
   '.highlight-box': {
     color: 'white',
     backgroundColor: theme.colors['raga-red'][6],
     padding: '8px',
     marginLeft: '-8px',
-    marginTop: '4px',
-    marginBottom: '4px',
     width: 'fit-content',
     borderRadius: '8px',
     borderColor: theme.colors['gray'][8],
@@ -76,7 +93,7 @@ export default createStyles((theme) => ({
   },
 
   '.highlight-button': {
-    color: theme.colors['raga-red'][6],
+    color: theme.colors['gray'][8],
     fontSize: '20px',
     fontWeight: 500,
     backgroundColor: 'white',
@@ -84,10 +101,10 @@ export default createStyles((theme) => ({
     marginLeft: '-8px',
     width: 'fit-content',
     borderRadius: '100px',
-    borderColor: theme.colors['raga-red'][6],
+    borderColor: theme.colors['gray'][8],
     borderWidth: '2px',
     borderStyle: 'solid',
-    boxShadow: `4px 4px 0px 0px ${theme.colors['raga-red'][6]}`,
+    boxShadow: `4px 4px 0px 0px ${theme.colors['gray'][8]}`,
     '&:hover': {
       color: theme.colors['gray'][8],
       borderColor: theme.colors['gray'][8],
@@ -96,10 +113,12 @@ export default createStyles((theme) => ({
   },
 
   title: {
-    color: theme.colors['gray'][8],
+    color: theme.colors.dark[8],
     fontSize: 60,
     fontWeight: 700,
     lineHeight: 1.1,
+    width: '100%',
+    // textShadow: '3px 3px 0px rgba(0, 0, 0, 1)',
 
     [theme.fn.smallerThan('md')]: {
       fontSize: 45,
@@ -122,18 +141,4 @@ export default createStyles((theme) => ({
       backgroundColor: 'rgba(255, 255, 255, 0.6)',
     }
   },
-
-  vinyl: {
-    img: {
-      animation: `${spinner} 10s linear infinite`,
-      border: '5px solid',
-      borderColor: 'rgba(255, 255, 255, 0.7)',
-      outline: '25px solid black'
-    },
-    [theme.fn.smallerThan('md')]: {
-      marginTop: 16,
-      marginLeft: 8,
-    },
-  }
-
 }));
