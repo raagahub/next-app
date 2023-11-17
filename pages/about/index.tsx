@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { AboutComponent } from '../../library/components/About/About'
+import { AboutComponent } from '../../library/pages/About/About'
 import LandingLayout from '../../layouts/LandingLayout'
 
 const About = () => {

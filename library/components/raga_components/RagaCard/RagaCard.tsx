@@ -14,7 +14,7 @@ import { IconAlertCircle, IconBookmark, IconBookmarkFilled, IconBrandYoutube, Ic
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useState, useTransition } from 'react';
-import { SwaraGradient } from '../../SwaraGradient/SwaraGradient'
+import { SwaraGradient } from '../SwaraGradient/SwaraGradient'
 import { Raga } from '../../../helpers/RagaHelpers'
 import { nth } from '../../../helpers/StringUtilities'
 import { initSupabase } from '../../../helpers/SupabaseHelpers'

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react'
 import { withRouter, NextRouter } from 'next/router'
-import { Footer } from '../library/components/Footer/Footer'
-import { NavBar } from '../library/components/NavBar/NavBar'
+import { Footer } from '../library/components/page_components/Footer/Footer'
+import { NavBar } from '../library/components/page_components/NavBar/NavBar'
 
 // interface WithRouterProps {
 //     router: NextRouter

@@ -6,7 +6,7 @@ import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider, Tuple, DefaultMantineColor } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import { NavBar } from '../library/components/NavBar/NavBar';
+import { NavBar } from '../library/components/page_components/NavBar/NavBar';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 

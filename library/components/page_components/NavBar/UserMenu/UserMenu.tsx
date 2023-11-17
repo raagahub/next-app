@@ -2,9 +2,9 @@ import { Avatar, Menu, Text } from '@mantine/core'
 import { IconDoorExit } from '@tabler/icons-react'
 import { User } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
-import { dashboardElements } from '../../Dashboard/DashboardHelper'
-import { initSupabase } from '../../../helpers/SupabaseHelpers'
-import { authErrorNotification, signOutSuccessNotification } from '../../../helpers/NotificationHelpers'
+import { dashboardElements } from '../../../../pages/Dashboard/DashboardHelper'
+import { initSupabase } from '../../../../helpers/SupabaseHelpers'
+import { authErrorNotification, signOutSuccessNotification } from '../../../../helpers/NotificationHelpers'
 
 export interface UserMenuProps {
     user: User

@@ -1,7 +1,7 @@
 import { DefaultProps, Selectors, MantineNumberSize, Box } from '@mantine/core';
 import useStyles, { SwaraGradientStylesParams } from './SwaraGradient.styles';
 import styled from '@emotion/styled';
-import { swaraHexColorMap } from '../../helpers/SwaraHelpers'
+import { swaraHexColorMap } from '../../../helpers/SwaraHelpers'
 
 type SwaraGradientStylesNames = Selectors<typeof useStyles>;
 

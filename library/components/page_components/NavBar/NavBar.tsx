@@ -11,7 +11,6 @@ import {
     Stack,
 } from '@mantine/core';
 import { useDisclosure, useWindowScroll } from '@mantine/hooks';
-import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { SignInModal } from './SignInModal/SignInModal'
 import { UserMenu } from './UserMenu/UserMenu'
 import { useUser } from '@supabase/auth-helpers-react'
@@ -82,7 +81,6 @@ export function NavBar() {
 
                     <Group className={classes.hiddenMobile}>
                         <SignInModal opened={opened} close={close} />
-                        {showDarkModeToggle && <ColorSchemeToggle />}
                         {user ? <UserMenu user={user} /> :
                             <UnstyledButton className={classes.signupButton} onClick={open}>Sign Up</UnstyledButton>}
                     </Group>

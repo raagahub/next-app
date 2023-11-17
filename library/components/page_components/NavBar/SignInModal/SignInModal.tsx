@@ -21,7 +21,7 @@ import { GoogleIcon } from './GoogleIcon'
 import { FacebookIcon } from './FacebookIcon'
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { registrationSuccessNotification } from '../../../helpers/NotificationHelpers'
+import { registrationSuccessNotification } from '../../../../helpers/NotificationHelpers'
 
 export interface SignInModalProps {
     opened: boolean;

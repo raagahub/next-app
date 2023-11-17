@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import LandingLayout from '../layouts/LandingLayout';
-import { Welcome } from '../library/components/Welcome/Welcome';
+import { Welcome } from '../library/pages/Welcome/Welcome';
 
 const HomePage = () => {
   return (

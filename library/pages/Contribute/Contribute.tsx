@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Group, Image, Paper, Text, Title, UnstyledButton } from '@mantine/core';
 import useStyles from './Contribute.styles'
-import ShadowButton from '../ui_components/ShadowButton';
+import ShadowButton from '../../components/ui_components/ShadowButton';
 
 export const ContributeComponent = () => {
     const { classes, theme } = useStyles();

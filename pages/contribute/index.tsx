@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { ContributeComponent } from '../../library/components/Contribute/Contribute'
+import { ContributeComponent } from '../../library/pages/Contribute/Contribute'
 import LandingLayout from '../../layouts/LandingLayout'
 
 const Contribute = () => {
