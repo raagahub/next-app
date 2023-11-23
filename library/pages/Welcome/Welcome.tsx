@@ -2,15 +2,14 @@ import { Title, Text, Anchor, Box, BackgroundImage, Flex, Card, Button, Grid, Gr
 import useStyles from './Welcome.styles';
 import { Player } from './Player';
 import { PlaylistCarousel } from './PlaylistCarousel';
-import Link from 'next/link';
-import Image from 'next/image';
+import useAuthModal from '../../hooks/useAuthModal';
+import { useUser } from '../../hooks/useUser';
+import ShadowButton from '../../components/ui_components/ShadowButton';
 
 export function Welcome() {
   const { classes, theme } = useStyles();
-
-  const image1 = '/grainy gradients/grainy gradients - saintricchi.store/grainy gradients - saintricchi.store (1).jpg'
-  const image2 = '/grainy gradients/grainy gradients - saintricchi.store/grainy gradients - saintricchi.store (9).jpg'
-  const image3 = '/grainy gradients/grainy gradients - saintricchi.store/grainy gradients - saintricchi.store (20).jpg'
+  const authModal = useAuthModal();
+  // const { user } = useUser();
 
   return (
     <div className={classes.container}>
@@ -28,7 +27,8 @@ export function Welcome() {
               <Text color="dark.8" align="left" size="xl">
                 Our expertly curated performances, easy-to-use interface, and lively community invite you to delve into one of the world's oldest musical traditions.
               </Text>
-              <UnstyledButton mt={8} className={classes['.highlight-button']}>Get Early Access</UnstyledButton>
+              
+              <UnstyledButton mt={8} className={classes['.highlight-button']} onClick={authModal.onOpen}>Get Early Access</UnstyledButton>
             </Group>
           </Box>
         </Grid.Col>

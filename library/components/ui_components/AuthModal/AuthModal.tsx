@@ -16,24 +16,34 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
-import { useState } from 'react';
-import { GoogleIcon } from '../../../ui_components/AuthModal/GoogleIcon'
-import { FacebookIcon } from '../../../ui_components/AuthModal/FacebookIcon'
+import { useEffect, useState } from 'react';
+import { GoogleIcon } from './GoogleIcon'
+import { FacebookIcon } from './FacebookIcon'
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { registrationSuccessNotification } from '../../../../helpers/NotificationHelpers'
+import { useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { registrationSuccessNotification } from '../../../helpers/NotificationHelpers'
+import useAuthModal from '../../../hooks/useAuthModal';
+import { useRouter } from 'next/navigation';
 
-export interface SignInModalProps {
-    opened: boolean;
-    close: () => void;
-}
 
-export function SignInModal({ opened, close }: SignInModalProps) {
+
+export function AuthModal() {
+    const { session } = useSessionContext();
+    const router = useRouter();
     const supabase = useSupabaseClient()
-    const [loading, setLoading] = useState(false)
-    const [authError, updateAuthError] = useState({title: "", message: ""})
+    const { onClose, isOpen } = useAuthModal();
 
-    const [type, toggle] = useToggle(['login', 'register']);
+    const [loading, setLoading] = useState(false)
+    const [authError, updateAuthError] = useState({ title: "", message: "" })
+
+    useEffect(() => {
+        if (session) {
+            router.refresh();
+            onClose();
+        }
+    }, [session, router, onClose]);
+
+    const [type, toggle] = useToggle(['register', 'login']);
     const form = useForm({
         validateInputOnBlur: true,
 
@@ -55,7 +65,7 @@ export function SignInModal({ opened, close }: SignInModalProps) {
             setLoading(true)
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
-              })
+            })
             console.log(data)
         } catch (error) {
             console.log(error)
@@ -67,7 +77,7 @@ export function SignInModal({ opened, close }: SignInModalProps) {
             setLoading(true)
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'facebook',
-              })
+            })
             console.log(data)
         } catch (error) {
             console.log(error)
@@ -91,11 +101,11 @@ export function SignInModal({ opened, close }: SignInModalProps) {
                 console.log("supabase error", error)
                 if (error) {
                     setLoading(false)
-                    updateAuthError({title: error.name, message: error.message})
+                    updateAuthError({ title: error.name, message: error.message })
                 } else {
                     setLoading(false)
                     close()
-                    updateAuthError({title: "", message: ""})
+                    updateAuthError({ title: "", message: "" })
                     registrationSuccessNotification()
                 }
             } catch (error) {
@@ -113,11 +123,11 @@ export function SignInModal({ opened, close }: SignInModalProps) {
                 console.log("supabase error", error)
                 if (error) {
                     setLoading(false)
-                    updateAuthError({title: error.name, message: error.message})
+                    updateAuthError({ title: error.name, message: error.message })
                 } else {
                     setLoading(false)
                     close()
-                    updateAuthError({title: "", message: ""})
+                    updateAuthError({ title: "", message: "" })
                     notifications.show({
                         title: 'Sign In Successful',
                         message: `Welcome Back, ${"arma"}`,
@@ -133,19 +143,19 @@ export function SignInModal({ opened, close }: SignInModalProps) {
 
     return (
         <>
-            <Modal opened={opened} onClose={close} withCloseButton={false} size={"md"} padding={"xl"} radius={"md"} centered>
+            <Modal opened={isOpen} onClose={onClose} withCloseButton={false} size={"md"} padding={"xl"} radius={"md"} centered>
                 <LoadingOverlay visible={loading} overlayBlur={2} />
                 <Text size="xl" weight={500}>
-                    Welcome to <Text weight={700} variant="gradient" component="span">RagaHub</Text>, {type} with
+                    Sign Up for <Text weight={700} component="span">RagaHub</Text>, {type} with
                 </Text>
 
                 <Group grow mb="md" mt="md">
-                    <Button 
-                    leftIcon={<GoogleIcon />} 
-                    variant="default" 
-                    color="gray" 
-                    radius={"md"} 
-                    onClick={() => handleGoogleAuth()}
+                    <Button
+                        leftIcon={<GoogleIcon />}
+                        variant="default"
+                        color="gray"
+                        radius={"md"}
+                        onClick={() => handleGoogleAuth()}
                     >Google</Button>
                     <Button
                         leftIcon={<FacebookIcon />}
@@ -217,8 +227,8 @@ export function SignInModal({ opened, close }: SignInModalProps) {
                         )}
                     </Stack>
 
-                    {authError.title && 
-                        <Alert icon={<IconAlertCircle size="1rem"/>} title={`Error - ${authError.title}`} color="red" mt={20}>
+                    {authError.title &&
+                        <Alert icon={<IconAlertCircle size="1rem" />} title={`Error - ${authError.title}`} color="red" mt={20}>
                             {authError.message}
                         </Alert>
                     }

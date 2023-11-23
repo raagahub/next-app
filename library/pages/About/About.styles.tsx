@@ -40,7 +40,7 @@ export default createStyles((theme) => ({
   },
 
   banner: {
-    height: rem(150),
+    height: rem(100),
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
