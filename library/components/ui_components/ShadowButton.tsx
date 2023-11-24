@@ -25,12 +25,14 @@ const useStyles = createStyles((theme, params: { color: keyof typeof theme.color
 interface UnstyledButtonProps extends DefaultProps {
     color: keyof ReturnType<typeof useMantineTheme>['colors'];
     children: React.ReactNode;
+    onClick?: () => void;
 }
 
-const ShadowButton: React.FC<UnstyledButtonProps> = ({ color, children, ...others }) => {
+const ShadowButton: React.FC<UnstyledButtonProps> = ({ color, children, onClick, ...others }) => {
     const { classes } = useStyles({ color });
     return (
         <UnstyledButton 
+        onClick={onClick}
         className={classes['.shadow-button']} 
         {...others}>
             {children}

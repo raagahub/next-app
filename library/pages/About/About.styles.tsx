@@ -1,4 +1,4 @@
-import { createStyles, keyframes, rem } from '@mantine/core';
+import { createStyles, rem } from '@mantine/core';
 
 
 export default createStyles((theme) => ({

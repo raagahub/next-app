@@ -111,11 +111,11 @@ export default function App(props: AppPropsWithLayout<{
             headings: customHeadingFont,
             fontFamily: customBodyFont,
           }} withGlobalStyles withNormalizeCSS>
-            {/* <UserProvider> */}
+            <UserProvider>
               <ModalProvider />
               <Notifications position="top-right" mt={48} zIndex={199} />
               {getLayout(<Component {...pageProps} />)}
-            {/* </UserProvider> */}
+            </UserProvider>
           </MantineProvider>
         </ColorSchemeProvider>
       </SessionContextProvider>

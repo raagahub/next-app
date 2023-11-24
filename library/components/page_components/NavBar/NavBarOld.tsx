@@ -33,7 +33,7 @@ import {
     IconHandThreeFingers,
 } from '@tabler/icons-react';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
-import { SignInModal } from './SignInModal/SignInModal'
+import { SignInModal } from './SignOutModal/SignInModal'
 import { UserMenu } from './UserMenu/UserMenu'
 import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router';

@@ -1,10 +1,13 @@
-import { Avatar, Menu, Text } from '@mantine/core'
+import { Avatar, Menu, Text, Tooltip } from '@mantine/core'
 import { IconDoorExit } from '@tabler/icons-react'
 import { User } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { dashboardElements } from '../../../../pages/Dashboard/DashboardHelper'
 import { initSupabase } from '../../../../helpers/SupabaseHelpers'
 import { authErrorNotification, signOutSuccessNotification } from '../../../../helpers/NotificationHelpers'
+import { useStyles } from './UserMenu.styles'
+import { useDisclosure } from '@mantine/hooks'
+import { SignOutModal } from '../SignOutModal/SignOutModal'
 
 export interface UserMenuProps {
     user: User
@@ -13,6 +16,9 @@ export interface UserMenuProps {
 export const UserMenu = ({ user }: UserMenuProps) => {
     const router = useRouter()
     const { supabase } = initSupabase()
+
+    const { classes, theme } = useStyles();
+    const [opened, { open, close }] = useDisclosure(false);
     
     async function signOut() {
         try {
@@ -46,21 +52,40 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         }
     }
 
+    // return (
+    //     <>
+    //         <Menu shadow="md" offset={10} width={200} trigger="hover" openDelay={100} closeDelay={150}>
+    //             <Menu.Target>
+    //                 <Avatar color='raga-red.6' variant='filled' radius={'xl'} classNames={{placeholder: classes.avatar}}>{getInitials().toUpperCase()}</Avatar>
+    //             </Menu.Target>
+
+    //             <Menu.Dropdown>
+    //                 <Menu.Label><Text fw={700} fz="xl">{user.user_metadata.full_name}</Text></Menu.Label>
+    //                 <Menu.Label>{user.email}</Menu.Label>
+    //                 {/* {menuItems} */}
+    //                 <Menu.Divider />
+    //                 <Menu.Item color="red" icon={<IconDoorExit size={14} />} onClick={() => signOut()}>Sign Out</Menu.Item>
+    //             </Menu.Dropdown>
+    //         </Menu>
+    //     </>
+    // )
+
     return (
         <>
-            <Menu shadow="md" offset={10} width={200} trigger="hover" openDelay={100} closeDelay={150}>
-                <Menu.Target>
-                    <Avatar color='raga-red.6' variant='filled'>{getInitials().toUpperCase()}</Avatar>
-                </Menu.Target>
-
-                <Menu.Dropdown>
-                    <Menu.Label><Text fw={700} fz="xl">{user.user_metadata.full_name}</Text></Menu.Label>
-                    <Menu.Label>{user.email}</Menu.Label>
-                    {menuItems}
-                    <Menu.Divider />
-                    <Menu.Item color="red" icon={<IconDoorExit size={14} />} onClick={() => signOut()}>Sign Out</Menu.Item>
-                </Menu.Dropdown>
-            </Menu>
+        <SignOutModal opened={opened} close={close}/>
+        <Tooltip 
+        label='Click to logout'
+        color="raga-red.6"
+        position="left"
+        withArrow>
+            <Avatar 
+            color='raga-red.6' 
+            variant='filled' 
+            radius={'xl'} 
+            onClick={open}
+            classNames={{placeholder: classes.avatar}}
+            >{getInitials().toUpperCase()}</Avatar>
+        </Tooltip>
         </>
     )
 }

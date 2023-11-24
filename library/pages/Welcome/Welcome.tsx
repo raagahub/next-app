@@ -5,11 +5,12 @@ import { PlaylistCarousel } from './PlaylistCarousel';
 import useAuthModal from '../../hooks/useAuthModal';
 import { useUser } from '../../hooks/useUser';
 import ShadowButton from '../../components/ui_components/ShadowButton';
+import { IconCircleCheck } from '@tabler/icons-react';
 
 export function Welcome() {
   const { classes, theme } = useStyles();
   const authModal = useAuthModal();
-  // const { user } = useUser();
+  const { user } = useUser();
 
   return (
     <div className={classes.container}>
@@ -27,8 +28,9 @@ export function Welcome() {
               <Text color="dark.8" align="left" size="xl">
                 Our expertly curated performances, easy-to-use interface, and lively community invite you to delve into one of the world's oldest musical traditions.
               </Text>
-              
+              {user ? <ShadowButton color='teal'><IconCircleCheck size={20}/> You're on the waitlist</ShadowButton> : 
               <UnstyledButton mt={8} className={classes['.highlight-button']} onClick={authModal.onOpen}>Get Early Access</UnstyledButton>
+              }
             </Group>
           </Box>
         </Grid.Col>

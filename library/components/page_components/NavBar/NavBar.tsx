@@ -11,23 +11,31 @@ import {
     Stack,
 } from '@mantine/core';
 import { useDisclosure, useWindowScroll } from '@mantine/hooks';
-import { SignInModal } from './SignInModal/SignInModal'
+import { SignInModal } from './SignOutModal/SignInModal'
 import { UserMenu } from './UserMenu/UserMenu'
-import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router';
 import { useStyles } from './NavBar.styles'
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import useAuthModal from '../../../hooks/useAuthModal';
+import { useUser } from '../../../hooks/useUser';
+import { Lora } from 'next/font/google';
+
+export const brandFont = Lora({
+    weight: ['400', '500', '600', '700'],
+    style: ['normal', 'italic'],
+    subsets: ['latin', 'latin-ext'],
+    display: 'swap',
+})
 
 export function NavBar() {
-    const showDarkModeToggle = false
-    const [opened, { open, close }] = useDisclosure(false);
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const { classes, theme } = useStyles();
     const [scroll, scrollTo] = useWindowScroll();
+    const authModal = useAuthModal();
 
     const router = useRouter();
-    const user = useUser()
+    const { user } = useUser()
 
     const [isNavTop, setNavTop] = useState(true)
     const [isHome, setHome] = useState(false)
@@ -64,7 +72,7 @@ export function NavBar() {
                             width={60}
                             height={60}
                         />
-                        <Text fw={900} size={'xl'} color='dark.4' mt={-5}>Ragahub</Text>
+                        <Text color='dark.4' mt={-5} style={{fontFamily: brandFont.style.fontFamily, fontWeight: 700, fontSize: 24}}>Ragahub</Text>
                     </Group>
 
                     <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
@@ -80,9 +88,8 @@ export function NavBar() {
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
-                        <SignInModal opened={opened} close={close} />
-                        {user ? <UserMenu user={user} /> :
-                            <UnstyledButton className={classes.signupButton} onClick={open}>Sign Up</UnstyledButton>}
+                        {user ? <UserMenu user={user}/> :
+                        <UnstyledButton className={classes.signupButton} onClick={authModal.onOpen}>Sign Up</UnstyledButton>}
                     </Group>
 
                     <Burger size={'md'} opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
@@ -111,7 +118,10 @@ export function NavBar() {
                         </Link>
                     </Stack>
                     <Stack align="stretch" px="md">
-                        <UnstyledButton className={classes.signupButton} onClick={open}>Sign Up</UnstyledButton>
+                        <UnstyledButton className={classes.signupButton} onClick={() => {
+                            closeDrawer()
+                            authModal.onOpen()
+                        }}>Sign Up</UnstyledButton>
                     </Stack>
                 </Box>
             </Drawer>
