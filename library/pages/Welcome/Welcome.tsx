@@ -6,11 +6,22 @@ import useAuthModal from '../../hooks/useAuthModal';
 import { useUser } from '../../hooks/useUser';
 import ShadowButton from '../../components/ui_components/ShadowButton';
 import { IconCircleCheck } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
+
 
 export function Welcome() {
   const { classes, theme } = useStyles();
   const authModal = useAuthModal();
+  const router = useRouter()
   const { user } = useUser();
+
+  const handleBecomeCurator = () => {
+    if (user) {
+      router.push('/become-curator')
+    } else {
+      authModal.onOpen()
+    }
+  }
 
   return (
     <div className={classes.container}>
@@ -50,7 +61,7 @@ export function Welcome() {
                     <Text color="dark.8" align="left" size="xl" w={{'lg':'50%', 'sm':'100%'}}>
                       <Text span fw={700} inherit>Handcrafted playlists</Text> that broaden your knowledge and appreciation.
                     </Text>
-                    <UnstyledButton className={classes['.highlight-button']}>Become a Curator</UnstyledButton>
+                    <UnstyledButton className={classes['.highlight-button']} onClick={() => handleBecomeCurator()}>Become a Curator</UnstyledButton>
                   </Group>
                 </Box>
               </Grid.Col>

@@ -17,6 +17,9 @@ const spinner = keyframes`
 
 const useStyles =  createStyles((theme) => ({
     container: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100dvh',
         backgroundImage: `url('/backgrounds/gradient-mesh-background-1.png')`,
         backgroundPosition: 'left',
         backgroundSize: 'cover',
@@ -24,12 +27,15 @@ const useStyles =  createStyles((theme) => ({
         backgroundAttachment: 'scroll',
         backgroundColor: theme.colors['gray'][4],
         backgroundBlendMode: 'overlay',
-        minHeight: '100vh',
         position: 'relative'
       },
 
     content: {
-        paddingBottom: '40px'
+        paddingBottom: '40px',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
     }
 }))
 

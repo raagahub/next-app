@@ -22,8 +22,5 @@ export default createStyles((theme) => ({
         overflow: 'clip',
         marginBottom: 16,
         borderBottom: '2px solid black',
-        [theme.fn.smallerThan('md')]: {
-            height: rem(50),
-        },
     },
 }));

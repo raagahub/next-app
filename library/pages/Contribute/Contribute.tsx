@@ -1,9 +1,23 @@
 import { Box, Container, Grid, Group, Image, Paper, Text, Title, UnstyledButton } from '@mantine/core';
 import useStyles from './Contribute.styles'
 import ShadowButton from '../../components/ui_components/ShadowButton';
+import useAuthModal from '../../hooks/useAuthModal';
+import { useRouter } from 'next/navigation';
+import { useUser } from '../../hooks/useUser';
 
 export const ContributeComponent = () => {
     const { classes, theme } = useStyles();
+    const authModal = useAuthModal();
+    const router = useRouter()
+    const { user } = useUser();
+
+    const handleBecomeCurator = () => {
+        if (user) {
+            router.push('/become-curator')
+        } else {
+            authModal.onOpen()
+        }
+    }
 
     return (
         <div className={classes.container}>
@@ -25,7 +39,7 @@ export const ContributeComponent = () => {
                         </Box>
                         <Group mt={32} w={{ 'lg': '90%', 'sm': '100%' }}>
                             <Text size={'xl'}>Whether you are a seasoned listener or new to Carnatic music, your insights and passion drive Ragahub's heartbeat. Share your favorite performances, create and curate playlists, and contribute insights and information that help others on their musical journey.</Text>
-                            <ShadowButton color='teal' mt={8}>Become a Curator</ShadowButton>
+                            <ShadowButton color='teal' mt={8} onClick={() => handleBecomeCurator()}>Become a Curator</ShadowButton>
                         </Group>
                     </Grid.Col>
                 </Grid>
