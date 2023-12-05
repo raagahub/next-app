@@ -11,7 +11,6 @@ import {
     Stack,
 } from '@mantine/core';
 import { useDisclosure, useWindowScroll } from '@mantine/hooks';
-import { SignInModal } from './SignOutModal/SignInModal'
 import { UserMenu } from './UserMenu/UserMenu'
 import { useRouter } from 'next/router';
 import { useStyles } from './NavBar.styles'
