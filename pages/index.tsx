@@ -1,11 +1,17 @@
-import { Welcome } from '../library/components/Welcome/Welcome';
-import RagaExplore from '../library/components/raga_components/RagaExplore/RagaExplore'
+import { ReactElement } from 'react';
+import LandingLayout from '../layouts/LandingLayout';
+import { Welcome } from '../library/pages/Welcome/Welcome';
 
-export default function HomePage() {
+const HomePage = () => {
   return (
-    <>
-      <Welcome />
-      <RagaExplore />
-    </>
-  );
+    <Welcome />
+  )
 }
+
+HomePage.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <LandingLayout>{page}</LandingLayout>
+  )
+}
+
+export default HomePage

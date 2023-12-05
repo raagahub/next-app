@@ -6,9 +6,10 @@ import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider, Tuple, DefaultMantineColor } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import { NavBar } from '../library/components/NavBar/NavBar';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
+import ModalProvider from '../library/providers/ModalProvider'
+import UserProvider from '../library/providers/UserProvider';
 
 type ExtendedCustomColors = 'raga-red' | 'raga-orange' | 'raga-green' | DefaultMantineColor; // | 'secondaryColorName'
 
@@ -92,7 +93,7 @@ export default function App(props: AppPropsWithLayout<{
   return (
     <>
       <Head>
-        <title>Raagahub</title>
+        <title>Ragahub</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
@@ -102,17 +103,19 @@ export default function App(props: AppPropsWithLayout<{
         initialSession={pageProps.initialSession}
       >
         <ColorSchemeProvider colorScheme={colorScheme == 'light' ? 'light' : 'light'} toggleColorScheme={toggleColorScheme}>
-          <MantineProvider theme={{ 
-            colorScheme, 
+          <MantineProvider theme={{
+            colorScheme: 'light',
             colors: customThemeColors,
-            primaryColor: 'raga-orange',
-            primaryShade: 8,
+            primaryColor: 'raga-red',
+            primaryShade: 6,
             headings: customHeadingFont,
             fontFamily: customBodyFont,
-            }} withGlobalStyles withNormalizeCSS>
-            <NavBar />
-            <Notifications position="top-right" mt={48} zIndex={199} />
-            {getLayout(<Component {...pageProps} />)}
+          }} withGlobalStyles withNormalizeCSS>
+            <UserProvider>
+              <ModalProvider />
+              <Notifications position="top-right" mt={48} zIndex={199} />
+              {getLayout(<Component {...pageProps} />)}
+            </UserProvider>
           </MantineProvider>
         </ColorSchemeProvider>
       </SessionContextProvider>

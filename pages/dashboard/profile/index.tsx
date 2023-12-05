@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { ProfileForm } from '../../../library/components/Dashboard/ProfileForm'
+import { ProfileForm } from '../../../library/pages/Dashboard/ProfileForm'
 import DashboardLayout from '../../../layouts/DashboardLayout'
 
 const Profile = () => {
