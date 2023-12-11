@@ -1,7 +1,9 @@
-import { ActionIcon, Anchor, AspectRatio, Box, Grid, Group, Image, Slider, Stack, Text } from '@mantine/core'
+import { ActionIcon, Anchor, Box, Grid, Group, Slider, Stack, Text } from '@mantine/core'
 import React from 'react'
 import useStyles from './Welcome.styles';
 import { IconPlayerPlay, IconPlayerPlayFilled, IconPlayerTrackNext, IconPlayerTrackNextFilled, IconPlayerTrackPrev, IconPlayerTrackPrevFilled } from '@tabler/icons-react';
+import Image from 'next/image';
+import ms_profile from '../../../public/artist-profiles/mssubu.jpeg'
 
 export const Player = () => {
     const { classes } = useStyles();
@@ -9,7 +11,14 @@ export const Player = () => {
         <div>
             <Grid>
                 <Grid.Col span={4}>
-                    <Image className={classes.vinyl} src={'/artist-profiles/mssubu.jpeg'} radius={'100px'}/>
+                    <Image 
+                        className={classes.vinyl}
+                        alt='artist_image'
+                        src={ms_profile}
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                        }} />
                 </Grid.Col>
                 <Grid.Col span={8}>
                     <Stack align="center" mt={8} ml={16}>
@@ -20,7 +29,7 @@ export const Player = () => {
                             </Anchor>
                         </Box>
                         <Box w={'90%'}>
-                            <Slider value={40} size={'sm'} showLabelOnHover={false} label={null}/>
+                            <Slider value={40} size={'sm'} showLabelOnHover={false} label={null} />
                         </Box>
                         <Group position="center">
                             <ActionIcon variant='outline' size={'xl'} color='raga-red.6' radius={'xl'}>

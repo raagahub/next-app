@@ -1,9 +1,13 @@
-import { Box, Container, Grid, Group, Image, Paper, Text, Title, UnstyledButton } from '@mantine/core';
+import { Box, Grid, Group, Paper, Text, Title } from '@mantine/core';
 import useStyles from './Contribute.styles'
 import ShadowButton from '../../components/ui_components/ShadowButton';
 import useAuthModal from '../../hooks/useAuthModal';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../../hooks/useUser';
+import Image from 'next/image';
+import listening_music from '../../../public/people-illustrations/sammy-line-meditation.png'
+import coding from '../../../public/people-illustrations/sammy-line-girl-updates-the-system-settings-of-the-computer.png'
+import saraswati from '../../../public/people-illustrations/Vasant Panchami Festival-cuate.png'
 
 export const ContributeComponent = () => {
     const { classes, theme } = useStyles();
@@ -25,8 +29,13 @@ export const ContributeComponent = () => {
                 <Paper className={classes.banner}
                     sx={{ backgroundImage: `url('/geometric-patterns/6323198.jpg')`, backgroundColor: theme.colors['teal'][3] }} />
                 <Grid className={classes.box} sx={{ backgroundColor: theme.colors['teal'][1] }} align='center'>
-                    <Grid.Col sm={12} lg={5} >
-                        <Image src={'/people-illustrations/sammy-line-meditation.png'} />
+                    <Grid.Col sm={12} lg={5} className={classes.imagebox}>
+                        <Image alt='listening_music' 
+                        src={listening_music} 
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                        }}/>
                     </Grid.Col>
                     <Grid.Col sm={12} lg={7} px={{ 'lg': 64 }}>
                         <Box className={classes.card} sx={{ backgroundColor: theme.colors['teal'][3] }}>
@@ -47,8 +56,13 @@ export const ContributeComponent = () => {
                 <Paper className={classes.banner}
                     sx={{ backgroundImage: `url('/geometric-patterns/6323198.jpg')`, backgroundColor: theme.colors['violet'][3] }} />
                 <Grid className={classes.box} sx={{ backgroundColor: theme.colors['violet'][1] }} align='center'>
-                    <Grid.Col sm={12} lg={5} >
-                        <Image src={'/people-illustrations/sammy-line-girl-updates-the-system-settings-of-the-computer.png'} />
+                    <Grid.Col sm={12} lg={5} className={classes.imagebox}>
+                        <Image alt='coding' 
+                        src={coding} 
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                        }}/>
                     </Grid.Col>
                     <Grid.Col sm={12} lg={7} px={{ 'lg': 64 }}>
                         <Box className={classes.card} sx={{ backgroundColor: theme.colors['violet'][3] }}>
@@ -69,8 +83,13 @@ export const ContributeComponent = () => {
                 <Paper className={classes.banner}
                     sx={{ backgroundImage: `url('/geometric-patterns/6323198.jpg')`, backgroundColor: theme.colors['yellow'][3] }} />
                 <Grid className={classes.box} sx={{ backgroundColor: theme.colors['yellow'][1] }} align='center'>
-                    <Grid.Col sm={12} lg={5} >
-                        <Image src={'/people-illustrations/Vasant Panchami Festival-cuate.png'} />
+                    <Grid.Col sm={12} lg={5} className={classes.imagebox}>
+                        <Image alt='saraswati' 
+                        src={saraswati} 
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                        }}/>
                     </Grid.Col>
                     <Grid.Col sm={12} lg={7} px={{ 'lg': 64 }}>
                         <Box className={classes.card} sx={{ backgroundColor: theme.colors['yellow'][3] }}>

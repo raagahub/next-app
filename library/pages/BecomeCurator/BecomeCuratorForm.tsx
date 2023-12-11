@@ -58,6 +58,9 @@ export const BecomeCuratorForm = () => {
       Object.entries(form.values).forEach(([key, value]) => {
         formData.append(key, value);
       });
+      formData.append('email', user?.email || '')
+      formData.append('fullname', user?.user_metadata.full_name || '')
+
   
       try {
         const response = await fetch('https://formbold.com/s/oJKpw', {
@@ -103,20 +106,6 @@ export const BecomeCuratorForm = () => {
             ? <Text>Thank you for your interest in becoming a Ragahub Curator. We'll review your application and get in touch if we find a good fit. Keep spreading the love for Carnatic music!</Text> 
             : <form onSubmit={handleSubmitFetch}>
               <Stack>
-                <Group grow>
-                  <TextInput
-                    name="fullname"
-                    value={user?.user_metadata.full_name}
-                    type="hidden"
-                  />
-
-                  <TextInput
-                    name="email"
-                    value={user?.email}
-                    type="hidden"
-                  />
-                </Group>
-
                 <Group grow>
                 <Select
                   name="country"

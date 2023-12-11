@@ -124,12 +124,12 @@ export default createStyles((theme) => ({
   },
 
   vinyl: {
-    img: {
-      animation: `${spinner} 10s linear infinite`,
-      border: '5px solid',
-      borderColor: 'rgba(255, 255, 255, 0.7)',
-      outline: '25px solid black'
-    },
+    borderRadius: '100px',
+    animation: `${spinner} 10s linear infinite`,
+    border: '5px solid',
+    borderColor: 'rgba(255, 255, 255, 0.7)',
+    outline: '25px solid black',
+    
     [theme.fn.smallerThan('md')]: {
       marginTop: 16,
       marginLeft: 8,
