@@ -19,9 +19,8 @@ export const Footer = () => {
       <Group position={'apart'}>
           <Text size={'xs'} color='white'>© Ragahub 2023-2024</Text>
         <Group> 
-          <Anchor size={'xs'}>Privacy Policy</Anchor>
-          {/* <Divider size={'xs'} color={'raga-red'} orientation={'vertical'}/> */}
-          <Anchor size={'xs'}>Terms & Conditions</Anchor>
+          <Anchor size={'xs'} href='/privacy-policy.html' target='_blank'>Privacy Policy</Anchor>
+          <Anchor size={'xs'} href='/terms-of-service.html' target='_blank'>Terms of Service</Anchor>
         </Group>
       </Group>
     </Box>

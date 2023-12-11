@@ -5,7 +5,6 @@ import {
     Alert,
     Anchor,
     Button,
-    ButtonProps,
     Checkbox,
     Divider,
     Group,
@@ -121,7 +120,7 @@ export function AuthModal() {
                     updateAuthError({ title: error.name, message: error.message })
                 } else {
                     setLoading(false)
-                    close()
+                    onClose()
                     updateAuthError({ title: "", message: "" })
                     registrationSuccessNotification()
                 }
@@ -143,7 +142,7 @@ export function AuthModal() {
                     updateAuthError({ title: error.name, message: error.message })
                 } else {
                     setLoading(false)
-                    close()
+                    onClose()
                     updateAuthError({ title: "", message: "" })
                     notifications.show({
                         title: 'Sign In Successful',

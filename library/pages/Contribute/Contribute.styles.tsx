@@ -25,6 +25,12 @@ export default createStyles((theme) => ({
     }
   },
 
+  imagebox: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
   card: {
     width: 'fit-content',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',

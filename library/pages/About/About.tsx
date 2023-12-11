@@ -1,9 +1,11 @@
-import { Box, Container, Grid, Group, Image, Paper, Stack, Text, Title, UnstyledButton } from '@mantine/core';
+import { Box, Container, Grid, Group, Paper, Text, Title, UnstyledButton } from '@mantine/core';
 import useStyles from './About.styles'
 import ShadowButton from '../../components/ui_components/ShadowButton';
 import { useUser } from '../../hooks/useUser';
 import { IconCheck, IconCircleCheck } from '@tabler/icons-react';
 import useAuthModal from '../../hooks/useAuthModal';
+import Image from 'next/image';
+import carnatic_people from '../../../public/people-illustrations/carnatic_music_performers.png'
 
 export const AboutComponent = () => {
     const { classes, theme } = useStyles();
@@ -21,7 +23,12 @@ export const AboutComponent = () => {
             />
             <Grid className={classes.box} align='center' >
                 <Grid.Col sm={12} lg={6} px={{ 'lg': 64, 'sm': '16px' }} py={{ 'lg': 16, 'sm': 64 }} >
-                    <Image src={'/people-illustrations/carnatic_music_performers.png'} />
+                    <Image alt='carnatic_people' 
+                    src={carnatic_people} 
+                    style={{
+                            width: '100%',
+                            height: 'auto',
+                        }} />
                 </Grid.Col>
                 <Grid.Col sm={12} lg={6} px={{ 'lg': 64 }}>
                     <Box>
