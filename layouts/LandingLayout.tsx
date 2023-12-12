@@ -3,12 +3,6 @@ import { withRouter, NextRouter } from 'next/router'
 import { Footer } from '../library/components/page_components/Footer/Footer'
 import { NavBar } from '../library/components/page_components/NavBar/NavBar'
 
-// interface WithRouterProps {
-//     router: NextRouter
-// }
-
-// interface MainProps extends WithRouterProps { }
-
 import { createStyles, keyframes } from '@mantine/core';
 import Image from 'next/image';
 
