@@ -10,17 +10,18 @@ export const Player = () => {
     return (
         <div>
             <Grid>
-                <Grid.Col span={4}>
+                <Grid.Col sm={12} md={4} lg={4} style={{textAlign: 'center'}}>
                     <Image 
                         className={classes.vinyl}
                         alt='artist_image'
                         src={ms_profile}
                         style={{
                             width: '100%',
+                            maxWidth: '180px',
                             height: 'auto',
                         }} />
                 </Grid.Col>
-                <Grid.Col span={8}>
+                <Grid.Col sm={12} md={8} lg={8}>
                     <Stack align="center" mt={8} ml={16}>
                         <Box style={{ textAlign: 'center' }}>
                             <Text color="dark.6" size="xl" fw={700}>Rangapura Vihara</Text>
