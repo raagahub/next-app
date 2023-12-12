@@ -146,7 +146,7 @@ export function AuthModal() {
                     updateAuthError({ title: "", message: "" })
                     notifications.show({
                         title: 'Sign In Successful',
-                        message: `Welcome Back, ${"arma"}`,
+                        message: `Welcome Back, ${data.user.user_metadata.full_name}`,
                         color: "teal",
                         icon: <IconCheck size="1.1rem" />
                     })
