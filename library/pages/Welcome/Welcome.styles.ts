@@ -132,7 +132,7 @@ export default createStyles((theme) => ({
     
     [theme.fn.smallerThan('md')]: {
       marginTop: 16,
-      marginLeft: 8,
+      marginBottom: 16
     },
   }
 
