@@ -1,19 +1,19 @@
 import { PropsWithChildren, useState } from 'react';
 import { Group, Text } from '@mantine/core';
 import {
-  IconBellRinging,
-  IconFingerprint,
-  IconKey,
   IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
   IconSwitchHorizontal,
   IconLogout,
+  IconMusicPlus,
+  IconPlaylist,
+  IconGps,
+  IconWriting,
+  IconMessage,
 } from '@tabler/icons-react';
 import useStyles from './Dashboard.styles';
 import Image from 'next/image';
 import { Lora } from 'next/font/google';
+import { useRouter } from 'next/navigation';
 
 export const brandFont = Lora({
   weight: ['400', '500', '600', '700'],
@@ -23,18 +23,17 @@ export const brandFont = Lora({
 })
 
 const data = [
-  { link: '', label: 'Notifications', icon: IconBellRinging },
-  { link: '', label: 'Billing', icon: IconReceipt2 },
-  { link: '', label: 'Security', icon: IconFingerprint },
-  { link: '', label: 'SSH Keys', icon: IconKey },
-  { link: '', label: 'Databases', icon: IconDatabaseImport },
-  { link: '', label: 'Authentication', icon: Icon2fa },
-  { link: '', label: 'Other Settings', icon: IconSettings },
+  { link: '/submit-music', label: 'Submit Music', icon: IconMusicPlus },
+  { link: '', label: 'Create Playlist', icon: IconPlaylist },
+  { link: '', label: 'Guidelines', icon: IconWriting },
+  { link: '', label: 'Browse', icon: IconGps },
+  { link: '', label: 'Settings', icon: IconSettings },
 ];
 
 const DashboardLayout = (props: PropsWithChildren) => {
-  const [active, setActive] = useState('Billing');
+  const [active, setActive] = useState('Submit Music');
   const { classes } = useStyles()
+  const router = useRouter()
 
   const links = data.map((item) => (
     <a
@@ -45,6 +44,7 @@ const DashboardLayout = (props: PropsWithChildren) => {
       onClick={(event) => {
         event.preventDefault();
         setActive(item.label);
+        router.push(item.link)
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
@@ -70,8 +70,8 @@ const DashboardLayout = (props: PropsWithChildren) => {
 
         <div className={classes.footer}>
           <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-            <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-            <span>Change account</span>
+            <IconMessage className={classes.linkIcon} stroke={1.5} />
+            <span>Submit Feedback</span>
           </a>
 
           <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
@@ -80,10 +80,7 @@ const DashboardLayout = (props: PropsWithChildren) => {
           </a>
         </div>
       </nav>
-      <div>
-        <div className={classes.content}>{props.children}</div>
-      </div>
-
+      <div className={classes.content}>{props.children}</div>
     </div>
   );
 }

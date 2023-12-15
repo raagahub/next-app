@@ -12,15 +12,13 @@ export default createStyles((theme) => ({
         backgroundAttachment: 'scroll',
         backgroundColor: theme.colors['gray'][4],
         backgroundBlendMode: 'overlay',
-        position: 'relative'
+        position: 'relative',
+        overflow: 'hidden'
       },
 
     content: {
-        paddingBottom: '40px',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
+        height: '100vh',
+        width: '100%',
     },
 
     navbar: {
