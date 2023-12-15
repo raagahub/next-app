@@ -17,6 +17,23 @@ export interface Raga {
     raga_videos_cnt: number;
 }
 
+export const defaultRaga: Raga = { 
+    id: 0,
+    name: '',
+    format_name: '',
+    arohanam: '',
+    avarohanam: '',
+    melakarta: 0,
+    is_janaka: false,
+    is_janya: false,
+    aliases: '',
+    is_vakra: false,
+    is_bashanga: false,
+    is_upanga: false,
+    raga_comments_cnt: 0,
+    raga_videos_cnt: 0
+}
+
 export type RagaType = 'melakarta' | 'janya'
 export type RagaTypeState = {melakarta: boolean; janya: boolean}
 

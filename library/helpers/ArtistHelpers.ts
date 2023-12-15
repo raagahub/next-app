@@ -4,6 +4,12 @@ export type Artist = {
     main_instrument: string;
 }
 
+export const defaultArtiste: Artist = {
+    id: 0,
+    name: '',
+    main_instrument: '',
+}
+
 // Instrument Options
 
 export const leadOptions = [
