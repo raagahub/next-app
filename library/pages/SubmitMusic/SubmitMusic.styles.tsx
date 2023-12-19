@@ -11,4 +11,9 @@ export default createStyles((theme) => ({
         paddingBottom: 16,
         overflow: 'scroll'
       },
+
+      previewContainer: {
+        height: '100vh',
+        padding: 16
+      }
 }))

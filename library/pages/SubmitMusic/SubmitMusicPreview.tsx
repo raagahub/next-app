@@ -1,20 +1,27 @@
 import { useContext } from "react"
 import { SubmitMusicContext } from "./SubmitMusicComponent"
-import { Image } from "@mantine/core"
+import { AspectRatio, Badge, Box, Card, Group, Image, Text } from "@mantine/core"
+import useStyles from "./SubmitMusic.styles"
 
 export const SubmitMusicPreview = () => {
     const form = useContext(SubmitMusicContext)
-    console.log(form.values)
+    const { classes } = useStyles()
 
     return (
-        <div>
-            <Image src={form.values.image}/>
-            <p>{form.values.title}</p>
-            <p>{form.values.youtubeLink}</p>
-            <p>{form.values.ragaId}</p>
-            <p>{form.values.talaId}</p>
-            <p>{form.values.moods}</p>
-
+        <div className={classes.previewContainer}>
+            <Card>
+                <Card.Section>
+                    <AspectRatio ratio={21 / 9}>
+                        <Image src={form.values.image} />
+                    </AspectRatio>
+                </Card.Section>
+                <Box mt={16}>
+                    <Badge color="orange" variant="light">
+                        {form.values.format}
+                    </Badge>
+                    <Text weight={500}>{form.values.title}</Text>
+                </Box>
+            </Card>
         </div>
     )
 }
