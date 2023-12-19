@@ -36,6 +36,7 @@ export const CompositionForm = () => {
     const supabase = useSupabaseClient()
 
     const [allRagas, setRagas] = useState<RagaSelect[]>([])
+    const [ragaActive, setRagaActive] = useState(false)
 
     async function getRagas() {
         const { data, status, error } = await supabase
@@ -53,6 +54,7 @@ export const CompositionForm = () => {
     }
 
     const [allTalas, setTalas] = useState<TalaSelect[]>([])
+    const [talaActive, setTalaActive] = useState(false)
 
     async function getTalas() {
         const { data, status, error } = await supabase
@@ -72,6 +74,7 @@ export const CompositionForm = () => {
 
     const [allComps, setComps] = useState<CompSelect[]>([])
     const [newComp, setNewComp] = useState<CompSelect | null>(null)
+    const [compActive, setCompActive] = useState(false)
 
     async function getComps() {
         const { data, status, error } = await supabase
@@ -89,6 +92,7 @@ export const CompositionForm = () => {
     }
 
     const [allComposers, setComposers] = useState<ComposerSelect[]>([])
+    const [composerActive, setComposerActive] = useState(false)
 
     async function getComposers() {
         const { data, status, error } = await supabase
@@ -111,6 +115,30 @@ export const CompositionForm = () => {
         getComps();
         getComposers();
     }, []);
+
+    useEffect(() => {
+        const selected = form.values.format
+        console.log('this is the format', selected)
+        if (selected) {
+            if (selected == 'rtp') {
+                setRagaActive(true)
+                setTalaActive(true)
+                setCompActive(false)
+            } else {
+                setCompActive(true)
+                setRagaActive(false)
+                setTalaActive(false)
+                setComposerActive(false)
+            }
+        }
+
+        if (newComp) {
+            setRagaActive(true)
+            setTalaActive(true)
+            setComposerActive(true)
+        }
+        
+    }, [form.values.format, newComp]);
 
 
     return (
@@ -139,12 +167,14 @@ export const CompositionForm = () => {
                             creatable
                             getCreateLabel={(query) => (<Text><Text span fs="italic">Add </Text>{query}</Text>)}
                             onCreate={(query) => {
-                                const newComp: CompSelect = { comp: null, label: query, value: '0' }
+                                const newComp: CompSelect = { comp: null, label: query, value: query }
                                 setComps((current) => [...current, newComp]);
                                 setNewComp(newComp)
                                 form.setFieldValue(`compId`, query)
+                                form.setFieldValue(`newComp`, true)
                                 return newComp;
                             }}
+                            disabled={!compActive}
                             {...form.getInputProps('compId')}
                         />
                     </Group>
@@ -154,6 +184,7 @@ export const CompositionForm = () => {
                             placeholder="Type Raga name"
                             data={allRagas}
                             searchable
+                            disabled={!ragaActive}
                             {...form.getInputProps(`ragaId`)}
                         />
 
@@ -162,6 +193,7 @@ export const CompositionForm = () => {
                             placeholder="Type Tala name"
                             data={allTalas}
                             searchable
+                            disabled={!talaActive}
                             {...form.getInputProps(`talaId`)}
                         />
 
@@ -171,6 +203,7 @@ export const CompositionForm = () => {
                                 placeholder="Type Composer's name"
                                 data={allComposers}
                                 searchable
+                                disabled={!composerActive}
                                 {...form.getInputProps(`composerId`)}
                             />
                         }

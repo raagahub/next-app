@@ -40,31 +40,46 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
     const { classes } = useStyles()
 
     const form = useContext(SubmitMusicContext)
+    const [submitted, setSubmitted] = useState(false)
 
-    async function submitArtists(video_id: string) {
-        if (form.values.mainArtist.id > 0) {
+    async function submitArtists(submission_id: string) {
+        if (form.values.mainArtist.id) {
             try {
                 if (form.values.mainArtist.id == 0) {
-                    const { status, error } = await supabase
+                    const { data, status, error } = await supabase
                         .from('pending_artists')
                         .insert([
                             {
                                 role: 'main',
-                                video_id: video_id,
+                                submission_id: submission_id,
                                 name: form.values.mainArtist.name,
                                 main_instrument: form.values.mainArtist.main_instrument,
                                 user_id: user?.id,
                             },
                         ])
+                        .select('*').single();
                     if (error) { throw error }
+                    if (status == 201 && data) {
+                        const { status, error } = await supabase
+                            .from('submission_pending_artists')
+                            .insert([
+                                {
+                                    role: 'main',
+                                    submission_id: submission_id,
+                                    pending_artist_id: data.id,
+                                    instrument: form.values.mainArtist.main_instrument
+                                },
+                            ])
+                        if (error) { throw error }
+                    }
 
                 } else {
                     const { status, error } = await supabase
-                        .from('raga_video_artists')
+                        .from('submission_artists')
                         .insert([
                             {
                                 role: 'main',
-                                video_id: video_id,
+                                submission_id: submission_id,
                                 artist_id: form.values.mainArtist.id,
                                 instrument: form.values.mainArtist.main_instrument
                             },
@@ -79,31 +94,48 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
 
         }
 
-        if (form.values.accompanying[0].id > 0) {
+        if (form.values.accompanying[0]) {
             form.values.accompanying.forEach(async (artist: Artist) => {
                 try {
                     if (artist.id == 0) {
-                        const { status, error } = await supabase
+                        const { data, status, error } = await supabase
                             .from('pending_artists')
                             .insert([
                                 {
                                     role: 'accompanying',
-                                    video_id: video_id,
+                                    submission_id: submission_id,
                                     name: artist.name,
                                     main_instrument: artist.main_instrument,
                                     user_id: user?.id,
                                 },
                             ])
+                            .select('*').single();
                         if (error) { throw error }
+                        if (status == 201 && data) {
+                            if (error) { throw error }
+                            if (status == 201 && data) {
+                                const { status, error } = await supabase
+                                    .from('submission_pending_artists')
+                                    .insert([
+                                        {
+                                            role: 'main',
+                                            submission_id: submission_id,
+                                            pending_artist_id: data.id,
+                                            instrument: artist.main_instrument
+                                        },
+                                    ])
+                                if (error) { throw error }
+                            }
+                        }
 
 
                     } else {
                         const { status, error } = await supabase
-                            .from('raga_video_artists')
+                            .from('submission_artists')
                             .insert([
                                 {
                                     role: 'accompanying',
-                                    video_id: video_id,
+                                    submission_id: submission_id,
                                     artist_id: artist.id,
                                     instrument: artist.main_instrument
                                 },
@@ -112,7 +144,7 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
                     }
 
                 } catch (error) {
-                    console.error("Error submitting main artist:", error);
+                    console.error("Error submitting accompanying artist:", error);
                     throw error
                 }
             })
@@ -121,45 +153,74 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
     }
 
     async function submitYTLink() {
-        setLoading(true)
-        const { data: video, status, error } = await supabase
-            .from('raga_videos')
-            .insert([
-                {
-                    user_id: user?.id,
-                    // raga_id: raga.id,
-                    video_url: form.values.youtubeLink,
-                    youtube_video_id: form.values.youtubeId
-                },
-            ])
-            .select('*')
-            .single()
+        setLoading(true);
 
-        if (status == 201 && video) {
-            try {
-                await submitArtists(video.video_id)
+        // Define the base object for insertion
+        const submissionData = {
+            user_id: user?.id,
+            youtube_url: form.values.youtubeLink,
+            youtube_video_id: form.values.youtubeId,
+            title: form.values.title,
+            image: form.values.image,
+            raga_id: form.values.ragaId,
+            tala_id: form.values.talaId,
+            composer_id: form.values.composerId,
+            moods: form.values.moods,
+            // Set either new_composition flag or composition_id based on form values
+            ...(form.values.newComp ? { new_composition: true, composition_title: form.values.compId } :
+                { composition_id: form.values.compId }),
+        };
 
-            } catch (error) {
-                // Handle errors and potential rollbacks as before
-                if (video) {
-                    await supabase.from('raga_videos').delete().eq('video_id', video.video_id);
-                }
-                console.error("Error submitting video:", error);
+        // Perform the insert operation
+        try {
+            const { data: submission, status, error } = await supabase
+                .from('submissions')
+                .insert([submissionData])
+                .select('*').single();
+
+            if (error) {
+                // Handle error here
+                databaseErrorNotification(error);
+                setLoading(false);
+                return;
             }
-            setLoading(false)
-        }
 
-        if (error) {
-            setLoading(false)
-            databaseErrorNotification(error)
+            // If insertion is successful, proceed to submit artists
+            if (status === 201 && submission) {
+                await submitArtists(submission.id);
+                setSubmitted(true)
+            }
+        } catch (error) {
+            // Handle errors and potential rollbacks
+            console.error("Error submitting video:", error);
         }
+        // Finally, set loading to false
+        setLoading(false);
+        
     }
 
-    
+    if (submitted) {
+        return (
+            <Box className={classes.container}>
+                <Text>
+                    Your submission is successful!
+                </Text>
+                <Group>
+                    <Button variant='default'>Back to Dashboard</Button>
+                    <Button variant='filled'>New Submission</Button>
+                </Group>
+
+            </Box>
+        )
+    }
+
+
+
+
 
     return (
         <Box className={classes.container}>
-            <Text size={"xl"} fw={700} my={8}>Submit Music from Youtube</Text>
+            <Text size={"xl"} fw={700} my={8}>Submit Music from Youtube - {user?.email}</Text>
             <form onSubmit={form.onSubmit((values) => submitYTLink())}>
                 <TextInput
                     withAsterisk
@@ -178,10 +239,10 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
                     </Alert>
                 }
 
-                <CompositionForm/>
-                <ArtistesForm/>
-                <MoodForm/>
-                
+                <CompositionForm />
+                <ArtistesForm />
+                <MoodForm />
+
                 <Group position='right' mt={16}>
                     <Button variant="default">Save Draft</Button>
                     <Button variant='filled' loading={loading} type="submit">Submit Music</Button>

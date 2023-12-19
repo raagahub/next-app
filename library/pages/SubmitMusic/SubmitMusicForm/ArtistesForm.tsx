@@ -88,7 +88,7 @@ export const ArtistesForm = () => {
                             placeholder="Vocal / Violin / etc."
                             data={leadOptions}
                             searchable
-                            {...form.getInputProps(`mainArtist.instrument`)}
+                            {...form.getInputProps(`mainArtist.main_instrument`)}
                         />
                         <Select
                             label="Name of Artiste"

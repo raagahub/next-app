@@ -16,13 +16,15 @@ interface FormValues {
     youtubeId: string;
     title: string;
     image: string;
+    format: string;
     compId: string;
     ragaId: string;
     talaId: string;
-    format: string;
+    composerId: string;
     mainArtist: Artist;
     accompanying: Artist[];
     moods: string[];
+    newComp: boolean;
 }
 
 export const SubmitMusicContext = createContext<UseFormReturnType<FormValues>>({} as UseFormReturnType<FormValues>);
@@ -35,13 +37,15 @@ export const SubmitMusicComponent = () => {
             youtubeId: '',
             title: '',
             image: '',
+            format: '',
             compId: '',
             ragaId: '',
             talaId: '', 
-            format: '',
+            composerId: '',
             mainArtist: defaultArtiste,
             accompanying: [defaultArtiste],
-            moods: ['']
+            moods: [''],
+            newComp: false
         },
 
         validate: {
@@ -77,6 +81,7 @@ export const SubmitMusicComponent = () => {
                 databaseErrorNotification(error)
             } else {
                 setValidation({loading: false, status: 'success', msg: 'Your submission link looks good! Provide more details to make it better.'})
+                form.setFieldValue('youtubeId', getVideoId(url) as string)
             }
         }
     }
