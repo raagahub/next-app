@@ -90,6 +90,7 @@ export default function App(props: AppPropsWithLayout<{
 
   // Create a new supabase browser client on every first render.
   const [supabaseClient] = useState(() => createPagesBrowserClient())
+  const analyticsId = process.env.NEXT_PUBLIC_ANALYTICS_ID
 
   return (
     <>
@@ -98,13 +99,13 @@ export default function App(props: AppPropsWithLayout<{
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-WHNB52SV6M" />
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} />
       <Script id="google-analytics">
       {`window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-WHNB52SV6M');`}
+      gtag('config', '${analyticsId}');`}
 
       </Script>
 
