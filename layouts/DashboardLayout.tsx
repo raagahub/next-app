@@ -9,6 +9,7 @@ import {
   IconGps,
   IconWriting,
   IconMessage,
+  IconLayoutDashboard,
 } from '@tabler/icons-react';
 import useStyles from './Dashboard.styles';
 import Image from 'next/image';
@@ -23,6 +24,7 @@ export const brandFont = Lora({
 })
 
 const data = [
+  { link: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
   { link: '/submit-music', label: 'Submit Music', icon: IconMusicPlus },
   { link: '', label: 'Create Playlist', icon: IconPlaylist },
   { link: '', label: 'Guidelines', icon: IconWriting },
