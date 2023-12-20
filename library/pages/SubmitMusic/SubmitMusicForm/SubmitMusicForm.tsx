@@ -1,6 +1,6 @@
 import { forwardRef, useContext, useEffect, useState } from "react";
 import { databaseErrorNotification } from '../../../helpers/NotificationHelpers';
-import { Accordion, ActionIcon, Alert, Autocomplete, Badge, Box, Button, Divider, Group, Loader, Paper, Select, SelectItemProps, Text, TextInput, Textarea, Title, rem } from "@mantine/core";
+import { Accordion, ActionIcon, Alert, Autocomplete, Badge, Box, Button, Center, Container, Divider, Group, Loader, Paper, Select, SelectItemProps, Text, TextInput, Textarea, Title, rem } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { youtubeIdRegExp, youtubeRegExp } from "../../../helpers/UrlHelpers";
 import { useDebouncedValue, useToggle } from "@mantine/hooks";
@@ -16,6 +16,7 @@ import { SubmitMusicContext } from "../SubmitMusicComponent";
 import { ArtistesForm } from "./ArtistesForm";
 import { CompositionForm } from "./CompositionForm";
 import { MoodForm } from "./MoodForm";
+import { useRouter } from "next/navigation";
 
 
 
@@ -36,6 +37,7 @@ interface SubmitMusicFormProps {
 export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
     const [loading, setLoading] = useState(false)
     const supabase = useSupabaseClient()
+    const router = useRouter()
     const { user } = useUser();
     const { classes } = useStyles()
 
@@ -202,14 +204,20 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
     if (submitted) {
         return (
             <Box className={classes.container}>
-                <Text>
-                    Your submission is successful!
-                </Text>
-                <Group>
-                    <Button variant='default'>Back to Dashboard</Button>
-                    <Button variant='filled'>New Submission</Button>
-                </Group>
-
+                <Center>
+                    <Box mt={96} maw={400}>
+                        <Title align="center" order={2} color="raga-red">
+                            Your submission was successful
+                        </Title>
+                        <Text align="center">
+                            You will be notified once your submission has been approved by the team of moderators.
+                        </Text>
+                        <Group mt={32} position={'center'}>
+                            <Button variant='default' onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
+                            <Button variant='filled' onClick={router.refresh}>New Submission</Button>
+                        </Group>
+                    </Box>
+                </Center>
             </Box>
         )
     }
