@@ -2,12 +2,14 @@ import { Box, Button, Grid, Group, LoadingOverlay, Paper, Select, Stack, Text, T
 import useStyles from './BecomeCurator.styles'
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useUser } from "../../hooks/useUser";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useAuthModal from "../../hooks/useAuthModal";
 
 
 export const BecomeCuratorForm = () => {
   const { classes, theme } = useStyles();
   const { user } = useUser();
+  const { isOpen, onOpen, onClose } = useAuthModal();
   const formRef = useRef<HTMLFormElement>(null); 
   const [loading, setLoading] = useState(false)
   const [submitted, updateSubmitted] = useState(false)
@@ -84,6 +86,16 @@ export const BecomeCuratorForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      onOpen();
+    } else {
+      onClose();
+    }
+  }, [isOpen, user]);
+
+
 
   return (
     <Box className={classes.container}>

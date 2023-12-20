@@ -10,6 +10,7 @@ import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import ModalProvider from '../library/providers/ModalProvider'
 import UserProvider from '../library/providers/UserProvider';
+import Script from 'next/script';
 
 type ExtendedCustomColors = 'raga-red' | 'raga-orange' | 'raga-green' | DefaultMantineColor; // | 'secondaryColorName'
 
@@ -97,6 +98,15 @@ export default function App(props: AppPropsWithLayout<{
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-WHNB52SV6M" />
+      <Script id="google-analytics">
+      {`window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WHNB52SV6M');`}
+
+      </Script>
 
       <SessionContextProvider
         supabaseClient={supabaseClient}
