@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Group, Paper, Text, Title, UnstyledButton } from '@mantine/core';
 import useStyles from './About.styles'
-import ShadowButton from '../../components/ui_components/ShadowButton';
+import ShadowButton from '../../components/ui_components/ShadowButton/ShadowButton';
 import { useUser } from '../../hooks/useUser';
 import { IconCheck, IconCircleCheck } from '@tabler/icons-react';
 import useAuthModal from '../../hooks/useAuthModal';

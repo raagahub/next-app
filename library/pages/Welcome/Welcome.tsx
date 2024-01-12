@@ -4,7 +4,7 @@ import { Player } from './Player';
 import { PlaylistCarousel } from './PlaylistCarousel';
 import useAuthModal from '../../hooks/useAuthModal';
 import { useUser } from '../../hooks/useUser';
-import ShadowButton from '../../components/ui_components/ShadowButton';
+import ShadowButton from '../../components/ui_components/ShadowButton/ShadowButton';
 import { IconCircleCheck } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 

@@ -1,6 +1,6 @@
 import { Box, Grid, Group, Paper, Text, Title } from '@mantine/core';
 import useStyles from './Contribute.styles'
-import ShadowButton from '../../components/ui_components/ShadowButton';
+import ShadowButton from '../../components/ui_components/ShadowButton/ShadowButton';
 import useAuthModal from '../../hooks/useAuthModal';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../../hooks/useUser';
