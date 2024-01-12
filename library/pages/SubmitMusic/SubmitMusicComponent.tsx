@@ -5,11 +5,11 @@ import { isNotEmpty, useForm, UseFormReturnType } from "@mantine/form";
 import { createContext, useEffect, useState } from "react";
 import { Artist, defaultArtiste } from "../../helpers/ArtistHelpers";
 import { Raga, defaultRaga } from "../../helpers/RagaHelpers";
+import { Tala, defaultTala } from "../../helpers/TalaHelpers";
 import { SubmitMusicPreview } from "./SubmitMusicPreview";
 import { useDebouncedValue } from "@mantine/hooks";
 import { databaseErrorNotification } from "../../helpers/NotificationHelpers";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Tala, defaultTala } from "../../helpers/TalaHelpers";
 
 interface FormValues {
     youtubeLink: string;
@@ -68,7 +68,7 @@ export const SubmitMusicComponent = () => {
     async function validateYTLink(url: string) {
         setValidation({...linkValidation, loading: true})
         const { data, count, status, error } = await supabase
-            .from('raga_videos')
+            .from('music_videos')
             .select('*', { count: 'exact' })
             .eq('youtube_video_id', getVideoId(url))
 

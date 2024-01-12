@@ -18,6 +18,7 @@ export const ArtistesForm = () => {
     const supabase = useSupabaseClient()
     const { user } = useUser();
     const [allArtists, setArtists] = useState<ArtistSelect[]>([])
+    const [newArtistCounter, updateCounter] = useState(1000)
 
     const accompanyingFields = form.values.accompanying.map((artist, index) => (
         <Group position='left' mb={8} key={`accompanying_${index}`}>
@@ -36,10 +37,12 @@ export const ArtistesForm = () => {
                 creatable
                 getCreateLabel={(query) => (<Text><Text span fs="italic">Add </Text>{query}</Text>)}
                 onCreate={(query) => {
-                    const newArtist: ArtistSelect = { artist: null, label: query, value: '0' }
+                    const newArtist: ArtistSelect = { artist: null, label: query, value: newArtistCounter.toString() }
                     setArtists((current) => [...current, newArtist]);
                     updateNewArtist({ ...addedNewArtist, accompanying: true })
                     form.setFieldValue(`accompanying.${index}.name`, query)
+                    updateCounter(newArtistCounter + 1)
+                    console.log(newArtist)
                     return newArtist;
                 }}
                 {...form.getInputProps(`accompanying.${index}.id`)}

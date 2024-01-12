@@ -1,3 +1,6 @@
+import { SupabaseClient } from "@supabase/supabase-js";
+import { Submission } from "./SubmissionHelpers";
+
 export const comp_formats = [
     { value: 'varnam', label: 'Varnam' },
     { value: 'kriti', label: 'Kriti' },
@@ -15,6 +18,7 @@ export interface Composition {
     tala: number;
     format: string;
     title: string;
+    composer: number;
 }
 
 export const defaultComposition: Composition = {
@@ -23,6 +27,7 @@ export const defaultComposition: Composition = {
     tala: 0,
     format: '',
     title: '',
+    composer: 0
 }
 
 export interface Composer {
@@ -41,3 +46,22 @@ export const defaultComposer: Composer = {
     url: '',
 }
 
+// Database Functions
+
+export async function insertNewComposition(submission: Submission, supabase: SupabaseClient) {
+    const { data: composition, error } = await supabase
+        .from('compositions')
+        .insert({
+            title: submission.composition_title,
+            format: submission.format,
+            raga: submission.raga_id,
+            tala: submission.tala_id,
+            composer: submission.composer_id
+        })
+        .select()
+        .single()
+
+    if (error) throw error;
+    console.log(composition)
+    return composition;
+}

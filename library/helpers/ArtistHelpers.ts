@@ -1,3 +1,6 @@
+import { SupabaseClient } from "@supabase/supabase-js";
+import { databaseErrorNotification } from "./NotificationHelpers";
+
 export type Artist = {
     id: number;
     name: string;
@@ -8,6 +11,30 @@ export const defaultArtiste: Artist = {
     id: 0,
     name: '',
     main_instrument: '',
+}
+
+export type SubmissionArtist = {
+    submission_id: number;
+    artist_id: number;
+    role: string;
+    instrument: string;
+    artists: Artist;
+}
+
+export type SubmissionPendingArtist = {
+    submission_id: number;
+    pending_artist_id: number;
+    role: string;
+    instrument: string;
+}
+
+export type PendingArtist = {
+    id: number;
+    name: string;
+    role: string;
+    main_instrument: string;
+    submitted_at: string;
+    status: string;
 }
 
 // Instrument Options
@@ -31,3 +58,60 @@ export const accompanimentOptions = [
     { value: 'tambura', label: 'Tambura' },
     { value: 'tabla', label: 'Tabla' },
 ];
+
+// Database Functions
+
+export async function insertSubmissionArtist(artist: SubmissionPendingArtist, artistId: number, supabase: SupabaseClient) {
+    const { data: submissionArtist, error } = await supabase
+        .from('submission_artists')
+        .insert([{ 
+            submission_id: artist.submission_id, 
+            artist_id: artistId, 
+            role: artist.role, 
+            instrument: artist.instrument }])
+        .select()
+        .single()
+
+    if (error) throw error;
+    return submissionArtist;
+}
+
+export async function deleteSubmissionPendingArtist(artist: SubmissionPendingArtist, supabase: SupabaseClient) {
+    const { status, error } = await supabase
+        .from('submission_pending_artists')
+        .delete()
+        .eq('pending_artist_id', artist.pending_artist_id)
+        
+    if (error) throw error;
+}
+
+export async function processSubmissionArtists(submissionId: number, musicVideoId: string, supabase: SupabaseClient) {
+    const { data: subArtists, status: subArtistsStatus, error: subArtistsError } = await supabase
+        .from('submission_artists')
+        .select()
+        .eq('submission_id', submissionId)
+
+    if (subArtistsStatus == 200 && subArtists) {
+        subArtists.forEach((subArtist: SubmissionArtist) => {
+            insertMusicVideoArtist(subArtist, musicVideoId, supabase);
+        })
+    }
+
+}
+
+export async function insertMusicVideoArtist(artist: SubmissionArtist, musicVideoId: string, supabase: SupabaseClient) {
+    const { data: musicVideoArtist, error } = await supabase
+        .from('music_video_artists')
+        .insert([{
+            video_id: musicVideoId,
+            artist_id: artist.artist_id,
+            role: artist.role,
+            instrument: artist.instrument
+        }])
+        .select()
+        .single()
+
+    if (error) throw error;
+    return musicVideoArtist;
+
+}

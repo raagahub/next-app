@@ -55,6 +55,189 @@ export interface Database {
         }
         Relationships: []
       }
+      composers: {
+        Row: {
+          id: number
+          languages: string | null
+          name: string
+          url: string | null
+          years: string | null
+        }
+        Insert: {
+          id?: number
+          languages?: string | null
+          name: string
+          url?: string | null
+          years?: string | null
+        }
+        Update: {
+          id?: number
+          languages?: string | null
+          name?: string
+          url?: string | null
+          years?: string | null
+        }
+        Relationships: []
+      }
+      compositions: {
+        Row: {
+          composer: number
+          created_at: string
+          format: string | null
+          id: number
+          raga: number | null
+          tala: number | null
+          title: string
+        }
+        Insert: {
+          composer: number
+          created_at?: string
+          format?: string | null
+          id?: number
+          raga?: number | null
+          tala?: number | null
+          title?: string
+        }
+        Update: {
+          composer?: number
+          created_at?: string
+          format?: string | null
+          id?: number
+          raga?: number | null
+          tala?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compositions_composer_fkey"
+            columns: ["composer"]
+            referencedRelation: "composers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compositions_raga_fkey"
+            columns: ["raga"]
+            referencedRelation: "ragas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compositions_tala_fkey"
+            columns: ["tala"]
+            referencedRelation: "talas"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      music_video_artists: {
+        Row: {
+          artist_id: number
+          instrument: string
+          role: string | null
+          video_id: string
+        }
+        Insert: {
+          artist_id: number
+          instrument: string
+          role?: string | null
+          video_id: string
+        }
+        Update: {
+          artist_id?: number
+          instrument?: string
+          role?: string | null
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "music_video_artists_artist_id_fkey"
+            columns: ["artist_id"]
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "music_video_artists_video_id_fkey"
+            columns: ["video_id"]
+            referencedRelation: "music_videos"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      music_videos: {
+        Row: {
+          composer_id: number | null
+          composition_id: number | null
+          composition_title: string | null
+          format: string
+          id: string
+          image: string
+          moods: string[] | null
+          raga_id: number | null
+          tala_id: number | null
+          user_id: string
+          youtube_url: string
+          youtube_video_id: string
+        }
+        Insert: {
+          composer_id?: number | null
+          composition_id?: number | null
+          composition_title?: string | null
+          format?: string
+          id?: string
+          image: string
+          moods?: string[] | null
+          raga_id?: number | null
+          tala_id?: number | null
+          user_id: string
+          youtube_url: string
+          youtube_video_id: string
+        }
+        Update: {
+          composer_id?: number | null
+          composition_id?: number | null
+          composition_title?: string | null
+          format?: string
+          id?: string
+          image?: string
+          moods?: string[] | null
+          raga_id?: number | null
+          tala_id?: number | null
+          user_id?: string
+          youtube_url?: string
+          youtube_video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "music_videos_composer_id_fkey"
+            columns: ["composer_id"]
+            referencedRelation: "composers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "music_videos_composition_id_fkey"
+            columns: ["composition_id"]
+            referencedRelation: "compositions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "music_videos_raga_id_fkey"
+            columns: ["raga_id"]
+            referencedRelation: "ragas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "music_videos_tala_id_fkey"
+            columns: ["tala_id"]
+            referencedRelation: "talas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "music_videos_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       pending_artists: {
         Row: {
           approved_artist_id: number | null
@@ -64,9 +247,9 @@ export interface Database {
           notes: string | null
           role: string | null
           status: string | null
+          submission_id: number
           submitted_at: string | null
           user_id: string
-          video_id: string | null
         }
         Insert: {
           approved_artist_id?: number | null
@@ -76,9 +259,9 @@ export interface Database {
           notes?: string | null
           role?: string | null
           status?: string | null
+          submission_id: number
           submitted_at?: string | null
           user_id: string
-          video_id?: string | null
         }
         Update: {
           approved_artist_id?: number | null
@@ -88,9 +271,9 @@ export interface Database {
           notes?: string | null
           role?: string | null
           status?: string | null
+          submission_id?: number
           submitted_at?: string | null
           user_id?: string
-          video_id?: string | null
         }
         Relationships: [
           {
@@ -100,16 +283,16 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "pending_artists_submission_id_fkey"
+            columns: ["submission_id"]
+            referencedRelation: "submissions"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "pending_artists_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "profiles"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pending_artists_video_id_fkey"
-            columns: ["video_id"]
-            referencedRelation: "raga_videos"
-            referencedColumns: ["video_id"]
           }
         ]
       }
@@ -143,250 +326,6 @@ export interface Database {
             foreignKeyName: "profiles_id_fkey"
             columns: ["id"]
             referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      raga_bookmarks: {
-        Row: {
-          created_at: string | null
-          raga_id: number
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          raga_id: number
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          raga_id?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "raga_bookmarks_raga_id_fkey"
-            columns: ["raga_id"]
-            referencedRelation: "ragas"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "raga_bookmarks_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      raga_comment_votes: {
-        Row: {
-          comment_id: string
-          user_id: string
-          value: number
-        }
-        Insert: {
-          comment_id: string
-          user_id: string
-          value: number
-        }
-        Update: {
-          comment_id?: string
-          user_id?: string
-          value?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "raga_comment_votes_comment_id_fkey"
-            columns: ["comment_id"]
-            referencedRelation: "raga_comments"
-            referencedColumns: ["comment_id"]
-          },
-          {
-            foreignKeyName: "raga_comment_votes_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      raga_comments: {
-        Row: {
-          comment_id: string
-          content: string | null
-          created_at: string
-          parent_comment_id: string | null
-          raga_id: number
-          user_id: string
-        }
-        Insert: {
-          comment_id?: string
-          content?: string | null
-          created_at?: string
-          parent_comment_id?: string | null
-          raga_id: number
-          user_id: string
-        }
-        Update: {
-          comment_id?: string
-          content?: string | null
-          created_at?: string
-          parent_comment_id?: string | null
-          raga_id?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "raga_comments_parent_comment_id_fkey"
-            columns: ["parent_comment_id"]
-            referencedRelation: "raga_comments"
-            referencedColumns: ["comment_id"]
-          },
-          {
-            foreignKeyName: "raga_comments_raga_id_fkey"
-            columns: ["raga_id"]
-            referencedRelation: "ragas"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "raga_comments_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      raga_video_artists: {
-        Row: {
-          artist_id: number
-          instrument: string
-          role: string | null
-          video_id: string
-        }
-        Insert: {
-          artist_id: number
-          instrument: string
-          role?: string | null
-          video_id: string
-        }
-        Update: {
-          artist_id?: number
-          instrument?: string
-          role?: string | null
-          video_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "raga_video_artists_artist_id_fkey"
-            columns: ["artist_id"]
-            referencedRelation: "artists"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "raga_video_artists_video_id_fkey"
-            columns: ["video_id"]
-            referencedRelation: "raga_videos"
-            referencedColumns: ["video_id"]
-          }
-        ]
-      }
-      raga_video_favourites: {
-        Row: {
-          created_at: string
-          user_id: string
-          video_id: string
-        }
-        Insert: {
-          created_at?: string
-          user_id: string
-          video_id: string
-        }
-        Update: {
-          created_at?: string
-          user_id?: string
-          video_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "raga_video_favourites_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "raga_video_favourites_video_id_fkey"
-            columns: ["video_id"]
-            referencedRelation: "raga_videos"
-            referencedColumns: ["video_id"]
-          }
-        ]
-      }
-      raga_video_votes: {
-        Row: {
-          user_id: string
-          value: number
-          video_id: string
-        }
-        Insert: {
-          user_id: string
-          value: number
-          video_id: string
-        }
-        Update: {
-          user_id?: string
-          value?: number
-          video_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "raga_video_votes_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "raga_video_votes_video_id_fkey"
-            columns: ["video_id"]
-            referencedRelation: "raga_videos"
-            referencedColumns: ["video_id"]
-          }
-        ]
-      }
-      raga_videos: {
-        Row: {
-          created_at: string | null
-          raga_id: number
-          user_id: string
-          video_id: string
-          video_url: string | null
-          youtube_video_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          raga_id: number
-          user_id: string
-          video_id?: string
-          video_url?: string | null
-          youtube_video_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          raga_id?: number
-          user_id?: string
-          video_id?: string
-          video_url?: string | null
-          youtube_video_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "raga_videos_raga_id_fkey"
-            columns: ["raga_id"]
-            referencedRelation: "ragas"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "raga_videos_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
             referencedColumns: ["id"]
           }
         ]
@@ -442,12 +381,257 @@ export interface Database {
         }
         Relationships: []
       }
+      submission_artists: {
+        Row: {
+          artist_id: number
+          instrument: string | null
+          role: string | null
+          submission_id: number
+        }
+        Insert: {
+          artist_id: number
+          instrument?: string | null
+          role?: string | null
+          submission_id: number
+        }
+        Update: {
+          artist_id?: number
+          instrument?: string | null
+          role?: string | null
+          submission_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submission_artists_artist_id_fkey"
+            columns: ["artist_id"]
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submission_artists_submission_id_fkey"
+            columns: ["submission_id"]
+            referencedRelation: "submissions"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      submission_pending_artists: {
+        Row: {
+          instrument: string | null
+          pending_artist_id: number
+          role: string | null
+          submission_id: number
+        }
+        Insert: {
+          instrument?: string | null
+          pending_artist_id: number
+          role?: string | null
+          submission_id: number
+        }
+        Update: {
+          instrument?: string | null
+          pending_artist_id?: number
+          role?: string | null
+          submission_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submission_pending_artists_pending_artist_id_fkey"
+            columns: ["pending_artist_id"]
+            referencedRelation: "pending_artists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submission_pending_artists_submission_id_fkey"
+            columns: ["submission_id"]
+            referencedRelation: "submissions"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      submissions: {
+        Row: {
+          approved_video_id: string | null
+          composer_id: number | null
+          composition_id: number | null
+          composition_title: string | null
+          format: string
+          id: number
+          image: string
+          moods: string[] | null
+          new_composition: boolean | null
+          notes: string | null
+          raga_id: number | null
+          status: string | null
+          submitted_at: string | null
+          tala_id: number | null
+          title: string
+          user_id: string
+          youtube_url: string
+          youtube_video_id: string
+        }
+        Insert: {
+          approved_video_id?: string | null
+          composer_id?: number | null
+          composition_id?: number | null
+          composition_title?: string | null
+          format?: string
+          id?: never
+          image: string
+          moods?: string[] | null
+          new_composition?: boolean | null
+          notes?: string | null
+          raga_id?: number | null
+          status?: string | null
+          submitted_at?: string | null
+          tala_id?: number | null
+          title: string
+          user_id: string
+          youtube_url: string
+          youtube_video_id: string
+        }
+        Update: {
+          approved_video_id?: string | null
+          composer_id?: number | null
+          composition_id?: number | null
+          composition_title?: string | null
+          format?: string
+          id?: never
+          image?: string
+          moods?: string[] | null
+          new_composition?: boolean | null
+          notes?: string | null
+          raga_id?: number | null
+          status?: string | null
+          submitted_at?: string | null
+          tala_id?: number | null
+          title?: string
+          user_id?: string
+          youtube_url?: string
+          youtube_video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submissions_approved_video_id_fkey"
+            columns: ["approved_video_id"]
+            referencedRelation: "music_videos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submissions_composer_id_fkey"
+            columns: ["composer_id"]
+            referencedRelation: "composers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submissions_composition_id_fkey"
+            columns: ["composition_id"]
+            referencedRelation: "compositions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submissions_raga_id_fkey"
+            columns: ["raga_id"]
+            referencedRelation: "ragas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submissions_tala_id_fkey"
+            columns: ["tala_id"]
+            referencedRelation: "talas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "submissions_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      talas: {
+        Row: {
+          id: number
+          jati: number
+          nadai: number
+          name: string
+          tala: string
+        }
+        Insert: {
+          id?: number
+          jati?: number
+          nadai?: number
+          name: string
+          tala: string
+        }
+        Update: {
+          id?: number
+          jati?: number
+          nadai?: number
+          name?: string
+          tala?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      commit_transaction: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      delete_claim: {
+        Args: {
+          uid: string
+          claim: string
+        }
+        Returns: string
+      }
+      get_claim: {
+        Args: {
+          uid: string
+          claim: string
+        }
+        Returns: Json
+      }
+      get_claims: {
+        Args: {
+          uid: string
+        }
+        Returns: Json
+      }
+      get_my_claim: {
+        Args: {
+          claim: string
+        }
+        Returns: Json
+      }
+      get_my_claims: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      is_claims_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      rollback_transaction: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      set_claim: {
+        Args: {
+          uid: string
+          claim: string
+          value: Json
+        }
+        Returns: string
+      }
+      start_transaction: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -162,6 +162,7 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
             user_id: user?.id,
             youtube_url: form.values.youtubeLink,
             youtube_video_id: form.values.youtubeId,
+            format: form.values.format,
             title: form.values.title,
             image: form.values.image,
             raga_id: form.values.ragaId,
