@@ -1,5 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { SubmissionArtist } from "./ArtistHelpers";
+import { PendingArtist, SubmissionArtist, SubmissionPendingArtist } from "./ArtistHelpers";
 
 export type Submission = {
     id: number;
@@ -25,12 +25,22 @@ export type Submission = {
     composers: { name: string };
     compositions: { title: string };
     submission_artists: SubmissionArtist[]
+    submission_pending_artists: SubmissionPendingArtist[]
 }
 
-export async function updateSubmissionStatus(submission: Submission, musicVideoId: string, supabase: SupabaseClient) {
+export async function approveSubmissionStatus(submission: Submission, musicVideoId: string, supabase: SupabaseClient) {
     const { error } = await supabase
         .from('submissions')
         .update({ status: 'approved', approved_video_id: musicVideoId })
+        .eq('id', submission.id);
+
+    if (error) throw error;
+}
+
+export async function rejectSubmissionStatus(submission: Submission, supabase: SupabaseClient) {
+    const { error } = await supabase
+        .from('submissions')
+        .update({ status: 'rejected' })
         .eq('id', submission.id);
 
     if (error) throw error;

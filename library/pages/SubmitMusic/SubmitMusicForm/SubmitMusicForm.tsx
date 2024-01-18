@@ -1,14 +1,8 @@
-import { forwardRef, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { databaseErrorNotification } from '../../../helpers/NotificationHelpers';
-import { Accordion, ActionIcon, Alert, Autocomplete, Badge, Box, Button, Center, Container, Divider, Group, Loader, Paper, Select, SelectItemProps, Text, TextInput, Textarea, Title, rem } from "@mantine/core";
-import { useForm } from '@mantine/form';
-import { youtubeIdRegExp, youtubeRegExp } from "../../../helpers/UrlHelpers";
-import { useDebouncedValue, useToggle } from "@mantine/hooks";
-import { IconAlertCircle, IconCheck, IconCircleCheck, IconCircleMinus, IconMinus, IconUser, IconUsersGroup } from "@tabler/icons-react";
-import { Raga } from "../../../helpers/RagaHelpers";
-import type { SelectItem } from "@mantine/core/lib/Select"
-import { Artist, leadOptions, accompanimentOptions, defaultArtiste } from "../../../helpers/ArtistHelpers";
-import { PostgrestError } from "@supabase/supabase-js";
+import { Alert, Box, Button, Center,Group, Loader, Text, TextInput, Title } from "@mantine/core";
+import { IconAlertCircle, IconCircleCheck  } from "@tabler/icons-react";
+import { SubmissionArtist } from "../../../helpers/ArtistHelpers";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUser } from "../../../hooks/useUser";
 import useStyles from '../SubmitMusic.styles';
@@ -45,17 +39,18 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
     const [submitted, setSubmitted] = useState(false)
 
     async function submitArtists(submission_id: string) {
-        if (form.values.mainArtist.id) {
+        if (form.values.mainArtist.artist_id) {
             try {
-                if (form.values.mainArtist.id == 0) {
+                // Handle New Artist Submission
+                if (form.values.mainArtist.artist_id >= 1000) {
                     const { data, status, error } = await supabase
                         .from('pending_artists')
                         .insert([
                             {
                                 role: 'main',
                                 submission_id: submission_id,
-                                name: form.values.mainArtist.name,
-                                main_instrument: form.values.mainArtist.main_instrument,
+                                name: form.values.mainArtist.artists.name,
+                                main_instrument: form.values.mainArtist.instrument,
                                 user_id: user?.id,
                             },
                         ])
@@ -69,7 +64,7 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
                                     role: 'main',
                                     submission_id: submission_id,
                                     pending_artist_id: data.id,
-                                    instrument: form.values.mainArtist.main_instrument
+                                    instrument: form.values.mainArtist.instrument
                                 },
                             ])
                         if (error) { throw error }
@@ -82,8 +77,8 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
                             {
                                 role: 'main',
                                 submission_id: submission_id,
-                                artist_id: form.values.mainArtist.id,
-                                instrument: form.values.mainArtist.main_instrument
+                                artist_id: form.values.mainArtist.artist_id,
+                                instrument: form.values.mainArtist.instrument
                             },
                         ])
                     if (error) { throw error }
@@ -96,18 +91,19 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
 
         }
 
-        if (form.values.accompanying[0]) {
-            form.values.accompanying.forEach(async (artist: Artist) => {
+        if (form.values.accompanying[0] && form.values.accompanying[0].instrument && form.values.accompanying[0].artist_id) {
+            form.values.accompanying.forEach(async (artist: SubmissionArtist) => {
                 try {
-                    if (artist.id == 0) {
+                    // Handle New Artist Submission
+                    if (artist.artist_id >= 1000) {
                         const { data, status, error } = await supabase
                             .from('pending_artists')
                             .insert([
                                 {
                                     role: 'accompanying',
                                     submission_id: submission_id,
-                                    name: artist.name,
-                                    main_instrument: artist.main_instrument,
+                                    name: artist.artists.name,
+                                    main_instrument: artist.instrument,
                                     user_id: user?.id,
                                 },
                             ])
@@ -123,7 +119,7 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
                                             role: 'main',
                                             submission_id: submission_id,
                                             pending_artist_id: data.id,
-                                            instrument: artist.main_instrument
+                                            instrument: artist.instrument
                                         },
                                     ])
                                 if (error) { throw error }
@@ -138,8 +134,8 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
                                 {
                                     role: 'accompanying',
                                     submission_id: submission_id,
-                                    artist_id: artist.id,
-                                    instrument: artist.main_instrument
+                                    artist_id: artist.artist_id,
+                                    instrument: artist.instrument
                                 },
                             ])
                         if (error) { throw error }
@@ -165,12 +161,13 @@ export const SubmitMusicForm = ({ linkValidation }: SubmitMusicFormProps) => {
             format: form.values.format,
             title: form.values.title,
             image: form.values.image,
+            composition_title: form.values.compName,
             raga_id: form.values.ragaId,
             tala_id: form.values.talaId,
             composer_id: form.values.composerId,
             moods: form.values.moods,
             // Set either new_composition flag or composition_id based on form values
-            ...(form.values.newComp ? { new_composition: true, composition_title: form.values.compId } :
+            ...(form.values.newComp ? { new_composition: true } :
                 { composition_id: form.values.compId }),
         };
 

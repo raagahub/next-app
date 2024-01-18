@@ -118,7 +118,7 @@ export const CompositionForm = () => {
 
     useEffect(() => {
         const selected = form.values.format
-        console.log('this is the format', selected)
+        console.log(form.getInputProps('format'))
         if (selected) {
             if (selected == 'rtp') {
                 setRagaActive(true)
@@ -170,7 +170,7 @@ export const CompositionForm = () => {
                                 const newComp: CompSelect = { comp: null, label: query, value: query }
                                 setComps((current) => [...current, newComp]);
                                 setNewComp(newComp)
-                                form.setFieldValue(`compId`, query)
+                                form.setFieldValue(`compName`, query)
                                 form.setFieldValue(`newComp`, true)
                                 return newComp;
                             }}
@@ -196,9 +196,8 @@ export const CompositionForm = () => {
                             disabled={!talaActive}
                             {...form.getInputProps(`talaId`)}
                         />
-
-                        {newComp &&
-                            <Select
+                        
+                        <Select
                                 label="Composer"
                                 placeholder="Type Composer's name"
                                 data={allComposers}
@@ -206,7 +205,7 @@ export const CompositionForm = () => {
                                 disabled={!composerActive}
                                 {...form.getInputProps(`composerId`)}
                             />
-                        }
+
 
                     </Group>
                 </Grid.Col>

@@ -3,13 +3,14 @@ import { SubmitMusicForm } from "./SubmitMusicForm/SubmitMusicForm"
 import { useUnfurlUrl, youtubeIdRegExp, youtubeRegExp } from "../../helpers/UrlHelpers";
 import { isNotEmpty, useForm, UseFormReturnType } from "@mantine/form";
 import { createContext, useEffect, useState } from "react";
-import { Artist, defaultArtiste } from "../../helpers/ArtistHelpers";
-import { Raga, defaultRaga } from "../../helpers/RagaHelpers";
-import { Tala, defaultTala } from "../../helpers/TalaHelpers";
+import { Artist, SubmissionArtist, defaultArtist, getArtist } from "../../helpers/ArtistHelpers";
+import { Raga, defaultRaga, getRaga } from "../../helpers/RagaHelpers";
+import { Tala, defaultTala, getTala } from "../../helpers/TalaHelpers";
 import { SubmitMusicPreview } from "./SubmitMusicPreview";
 import { useDebouncedValue } from "@mantine/hooks";
 import { databaseErrorNotification } from "../../helpers/NotificationHelpers";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { getComposer, getComposition } from "../../helpers/CompositionHelpers";
 
 interface FormValues {
     youtubeLink: string;
@@ -18,11 +19,15 @@ interface FormValues {
     image: string;
     format: string;
     compId: string;
+    compName: string;
     ragaId: string;
+    ragaName: string;
     talaId: string;
+    talaName: string;
     composerId: string;
-    mainArtist: Artist;
-    accompanying: Artist[];
+    composerName: string;
+    mainArtist: SubmissionArtist;
+    accompanying: SubmissionArtist[];
     moods: string[];
     newComp: boolean;
 }
@@ -39,13 +44,17 @@ export const SubmitMusicComponent = () => {
             image: '',
             format: '',
             compId: '',
+            compName: '',
             ragaId: '',
+            ragaName: '',
             talaId: '', 
+            talaName: '',
             composerId: '',
-            mainArtist: defaultArtiste,
-            accompanying: [defaultArtiste],
+            composerName: '',
+            mainArtist: defaultArtist('main'),
+            accompanying: [defaultArtist('accompanying')],
             moods: [''],
-            newComp: false
+            newComp: false,
         },
 
         validate: {
@@ -104,6 +113,59 @@ export const SubmitMusicComponent = () => {
         }
 
     }, [debouncedYTLink, unfurlData, unfurlStatus]);
+
+    // Form Related Effects
+
+    useEffect(() => {
+        (async () => {
+            const composition = await getComposition(form.values.compId, supabase)
+            form.setFieldValue('ragaId', composition.raga)
+            form.setFieldValue('talaId', composition.tala)
+            form.setFieldValue('composerId', composition.composer)
+            form.setFieldValue('compName', composition.title)
+        })();
+
+    }, [form.values.compId])
+
+    useEffect(() => {
+        (async () => {
+            const raga = await getRaga(form.values.ragaId, supabase)
+            form.setFieldValue('ragaName', raga.format_name)
+        })();
+
+    }, [form.values.ragaId])
+
+    useEffect(() => {
+        (async () => {
+            const tala = await getTala(form.values.talaId, supabase)
+            form.setFieldValue('talaName', tala.name)
+        })();
+
+    }, [form.values.talaId])
+
+    useEffect(() => {
+        (async () => {
+            const composer = await getComposer(form.values.composerId, supabase)
+            form.setFieldValue('composerName', composer.name)
+        })();
+
+    }, [form.values.composerId])
+
+    useEffect(() => {
+        (async () => {
+            const artist = await getArtist(form.values.mainArtist.artist_id, supabase)
+            form.setFieldValue('mainArtist.artists.name', artist.name)
+        })();
+
+    }, [form.values.mainArtist])
+
+    useEffect(() => {
+        form.values.accompanying.forEach(async (accompanying, index)=> {
+            const artist = await getArtist(accompanying.artist_id, supabase)
+            form.setFieldValue(`accompanying.${index}.artists.name`, artist.name)
+        })
+
+    }, [form.values.accompanying])
 
     return (
         <div>

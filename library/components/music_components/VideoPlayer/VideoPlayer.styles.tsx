@@ -14,7 +14,17 @@ export default createStyles((theme) => ({
 
       previewContainer: {
         height: '100vh',
-        padding: 16,
-        overflow: 'scroll'
+        padding: 16
+      },
+
+      playerWrapper: {
+        position: 'relative',
+        paddingTop: '56.25%', /* Player ratio: 100 / (1280 / 720) */
+      },
+      
+      reactPlayer: {
+        position: 'absolute',
+        top: 0,
+        left: 0
       }
 }))

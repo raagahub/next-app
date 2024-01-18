@@ -1,3 +1,4 @@
+import { SupabaseClient } from "@supabase/supabase-js";
 import { createContext } from "react";
 
 export interface Raga {
@@ -43,3 +44,17 @@ export type SwaraCountState = {five: boolean; six: boolean; seven: boolean; othe
 export type RagaSortOption = 'melakarta' | 'name'
 
 export const RagaContext = createContext({} as Raga)
+
+
+// Database Functions
+
+export async function getRaga(ragaId: string, supabase: SupabaseClient) {
+    const { data: raga, error } = await supabase
+    .from('ragas')
+    .select()
+    .eq('id', ragaId)
+    .single()
+
+    if (error) throw error;
+    return raga;
+}

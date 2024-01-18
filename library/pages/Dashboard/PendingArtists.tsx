@@ -2,10 +2,11 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { useEffect, useState } from "react"
 import { PendingArtist, SubmissionArtist, SubmissionPendingArtist, deleteSubmissionPendingArtist, insertSubmissionArtist } from "../../helpers/ArtistHelpers"
 import { databaseErrorNotification } from "../../helpers/NotificationHelpers"
-import { Badge, Button, Group, Table, Text } from "@mantine/core"
+import { ActionIcon, Badge, Button, Group, Table, Text } from "@mantine/core"
 import { statusColorMap } from "./DashboardHelper"
 import dayjs from 'dayjs';
 import { useUser } from "../../hooks/useUser"
+import { IconCheck, IconEditCircle, IconX } from "@tabler/icons-react"
 
 export const PendingArtists = () => {
     const supabase = useSupabaseClient()
@@ -37,12 +38,13 @@ export const PendingArtists = () => {
             <td><Text fw={500}>{artist.name}</Text></td>
             <td>{artist.main_instrument}</td>
             <td>{dayjs(artist.submitted_at).format('DD-MM-YYYY')}</td>
-            <td>
-                <Group>
-                    <Button size={'xs'} variant="default">Edit</Button>
-                    <Button size={'xs'} color={'teal'} onClick={() => { approveArtist(artist) }}>Approve</Button>
-                </Group>
-            </td>
+            <td width={175}>
+                    <Group spacing={'sm'}>
+                        <ActionIcon variant='outline' color='blue' disabled={artist.status == "approved"}><IconEditCircle size="1.125rem"/></ActionIcon>
+                        <ActionIcon variant='outline' color='red' disabled={artist.status == "approved"} onClick={() => { approveArtist(artist) }}><IconX size="1.125rem"/></ActionIcon>
+                        <ActionIcon variant='filled' color='teal' disabled={artist.status == "approved"} onClick={() => { approveArtist(artist) }}><IconCheck size="1.125rem"/></ActionIcon>
+                    </Group>
+                </td>
         </tr>
     ));
 

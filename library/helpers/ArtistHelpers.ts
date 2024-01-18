@@ -7,10 +7,18 @@ export type Artist = {
     main_instrument: string;
 }
 
-export const defaultArtiste: Artist = {
-    id: 0,
-    name: '',
-    main_instrument: '',
+export const defaultArtist = (role: string = 'main'): SubmissionArtist => {
+    return {
+        submission_id: 0,
+        artist_id: 0,
+        role: role,
+        instrument: '',
+        artists: {
+            name: '',
+            id: 0, // Not Used
+            main_instrument: '', // Not Used
+        }
+    }
 }
 
 export type SubmissionArtist = {
@@ -26,6 +34,7 @@ export type SubmissionPendingArtist = {
     pending_artist_id: number;
     role: string;
     instrument: string;
+    pending_artists: PendingArtist;
 }
 
 export type PendingArtist = {
@@ -61,14 +70,35 @@ export const accompanimentOptions = [
 
 // Database Functions
 
+export async function getArtists(supabase: SupabaseClient) {
+    const { data: artists, status, error } = await supabase
+        .from('artists')
+        .select('id, name, main_instrument')
+
+    if (error) throw error;
+    return artists;
+}
+
+export async function getArtist(artistId: number, supabase: SupabaseClient) {
+    const { data: artist, status, error } = await supabase
+        .from('artists')
+        .select('id, name, main_instrument')
+        .eq('id', artistId)
+        .single()
+
+    if (error) throw error;
+    return artist;
+}
+
 export async function insertSubmissionArtist(artist: SubmissionPendingArtist, artistId: number, supabase: SupabaseClient) {
     const { data: submissionArtist, error } = await supabase
         .from('submission_artists')
-        .insert([{ 
-            submission_id: artist.submission_id, 
-            artist_id: artistId, 
-            role: artist.role, 
-            instrument: artist.instrument }])
+        .insert([{
+            submission_id: artist.submission_id,
+            artist_id: artistId,
+            role: artist.role,
+            instrument: artist.instrument
+        }])
         .select()
         .single()
 
@@ -81,7 +111,7 @@ export async function deleteSubmissionPendingArtist(artist: SubmissionPendingArt
         .from('submission_pending_artists')
         .delete()
         .eq('pending_artist_id', artist.pending_artist_id)
-        
+
     if (error) throw error;
 }
 

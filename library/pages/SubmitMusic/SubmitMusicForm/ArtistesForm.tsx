@@ -2,7 +2,7 @@ import { ActionIcon, Alert, Badge, Button, Grid, Group, Paper, Select, SelectIte
 import { IconMinus, IconUser, IconUsersGroup } from "@tabler/icons-react";
 import { useContext, useEffect, useState } from "react";
 import { SubmitMusicContext } from "../SubmitMusicComponent";
-import { Artist, accompanimentOptions, defaultArtiste, leadOptions } from "../../../helpers/ArtistHelpers";
+import { Artist, SubmissionArtist, accompanimentOptions, defaultArtist, getArtists, leadOptions } from "../../../helpers/ArtistHelpers";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { databaseErrorNotification } from "../../../helpers/NotificationHelpers";
 import { useUser } from "../../../hooks/useUser";
@@ -27,7 +27,7 @@ export const ArtistesForm = () => {
                 placeholder="Vocal / Violin / etc."
                 data={accompanimentOptions}
                 searchable
-                {...form.getInputProps(`accompanying.${index}.main_instrument`)}
+                {...form.getInputProps(`accompanying.${index}.instrument`)}
             />
             <Select
                 label="Name of Artiste"
@@ -40,12 +40,12 @@ export const ArtistesForm = () => {
                     const newArtist: ArtistSelect = { artist: null, label: query, value: newArtistCounter.toString() }
                     setArtists((current) => [...current, newArtist]);
                     updateNewArtist({ ...addedNewArtist, accompanying: true })
-                    form.setFieldValue(`accompanying.${index}.name`, query)
+                    form.setFieldValue(`accompanying.${index}.artists.name`, query)
                     updateCounter(newArtistCounter + 1)
                     console.log(newArtist)
                     return newArtist;
                 }}
-                {...form.getInputProps(`accompanying.${index}.id`)}
+                {...form.getInputProps(`accompanying.${index}.artist_id`)}
             />
             <ActionIcon color="red" variant="light" mt={20} radius={'md'}
                 onClick={() => form.removeListItem('accompanying', index)} disabled={form.values.accompanying.length < 2}>
@@ -55,23 +55,13 @@ export const ArtistesForm = () => {
         </Group>
     ))
 
-    async function getArtists() {
-        const { data, status, error } = await supabase
-            .from('artists')
-            .select('id, name, main_instrument')
-
-        if (status == 200 && data) {
-            setArtists(data.map((artist) => ({ artist: artist, value: artist.id, label: artist.name })))
-        }
-
-        if (error) {
-            databaseErrorNotification(error)
-        }
-
-    }
+    
 
     useEffect(() => {
-        getArtists()
+        (async () => {
+            const artists = await getArtists(supabase)
+            setArtists(artists.map((artist) => ({ artist: artist, value: artist.id, label: artist.name })))
+        })();
     }, []);
 
     const [addedNewArtist, updateNewArtist] = useState({ main: false, accompanying: false })
@@ -91,7 +81,7 @@ export const ArtistesForm = () => {
                             placeholder="Vocal / Violin / etc."
                             data={leadOptions}
                             searchable
-                            {...form.getInputProps(`mainArtist.main_instrument`)}
+                            {...form.getInputProps(`mainArtist.instrument`)}
                         />
                         <Select
                             label="Name of Artiste"
@@ -104,10 +94,10 @@ export const ArtistesForm = () => {
                                 const newArtist: ArtistSelect = { artist: null, label: query, value: '0' }
                                 setArtists((current) => [...current, newArtist]);
                                 updateNewArtist({ ...addedNewArtist, main: true })
-                                form.setFieldValue(`mainArtist.name`, query)
+                                form.setFieldValue(`mainArtist.artists.name`, query)
                                 return newArtist;
                             }}
-                            {...form.getInputProps(`mainArtist.id`)}
+                            {...form.getInputProps(`mainArtist.artist_id`)}
                         />
                     </Group>
                     {addedNewArtist.main &&
@@ -121,7 +111,7 @@ export const ArtistesForm = () => {
                     <Text fw={500} mt={16}>Accompanying Artistes</Text>
                     {accompanyingFields}
                     <Button mt={8} leftIcon={<IconUser size="1rem" />} variant={'outline'}
-                        onClick={() => form.insertListItem('accompanying', defaultArtiste)}>Add Accompanying Artiste</Button>
+                        onClick={() => form.insertListItem('accompanying', defaultArtist('accompanying'))}>Add Accompanying Artiste</Button>
                     {addedNewArtist.accompanying &&
                         <Alert
                             mt={8}

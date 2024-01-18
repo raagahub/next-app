@@ -48,6 +48,28 @@ export const defaultComposer: Composer = {
 
 // Database Functions
 
+export async function getComposition(compId: string, supabase: SupabaseClient) {
+    const { data: composition, error } = await supabase
+    .from('compositions')
+    .select()
+    .eq('id', compId)
+    .single()
+
+    if (error) throw error;
+    return composition;
+}
+
+export async function getComposer(compId: string, supabase: SupabaseClient) {
+    const { data: composer, error } = await supabase
+    .from('composers')
+    .select()
+    .eq('id', compId)
+    .single()
+
+    if (error) throw error;
+    return composer;
+}
+
 export async function insertNewComposition(submission: Submission, supabase: SupabaseClient) {
     const { data: composition, error } = await supabase
         .from('compositions')
@@ -62,6 +84,5 @@ export async function insertNewComposition(submission: Submission, supabase: Sup
         .single()
 
     if (error) throw error;
-    console.log(composition)
     return composition;
 }
